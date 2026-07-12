@@ -1,0 +1,6 @@
+# Code owners for agentic-skills
+# @vidhunnan is requested for review on every pull request.
+# Combined with the branch ruleset on prod-stable (PR + 1 approval required),
+# this means changes need the owner's sign-off before they can be merged.
+
+*       @vidhunnan

@@ -30,6 +30,10 @@ Zip the skill folder (e.g. `skills/handoff-generator/`) and upload it under Sett
 - PRDs for non-trivial skills live in `docs/prds/`.
 - Nothing referencing internal/employer-specific systems or unreleased work goes in this repo.
 
+## Contributing
+
+PRs welcome. `prod-stable` is protected — open a pull request against it and the maintainer reviews and merges. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and skill conventions.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

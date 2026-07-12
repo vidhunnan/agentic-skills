@@ -36,7 +36,7 @@ Vids — ideates in Claude Chat, executes in Claude Code, and moves work both wa
    - Concrete next actions (aimed at the destination)
 5. Skill assembles the brief using the direction-aware template below.
 6. Delivery by surface:
-   - **Claude Code:** writes to `handoff/handoff-{from}-to-{to}-{date}.md`. Always targets the `handoff/` folder; if the folder is missing it **prompts the user** to create it (never silently). If a prior handoff exists, it offers to **resume** — reading the latest brief and continuing from that point rather than repeating. Confirms the final path back to the user.
+   - **Claude Code:** writes to `handoff/handoff-{from}-to-{to}-{date}-{slug}.md`. Always targets the `handoff/` folder; if the folder is missing it **prompts the user** to create it (never silently). If a prior handoff exists, it offers to **resume** — reading the latest brief and continuing from that point rather than repeating. Confirms the final path back to the user.
    - **Claude.ai:** renders a downloadable markdown artifact (chat has no persistent folder; no folder/resume logic).
 7. The receiver opens the brief as starting context and continues without re-explaining anything.
 
@@ -70,8 +70,8 @@ Empty sections keep their header and use an explicit "None" line rather than bei
 
 | Surface | Trigger | Interview | Output |
 |---|---|---|---|
-| Claude Code | `/handoff-generator {optional-slug}` or natural phrasing ("generate a handoff", "hand this off to chat", "resume a handoff") | Asks destination + focus + thread-specific questions; prompts before creating `handoff/`; offers to resume if a prior handoff exists | Writes `handoff/handoff-{from}-to-{to}-{date}.md` (numeric-counter suffix on collision); prints inline if user declines the folder |
-| Claude.ai | Explicit mention or description-match auto-trigger | Same questions, asked conversationally in plain text | Downloadable `handoff-{from}-to-{to}-{date}.md` artifact |
+| Claude Code | `/handoff-generator {optional-slug}` or natural phrasing ("generate a handoff", "hand this off to chat", "resume a handoff") | Asks destination + focus + thread-specific questions; prompts before creating `handoff/`; offers to resume if a prior handoff exists | Writes `handoff/handoff-{from}-to-{to}-{date}-{slug}.md` (numeric-counter suffix on collision); prints inline if user declines the folder |
+| Claude.ai | Explicit mention or description-match auto-trigger | Same questions, asked conversationally in plain text | Downloadable `handoff-{from}-to-{to}-{date}-{slug}.md` artifact |
 
 **Direction model:** `from` = the surface the skill runs on (`chat` on Claude.ai, `code` on Claude Code). `to` = the destination the user names in the interview (default: the opposite surface; free-form values like `teammate` allowed). Surface is detected via **Bash availability** (available → Claude Code; unavailable → Claude.ai).
 
