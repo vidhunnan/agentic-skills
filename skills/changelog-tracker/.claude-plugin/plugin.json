@@ -1,0 +1,8 @@
+{
+  "name": "changelog-tracker",
+  "description": "Documents every substantive commit into per-commit changelog files plus a rolling CHANGELOG index.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

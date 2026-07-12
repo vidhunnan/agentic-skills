@@ -1,0 +1,8 @@
+{
+  "name": "model-strategy",
+  "description": "Creates and maintains docs/MODEL-STRATEGY.md — which Claude model to use for which work, tailored via interview.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

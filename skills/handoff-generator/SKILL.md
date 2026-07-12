@@ -2,7 +2,7 @@
 name: handoff-generator
 description: Interactive, bidirectional handoff-brief generator that bridges Claude.ai chat and Claude Code. Interviews the user first, then writes a structured brief so work can move between surfaces without re-explaining. Triggers when the user says "generate a handoff", "hand this off to code", "hand this off to chat", "prep this for Claude Code", "resume a handoff", or runs /handoff-generator.
 argument-hint: "[optional-slug]"
-allowed-tools: Read, Write, Bash, AskUserQuestion
+allowed-tools: Read, Write, Edit, Bash, AskUserQuestion
 disable-model-invocation: false
 ---
 
@@ -179,6 +179,35 @@ Markdown artifact named `handoff-{from}-to-{to}-{date}-{slug}.md`. Present the f
 content and make clear it can be saved and dropped into the destination (e.g.
 Claude Code) as starting context. Do not attempt to run Bash or write to a
 filesystem path, and skip resume logic.
+
+### Step 6C — Register the handoff protocol in CLAUDE.md (Claude Code only)
+
+After the brief is delivered, offer to register a short handoff-protocol block in
+the project's CLAUDE.md so future sessions know to check `handoff/` and use this
+skill when moving work across surfaces. This is **best-effort — never let it block
+or delay delivery of the brief itself.**
+
+1. Locate CLAUDE.md: `git rev-parse --show-toplevel` → `<root>/CLAUDE.md` (accept
+   `.claude/CLAUDE.md`; prefer an existing file).
+2. **Exists** → Read it and search for the literal `<!-- BEGIN skill:handoff-generator -->`.
+   If absent, show the block below and ask permission (AskUserQuestion); on yes,
+   insert it under a `## Skill protocols` heading (create the heading at the end of
+   the file if needed) — never blind-append. If present but outdated, update only
+   the text between this skill's markers; else report "already registered." Never
+   touch other skills' blocks.
+3. **Missing entirely** → don't write a stub; offer a full `/init`-style analysis
+   (confirmation-gated) to generate a real CLAUDE.md, then insert the block.
+
+On Claude.ai, skip the write — print the block and tell the user to paste it into
+their project's CLAUDE.md.
+
+Canonical block:
+```md
+<!-- BEGIN skill:handoff-generator -->
+### Handoff protocol
+When work moves between Claude.ai chat and Claude Code (or to a teammate/another session), generate a handoff brief with `/handoff-generator`. Briefs live in `handoff/handoff-{from}-to-{to}-{date}-{slug}.md`. When resuming, check `handoff/` for the latest relevant brief first.
+<!-- END skill:handoff-generator -->
+```
 
 ### Step 7 — Edge cases
 
