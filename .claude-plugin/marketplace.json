@@ -9,6 +9,21 @@
       "name": "handoff-generator",
       "source": "./skills/handoff-generator",
       "description": "Interactive, bidirectional Chat↔Code handoff brief generator."
+    },
+    {
+      "name": "changelog-tracker",
+      "source": "./skills/changelog-tracker",
+      "description": "Documents every substantive commit into per-commit changelog files plus a rolling CHANGELOG index."
+    },
+    {
+      "name": "model-strategy",
+      "source": "./skills/model-strategy",
+      "description": "Creates and maintains docs/MODEL-STRATEGY.md — which Claude model to use for which work, tailored via interview."
+    },
+    {
+      "name": "branch-naming",
+      "source": "./skills/branch-naming",
+      "description": "Suggests and optionally creates a git branch name following the project's convention."
     }
   ]
 }

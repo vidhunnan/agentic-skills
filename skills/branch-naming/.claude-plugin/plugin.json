@@ -1,0 +1,8 @@
+{
+  "name": "branch-naming",
+  "description": "Suggests and optionally creates a git branch name following the project's convention.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

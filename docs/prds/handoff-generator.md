@@ -1,6 +1,6 @@
 # PRD — handoff-generator
 
-Status: Draft v0.2 · Owner: Vids · Repo: vidhunnan/agentic-skills
+Status: Draft v0.3 · Owner: Vids · Repo: vidhunnan/agentic-skills
 
 ## 1. Problem
 
@@ -81,10 +81,14 @@ Empty sections keep their header and use an explicit "None" line rather than bei
 name: handoff-generator
 description: Interactive, bidirectional handoff-brief generator that bridges Claude.ai chat and Claude Code. Interviews the user first, then writes a structured brief so work can move between surfaces without re-explaining. Triggers when the user says "generate a handoff", "hand this off to code", "hand this off to chat", "prep this for Claude Code", "resume a handoff", or runs /handoff-generator.
 argument-hint: "[optional-slug]"
-allowed-tools: Read, Write, Bash, AskUserQuestion
+allowed-tools: Read, Write, Edit, Bash, AskUserQuestion
 disable-model-invocation: false
 ---
 ```
+
+### CLAUDE.md registration (v0.3)
+
+After delivering the brief, the skill offers to register a `<!-- BEGIN skill:handoff-generator -->…<!-- END -->` protocol block under a `## Skill protocols` heading in the project's CLAUDE.md, so future sessions check `handoff/` and use the skill when moving work across surfaces. Idempotent (match on the literal markers, update-in-place, never duplicate); if CLAUDE.md is missing, offer a full `/init`-style generation (confirmation-gated) first. This is best-effort and never blocks brief delivery. On Claude.ai, the block is printed for the user to paste. This shared registration mechanism is used by every skill in the library.
 
 ## 7. Success criteria
 

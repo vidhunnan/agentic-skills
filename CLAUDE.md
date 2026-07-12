@@ -26,6 +26,25 @@ Skills here are written to run on **two surfaces that do not share state**: Clau
 
 When adding or editing a skill, keep this split explicit — the same skill produces different output mechanics depending on where it runs.
 
+## Skill protocols — the CLAUDE.md registration pattern
+
+Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
+
+The shared mechanism, embedded as a Step in each such skill:
+
+- **One delimited block per skill**, under a `## Skill protocols` heading in the target CLAUDE.md:
+  ```md
+  <!-- BEGIN skill:<name> -->
+  ### <Protocol title>
+  <1–5 line protocol Claude follows>
+  <!-- END skill:<name> -->
+  ```
+- **Idempotent:** match on the literal `BEGIN`/`END` markers (never the title). Absent → ask, then insert under `## Skill protocols`. Present → update in place only if changed; never duplicate; never touch other skills' blocks.
+- **Missing CLAUDE.md:** don't stub — offer a full `/init`-style analysis (confirmation-gated) to generate a real one, then insert.
+- **Claude.ai:** no filesystem — print the block for the user to paste.
+
+When building a new skill that establishes a durable per-project convention, reuse this exact mechanism and marker format.
+
 ## Adding a new skill
 
 1. Write `docs/prds/<name>.md` for anything non-trivial (problem, goals/non-goals, workflow, output template, per-surface trigger + output table).

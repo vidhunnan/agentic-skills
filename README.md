@@ -7,6 +7,9 @@ Personal library of Claude / Cursor-compatible skills — small, focused tools y
 | Skill | What it does | Surfaces | Status |
 |---|---|---|---|
 | [`handoff-generator`](skills/handoff-generator/SKILL.md) | Interactive, bidirectional Chat↔Code handoff brief — interviews you, then writes the brief | Claude Code, Claude.ai | Implemented ([PRD](docs/prds/handoff-generator.md)) |
+| [`changelog-tracker`](skills/changelog-tracker/SKILL.md) | Documents every substantive commit into per-commit files + a rolling CHANGELOG index | Claude Code | Implemented ([PRD](docs/prds/changelog-tracker.md)) |
+| [`model-strategy`](skills/model-strategy/SKILL.md) | Creates/maintains docs/MODEL-STRATEGY.md — which Claude model for which work, tailored via interview | Claude Code, Claude.ai | Implemented ([PRD](docs/prds/model-strategy.md)) |
+| [`branch-naming`](skills/branch-naming/SKILL.md) | Suggests/creates a git branch name that follows the project's convention | Claude Code | Implemented ([PRD](docs/prds/branch-naming.md)) |
 
 ## Install
 
