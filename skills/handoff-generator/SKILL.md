@@ -157,23 +157,25 @@ scope with the user)`. A stable shape makes the brief reliable for the receiver.
 
 ### Step 6A — Claude Code: write the file
 
-1. Target filename: `handoff/handoff-{from}-to-{to}-{date}.md`
-   (e.g. `handoff/handoff-code-to-chat-2026-07-12.md`).
+1. Target filename: `handoff/handoff-{from}-to-{to}-{date}-{slug}.md`
+   (e.g. `handoff/handoff-code-to-chat-2026-07-12-auth-token-refresh.md`).
+   The `{slug}` (from Step 4) keeps same-day handoffs on different topics
+   distinct.
 2. The `handoff/` folder must already exist or have been approved by the user in
    Step 1. Run `mkdir -p handoff` only after that approval.
 3. Avoid overwriting: check whether the target name is taken
-   (e.g. `ls handoff/handoff-{from}-to-{to}-{date}*.md`). If so, append a numeric
-   counter before `.md`: `-2`, `-3`, … and use the first free name.
+   (e.g. `ls handoff/handoff-{from}-to-{to}-{date}-{slug}*.md`). If so, append a
+   numeric counter before `.md`: `-2`, `-3`, … and use the first free name.
 4. Write the assembled brief to that path with the Write tool.
 5. Confirm back to the user with the exact final path, e.g. "Handoff brief written
-   to `handoff/handoff-code-to-chat-2026-07-12.md`."
+   to `handoff/handoff-code-to-chat-2026-07-12-auth-token-refresh.md`."
 6. **If the user declined to create `handoff/`:** skip writing and print the full
    brief inline in your reply instead, so nothing is lost.
 
 ### Step 6B — Claude.ai: produce a downloadable artifact
 
 There is no project folder to write into. Output the brief as a downloadable
-Markdown artifact named `handoff-{from}-to-{to}-{date}.md`. Present the full brief
+Markdown artifact named `handoff-{from}-to-{to}-{date}-{slug}.md`. Present the full brief
 content and make clear it can be saved and dropped into the destination (e.g.
 Claude Code) as starting context. Do not attempt to run Bash or write to a
 filesystem path, and skip resume logic.
