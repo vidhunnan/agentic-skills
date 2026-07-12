@@ -1,0 +1,14 @@
+{
+  "name": "agentic-skills",
+  "owner": {
+    "name": "Vidhunnan Murugan",
+    "email": "hi@vidhunnan.design"
+  },
+  "plugins": [
+    {
+      "name": "handoff-generator",
+      "source": "./skills/handoff-generator",
+      "description": "Interactive, bidirectional Chat↔Code handoff brief generator."
+    }
+  ]
+}
