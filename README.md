@@ -1,6 +1,6 @@
 # agentic-skills
 
-Personal library of Claude / Cursor-compatible skills. Private for now — will flip public once the first skill is solid.
+Personal library of Claude / Cursor-compatible skills — small, focused tools you install into Claude Code or Claude.ai. The first skill, [`handoff-generator`](skills/handoff-generator/SKILL.md), is implemented and ready to use.
 
 ## Skills
 
