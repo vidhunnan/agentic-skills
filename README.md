@@ -17,7 +17,11 @@ Personal library of Claude / Cursor-compatible skills — small, focused tools y
 ```
 /plugin marketplace add vidhunnan/agentic-skills
 /plugin install handoff-generator
+/plugin install changelog-tracker
+/plugin install model-strategy
+/plugin install branch-naming
 ```
+Add the marketplace once, then install whichever skills you want (each is a separate plugin).
 
 **Claude Code (standalone, no plugin):**
 Copy the skill folder into `~/.claude/skills/` (personal) or `.claude/skills/` inside a project.
