@@ -45,6 +45,23 @@ The shared mechanism, embedded as a Step in each such skill:
 
 When building a new skill that establishes a durable per-project convention, reuse this exact mechanism and marker format.
 
+**Active protocols in this repo** (live blocks the skills registered here):
+
+<!-- BEGIN skill:changelog-tracker -->
+### Changelog protocol
+After every substantive commit (skip merge commits and changelog-only commits), document it: create `changelog/commits/NNN-slug.md` (NNN = next zero-padded 3-digit number, slug = kebab-case of the subject) and update `changelog/CHANGELOG.md` (per-commit table newest-first, plus the dated section). Pull all data from git (`git log -1`, `git show --stat`). Run `/changelog-tracker` if unsure of the format.
+<!-- END skill:changelog-tracker -->
+
+<!-- BEGIN skill:branch-naming -->
+### Branch naming
+Branches follow: `<type>/<slug>` (kebab-case; `type` ∈ `feat`/`fix`/`chore`/`docs`/`refactor`) — e.g. `feat/handoff-generator`, `chore/changelog-baseline`. No area segment. Before creating a branch, derive a name from the work context and this convention, then confirm with the user. Use `/branch-naming` to generate one.
+<!-- END skill:branch-naming -->
+
+<!-- BEGIN skill:model-strategy -->
+### Model strategy
+Model assignments for AI work in this project live in `docs/MODEL-STRATEGY.md`. Follow its assignment rules and the mandatory review rule when choosing a Claude model. Keep model IDs current (confirm against the live lineup, e.g. via the `claude-api` skill) rather than hardcoding stale ones. Update via `/model-strategy` when the lineup or task mix changes.
+<!-- END skill:model-strategy -->
+
 ## Adding a new skill
 
 1. Write `docs/prds/<name>.md` for anything non-trivial (problem, goals/non-goals, workflow, output template, per-surface trigger + output table).
