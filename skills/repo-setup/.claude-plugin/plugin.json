@@ -1,0 +1,8 @@
+{
+  "name": "repo-setup",
+  "description": "Scaffolds a project's context stack — the tiered docs folders that let an agent be briefed on a project — and registers the routing table in CLAUDE.md.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

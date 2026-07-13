@@ -28,7 +28,7 @@ When adding or editing a skill, keep this split explicit — the same skill prod
 
 ## Skill protocols — the CLAUDE.md registration pattern
 
-Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
+Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`, `repo-setup`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
 
 The shared mechanism, embedded as a Step in each such skill:
 
@@ -61,6 +61,21 @@ Branches follow: `<type>/<slug>` (kebab-case; `type` ∈ `feat`/`fix`/`chore`/`d
 ### Model strategy
 Model assignments for AI work in this project live in `docs/MODEL-STRATEGY.md`. Follow its assignment rules and the mandatory review rule when choosing a Claude model. Keep model IDs current (confirm against the live lineup, e.g. via the `claude-api` skill) rather than hardcoding stale ones. Update via `/model-strategy` when the lineup or task mix changes.
 <!-- END skill:model-strategy -->
+
+<!-- BEGIN skill:repo-setup -->
+### Context stack
+Project docs are tiered by the question they answer. Before writing a doc, route it. Before trusting one, check its tier.
+
+| Question | Tier | Path | Status |
+|---|---|---|---|
+| What are we even trying to build? | Concepts | `docs/concepts/` | hypothesis — future tense, disposable |
+| What are we still deciding? | PRDs | `docs/prds/` | proposal — a concept worth building |
+| Why did we choose that? | Decisions | `docs/decisions/` | truth — past tense, append-only |
+| Where did we leave off? | Handoffs | `handoff/` | snapshot — the latest one wins |
+| What actually shipped? | Changelog | `changelog/` | TRUTH — generated from git |
+
+**Done vs. explored:** `changelog/` is what shipped; everything under `docs/` is what we *thought*. Never cite a concept or a PRD as evidence something exists — check the changelog or the code. Never hand-edit the changelog. Each folder's `README.md` states its tense and lifecycle. Run `/repo-setup check` to re-verify the stack.
+<!-- END skill:repo-setup -->
 
 ## Adding a new skill
 
