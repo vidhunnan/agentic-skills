@@ -11,6 +11,7 @@ Personal library of Claude / Cursor-compatible skills — small, focused tools y
 | [`model-strategy`](skills/model-strategy/SKILL.md) | Creates/maintains docs/MODEL-STRATEGY.md — which Claude model for which work, tailored via interview | Claude Code, Claude.ai | Implemented ([PRD](docs/prds/model-strategy.md)) |
 | [`branch-naming`](skills/branch-naming/SKILL.md) | Suggests/creates a git branch name that follows the project's convention | Claude Code | Implemented ([PRD](docs/prds/branch-naming.md)) |
 | [`repo-setup`](skills/repo-setup/SKILL.md) | Scaffolds a repo's context stack — concepts, PRDs, decisions, handoffs, changelog — surveying and adopting what's already there | Claude Code, Claude.ai | Implemented ([PRD](docs/prds/repo-setup.md)) |
+| [`decisions-logger`](skills/decisions-logger/SKILL.md) | Mines the project for decisions that were actually made and writes each as an ADR with its evidence — never inventing a rationale | Claude Code, Claude.ai | Implemented ([PRD](docs/prds/decisions-logger.md)) |
 
 ## Install
 
@@ -22,6 +23,7 @@ Personal library of Claude / Cursor-compatible skills — small, focused tools y
 /plugin install model-strategy
 /plugin install branch-naming
 /plugin install repo-setup
+/plugin install decisions-logger
 ```
 Add the marketplace once, then install whichever skills you want (each is a separate plugin).
 

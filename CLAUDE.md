@@ -28,7 +28,7 @@ When adding or editing a skill, keep this split explicit — the same skill prod
 
 ## Skill protocols — the CLAUDE.md registration pattern
 
-Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`, `repo-setup`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
+Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`, `repo-setup`, `decisions-logger`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
 
 The shared mechanism, embedded as a Step in each such skill:
 
@@ -76,6 +76,15 @@ Project docs are tiered by the question they answer. Before writing a doc, route
 
 **Done vs. explored:** `changelog/` is what shipped; everything under `docs/` is what we *thought*. Never cite a concept or a PRD as evidence something exists — check the changelog or the code. Never hand-edit the changelog. Each folder's `README.md` states its tense and lifecycle. Run `/repo-setup check` to re-verify the stack.
 <!-- END skill:repo-setup -->
+
+<!-- BEGIN skill:decisions-logger -->
+### Decision log
+Architectural and process decisions live in `docs/decisions/` as numbered ADRs (`NNNN-slug.md`), indexed in `docs/decisions/README.md`. The tier is **truth**: past tense, **append-only**. Never edit a logged decision — supersede it with a new ADR that links back, or append a dated entry under its `## Follow-up` section. The only edit ever permitted to an existing ADR is its `**Status:**` line.
+
+**Proactively offer to log — don't wait to be asked.** When a decision has just been made and is about to become invisible, name it, cite the evidence, and offer to write it: **before staging a commit** that changes a convention, a dependency, a layout, or a protocol; **at the end of a substantial piece of work**; when a handoff's `## Decisions Made` section is non-empty; or when the user says "let's go with X" / "not Y, because Z". Offer **once**, be specific, and take no for an answer.
+
+**Never invent a rationale.** If the reasoning isn't in a source, ask — and if nobody remembers, write `*(reason not stated)*`. A decision with an honest gap is worth more than one with a plausible fiction. Run `/decisions-logger` to mine the project for decisions not yet logged.
+<!-- END skill:decisions-logger -->
 
 ## Adding a new skill
 
