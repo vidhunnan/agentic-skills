@@ -8,6 +8,7 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 
 | # | Commit | Date | Subject |
 |---|--------|------|---------|
+| [006](./commits/006-rewrite-the-readme-around-the-context-stack.md) | `4ab3c74` | 2026-07-13 | Rewrite the README around the context stack |
 | [005](./commits/005-add-decisions-logger-skill.md) | `d6ee986` | 2026-07-13 | Add decisions-logger skill |
 | [004](./commits/004-add-repo-setup-skill-and-scaffold-this-repos-context-stack.md) | `32e425a` | 2026-07-13 | Add repo-setup skill and scaffold this repo's context stack |
 | [003](./commits/003-add-changelog-baseline-model-strategy-and-skill-protocol-registrations.md) | `0fc116e` | 2026-07-12 | Add changelog baseline, model strategy, and skill protocol registrations |
@@ -24,6 +25,7 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 - **`decisions-logger` skill** (`d6ee986`) — mines a project for the decisions that were actually made and writes each as a numbered ADR with its evidence. Built around a **source firewall**: a candidate may be *born* in a weak source but never *justified* by one, so a rule stated without a reason (CLAUDE.md's protocol blocks) can be found but never rationalized. Where the "why" was never written down it asks, and where nobody remembers it records `(reason not stated)` — it never invents one.
 
 ### Changed
+- **README rewritten around the context stack** (`4ab3c74`) — the install section is now three independently copyable blocks instead of one that ran all six installs at once, with each skill's `/plugin install` command beside its name in the table. The Skills tables are grouped by job (`repo-setup` builds the stack; `changelog-tracker` / `decisions-logger` / `handoff-generator` fill it; `branch-naming` / `model-strategy` hold the conventions), and the Status column reads `Live` rather than an identical "Implemented (PRD)" on every row. Adds "The context stack" (what each folder means and how far to trust it) and "This repo runs on its own skills" (where to find the 14 ADRs, the changelog, and the model strategy).
 - **The decisions tier's append-only rule** (`d6ee986`) — made precise. The *reasoning* (Context/Decision/Alternatives/Consequences) is frozen; the `**Status:**` line is a navigational pointer and `## Follow-up` is append-only. A superseded ADR still reading "Accepted" lies to the next reader, so exactly two mutations are permitted, enforced by a byte-identical check on the frozen body. `docs/decisions/_TEMPLATE.md` gains `## Evidence` and `## Follow-up`.
 
 ## 2026-07-12
