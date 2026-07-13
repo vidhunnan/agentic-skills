@@ -1,0 +1,8 @@
+{
+  "name": "decisions-logger",
+  "description": "Mines a project for the decisions that were actually made and writes each as a numbered ADR with its evidence — asking when the \"why\" was never written down, and never inventing one.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

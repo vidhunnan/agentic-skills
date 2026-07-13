@@ -29,6 +29,11 @@
       "name": "repo-setup",
       "source": "./skills/repo-setup",
       "description": "Scaffolds a project's context stack — the tiered docs folders that let an agent be briefed on a project — and registers the routing table in CLAUDE.md."
+    },
+    {
+      "name": "decisions-logger",
+      "source": "./skills/decisions-logger",
+      "description": "Mines a project for the decisions that were actually made and writes each as a numbered ADR with its evidence — asking when the \"why\" was never written down, and never inventing one."
     }
   ]
 }
