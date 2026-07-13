@@ -1,6 +1,6 @@
 ---
 name: handoff-generator
-description: Interactive, bidirectional generator for a comprehensive project handoff that bridges Claude.ai chat and Claude Code. Interviews the user first, then writes a structured handoff covering the project's progress, timeline, features, decisions, changelog delta, open questions, and next actions — so work can move between surfaces without re-explaining. On Claude Code it verifies the state against the repo (git, changelog, decisions); on Claude.ai it works from the conversation. Triggers when the user says "generate a handoff", "hand this off to code", "hand this off to chat", "prep this for Claude Code", "resume a handoff", or runs /handoff-generator.
+description: Interactive, bidirectional generator for a comprehensive project handoff that bridges Claude.ai chat and Claude Code. Interviews the user first, then writes a structured handoff covering the project's progress, timeline, features, decisions, changelog delta, open questions, next actions, and a near-verbatim log of the session conversation — so work can move between surfaces without re-explaining. On Claude Code it verifies the state against the repo (git, changelog, decisions); on Claude.ai it works from the conversation. Triggers when the user says "generate a handoff", "hand this off to code", "hand this off to chat", "prep this for Claude Code", "resume a handoff", or runs /handoff-generator.
 argument-hint: "[optional-slug]"
 allowed-tools: Read, Write, Edit, Bash, AskUserQuestion
 disable-model-invocation: false
@@ -17,9 +17,10 @@ anything. It is the shape of the two reference handoffs, not a one-line brief.
 
 Three things make this skill different from a one-shot summarizer:
 
-- **It is comprehensive.** The output is a full project handoff (~10 sections),
+- **It is comprehensive.** The output is a full project handoff (~11 sections),
   not a five-line brief. It carries progress, a timeline, feature/component
-  status, and a changelog delta alongside decisions and next actions.
+  status, a changelog delta, and a near-verbatim log of the session conversation
+  alongside decisions and next actions.
 - **It is bidirectional and surface-aware.** The handoff can go chat→code,
   code→chat, or to some other destination (a fresh chat, a teammate, another
   Claude Code session). The section *shape* is the same on both surfaces; the
@@ -98,7 +99,7 @@ generative** — every line must trace to a real source (the conversation, or on
 Claude Code the repo). Invent nothing. Where a "why" or a fact was never
 recorded, say so (`(reason not stated)`) rather than filling the gap.
 
-The same ten sections are produced on both surfaces; only where you *get* the
+The same eleven sections are produced on both surfaces; only where you *get* the
 material differs. On **Claude Code the handoff is verified against the repo** —
 git and the changelog are truth; a PRD or concept doc is a hypothesis, so never
 cite one as evidence that something shipped. On **Claude.ai** every section is
@@ -159,6 +160,18 @@ see graceful degradation below). Suggested reads:
     (Code) an orientation map, **stale-doc findings**, and **exact repo state**
     (branch / unpushed commits / version). Optional but encouraged; use an
     explicit "None." if there's genuinely nothing.
+11. **Session Log** — a chronological, **near-verbatim** log of *this* session's
+    key exchanges: the asks, the options explored, what was chosen and why, and
+    the follow-ups — in the words actually used. This is the one section that
+    preserves the back-and-forth itself, not just its conclusions. Rules:
+    - **Near-verbatim, not fabricated** — quote what was really said; never
+      invent, embellish, or paraphrase an exchange into something never said.
+    - **The meaningful beats** — log the substantive turns; compress trivial or
+      administrative ones. A long session captures the load-bearing exchanges,
+      not literally every message.
+    - **Redact secrets** — never log credentials, tokens, or clearly sensitive
+      content verbatim; replace with `[redacted]`.
+    - If there was essentially no back-and-forth, use an explicit `- None.`.
 
 #### Per-surface sourcing
 
@@ -174,6 +187,7 @@ see graceful degradation below). Suggested reads:
 | Files / Repos Referenced | verbatim from conversation + key repo paths | verbatim from conversation |
 | Next Actions | conversation, reconciled against prior handoff's actions | conversation |
 | Notes for the receiver | CLAUDE.md `## Skill protocols`, orientation map, stale-doc findings, exact repo state | working-style + how-to-use notes |
+| Session Log | the current Claude Code session's conversation, near-verbatim | the chat conversation, near-verbatim |
 
 **Graceful degradation (target projects are not this repo).** `changelog/`,
 `docs/decisions/`, and `docs/phases/` are conventions of *this* library, not
@@ -251,6 +265,12 @@ Continued from: {prev filename}         # only when resuming
 
 ## Notes for the receiver
 {orientation: conventions, working style, repo state, stale-doc warnings}
+
+## Session Log
+{chronological, near-verbatim log of this session's key exchanges — the meaningful back-and-forth, redact secrets}
+- **{who}:** {what was asked / said, near-verbatim}
+- **Explored:** {options considered} → chose {X} — {why}
+- **{who}:** {follow-up / correction}
 ```
 
 If a section has nothing, keep the header and write an explicit line rather than
@@ -329,6 +349,10 @@ When work moves between Claude.ai chat and Claude Code (or to a teammate/another
 - **Very long conversation / large repo:** prioritize the most recent and most
   load-bearing material; compress older exploration and the timeline into
   milestones. "What this is" stays 2–4 sentences regardless of size — favor what
-  the receiver needs over completeness.
+  the receiver needs over completeness. The **Session Log** likewise captures the
+  substantive beats, not every message — compress trivial or repetitive turns.
+- **Secrets in the conversation:** never carry credentials, API keys, tokens, or
+  clearly sensitive content into the handoff — the Session Log especially. Replace
+  with `[redacted]`.
 - **User declines the `handoff/` folder:** print the handoff inline (Step 6A.6)
   rather than erroring.

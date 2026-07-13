@@ -8,7 +8,7 @@
     {
       "name": "handoff-generator",
       "source": "./skills/handoff-generator",
-      "description": "Interactive, bidirectional Chat↔Code generator for a comprehensive project handoff — progress, features, decisions, changelog, next actions."
+      "description": "Interactive, bidirectional Chat↔Code generator for a comprehensive project handoff — progress, features, decisions, changelog, next actions, and a near-verbatim session log."
     },
     {
       "name": "changelog-tracker",

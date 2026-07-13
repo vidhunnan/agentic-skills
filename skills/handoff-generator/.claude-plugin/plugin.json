@@ -1,7 +1,7 @@
 {
   "name": "handoff-generator",
-  "description": "Interactive, bidirectional Chat↔Code generator for a comprehensive project handoff — progress, features, decisions, changelog, next actions.",
-  "version": "0.4.0",
+  "description": "Interactive, bidirectional Chat↔Code generator for a comprehensive project handoff — progress, features, decisions, changelog, next actions, and a near-verbatim session log.",
+  "version": "0.5.0",
   "author": {
     "name": "Vidhunnan Murugan"
   }

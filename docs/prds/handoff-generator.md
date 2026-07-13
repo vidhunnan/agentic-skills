@@ -1,6 +1,6 @@
 # PRD — handoff-generator
 
-Status: Draft v0.4 · Owner: Vids · Repo: vidhunnan/agentic-skills
+Status: Draft v0.5 · Owner: Vids · Repo: vidhunnan/agentic-skills
 
 ## 1. Problem
 
@@ -8,7 +8,7 @@ Work moves between Claude Chat (ideation, decisions, back-and-forth) and Claude 
 
 ## 2. Goals
 
-- A single trigger runs a short, guided flow that captures the full state of the work — what it is, where it stands, how it got here, its features, decisions, what this session changed, open questions, and next actions — then produces a **comprehensive project handoff** (~10 sections), in the shape of the reference Reviz handoffs.
+- A single trigger runs a short, guided flow that captures the full state of the work — what it is, where it stands, how it got here, its features, decisions, what this session changed, open questions, next actions, and a near-verbatim log of the session conversation — then produces a **comprehensive project handoff** (~11 sections), in the shape of the reference Reviz handoffs.
 - **Bidirectional and surface-aware:** works chat→code, code→chat, or to any destination (a fresh chat, a teammate, another Claude Code session). The section shape is identical on both surfaces; the *sourcing* differs — on Claude Code the handoff is verified against the repo (git, changelog, decisions, PRDs); on Claude.ai it's drawn from the conversation.
 - Works as the first proof-of-concept skill for the `agentic-skills` repo — establishes the pattern (SKILL.md + `plugin.json` + marketplace entry) for every skill after it.
 - Reliable enough to actually use daily, not just a demo.
@@ -40,6 +40,7 @@ Vids — ideates in Claude Chat, executes in Claude Code, and moves work both wa
    - Files, repos, or tools referenced (verbatim)
    - Concrete next actions (aimed at the destination)
    - Notes for the receiver (conventions, repo state, stale-doc warnings)
+   - Session log — a near-verbatim, chronological record of the session's key exchanges (both surfaces, from their own conversation; secrets redacted)
 5. Skill assembles the handoff using the direction-aware template below.
 6. Delivery by surface:
    - **Claude Code:** writes to `handoff/handoff-{from}-to-{to}-{date}-{slug}.md`. Always targets the `handoff/` folder; if the folder is missing it **prompts the user** to create it (never silently). If a prior handoff exists, it offers to **resume** — reading the latest one and continuing from that point rather than repeating. Confirms the final path back to the user.
@@ -48,7 +49,7 @@ Vids — ideates in Claude Chat, executes in Claude Code, and moves work both wa
 
 ## 5. Output template
 
-Same ten sections on both surfaces; only the *sourcing* differs (§6). The `Status:` and `Continued from:` header lines are conditional.
+Same eleven sections on both surfaces; only the *sourcing* differs (§6). The `Status:` and `Continued from:` header lines are conditional.
 
 ```md
 # Handoff Brief — {project / topic}
@@ -88,6 +89,11 @@ Continued from: {prev filename}         # only when resuming
 
 ## Notes for the receiver
 {orientation: conventions, working style, repo state, stale-doc warnings}
+
+## Session Log
+{chronological, near-verbatim log of this session's key exchanges — the meaningful back-and-forth, redact secrets}
+- **{who}:** {what was asked / said, near-verbatim}
+- **Explored:** {options considered} → chose {X} — {why}
 ```
 
 Empty sections keep their header and use an explicit "None" line rather than being omitted — the fixed shape is a stable contract for the receiver.
@@ -98,6 +104,8 @@ Empty sections keep their header and use an explicit "None" line rather than bei
 |---|---|---|---|---|
 | Claude Code | `/handoff-generator {optional-slug}` or natural phrasing ("generate a handoff", "hand this off to chat", "resume a handoff") | Asks destination + focus + thread-specific questions; prompts before creating `handoff/`; offers to resume if a prior handoff exists | **Verified against the repo** — `git log` (timeline), `changelog/` (session delta), `docs/decisions/` (decision cross-ref), workspaces / `docs/phases/` (features), repo state (branch / unpushed / version), CLAUDE.md protocols (conventions); best-effort with graceful fallback when a source is absent | Writes `handoff/handoff-{from}-to-{to}-{date}-{slug}.md` (numeric-counter suffix on collision); prints inline if user declines the folder |
 | Claude.ai | Explicit mention or description-match auto-trigger | Same questions, asked conversationally in plain text | **From the conversation** — the arc/pivots become the timeline, artifacts produced become the session delta; no filesystem/git access | Downloadable `handoff-{from}-to-{to}-{date}-{slug}.md` artifact |
+
+**Session Log sourcing:** independent of the repo split above — both surfaces build it from *their own* current session's conversation (chat on Claude.ai, the Claude Code session on Claude Code), near-verbatim. It's the substantive beats, not every message, and secrets are redacted.
 
 **Direction model:** `from` = the surface the skill runs on (`chat` on Claude.ai, `code` on Claude Code). `to` = the destination the user names in the interview (default: the opposite surface; free-form values like `teammate` allowed). Surface is detected via **Bash availability** (available → Claude Code; unavailable → Claude.ai).
 
