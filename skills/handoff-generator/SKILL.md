@@ -1,6 +1,6 @@
 ---
 name: handoff-generator
-description: Interactive, bidirectional handoff-brief generator that bridges Claude.ai chat and Claude Code. Interviews the user first, then writes a structured brief so work can move between surfaces without re-explaining. Triggers when the user says "generate a handoff", "hand this off to code", "hand this off to chat", "prep this for Claude Code", "resume a handoff", or runs /handoff-generator.
+description: Interactive, bidirectional generator for a comprehensive project handoff that bridges Claude.ai chat and Claude Code. Interviews the user first, then writes a structured handoff covering the project's progress, timeline, features, decisions, changelog delta, open questions, next actions, and a near-verbatim log of the session conversation — so work can move between surfaces without re-explaining. On Claude Code it verifies the state against the repo (git, changelog, decisions); on Claude.ai it works from the conversation. Triggers when the user says "generate a handoff", "hand this off to code", "hand this off to chat", "prep this for Claude Code", "resume a handoff", or runs /handoff-generator.
 argument-hint: "[optional-slug]"
 allowed-tools: Read, Write, Edit, Bash, AskUserQuestion
 disable-model-invocation: false
@@ -8,16 +8,25 @@ disable-model-invocation: false
 
 # handoff-generator
 
-Produces a **handoff brief**: a portable Markdown document that captures what a
-session was about — context, decisions, open questions, referenced files, and
-next actions — so the work can continue on another surface (Claude.ai chat ↔
-Claude Code) or with another person, without re-explaining anything.
+Produces a **comprehensive project handoff**: a portable Markdown document that
+captures the whole state of the work — what the project is, where it stands, how
+it got here, its features, decisions, what this session changed, open questions,
+referenced files, and next actions — so the work can continue on another surface
+(Claude.ai chat ↔ Claude Code) or with another person, without re-explaining
+anything. It is the shape of the two reference handoffs, not a one-line brief.
 
-Two things make this skill different from a one-shot summarizer:
+Three things make this skill different from a one-shot summarizer:
 
-- **It is bidirectional.** The handoff can go chat→code, code→chat, or to some
-  other destination (a fresh chat, a teammate, another Claude Code session). You
-  decide the destination *with the user* and shape the brief for it.
+- **It is comprehensive.** The output is a full project handoff (~11 sections),
+  not a five-line brief. It carries progress, a timeline, feature/component
+  status, a changelog delta, and a near-verbatim log of the session conversation
+  alongside decisions and next actions.
+- **It is bidirectional and surface-aware.** The handoff can go chat→code,
+  code→chat, or to some other destination (a fresh chat, a teammate, another
+  Claude Code session). The section *shape* is the same on both surfaces; the
+  *sourcing* differs — on Claude Code it is verified against the repo (git,
+  changelog, decisions, PRDs); on Claude.ai it is drawn from the conversation.
+  You decide the destination *with the user* and shape the handoff for it.
 - **It never runs autonomously.** You always interview the user briefly first,
   gather the real intent and context, and only then generate. Do not rush
   straight to output.
@@ -83,31 +92,113 @@ before continuing.
   capture what has changed or progressed since, not repeat what's already
   recorded.
 
-### Step 3 — Review the conversation and extract the sections
+### Step 3 — Gather the material and extract the sections
 
-Read the whole conversation. You are recording what actually happened in *this*
-session — be **faithful, not generative**. Every line must trace to something
-that was really said. Invent nothing.
+You are building a comprehensive project handoff. Be **faithful, not
+generative** — every line must trace to a real source (the conversation, or on
+Claude Code the repo). Invent nothing. Where a "why" or a fact was never
+recorded, say so (`(reason not stated)`) rather than filling the gap.
 
-Extract:
+The same eleven sections are produced on both surfaces; only where you *get* the
+material differs. On **Claude Code the handoff is verified against the repo** —
+git and the changelog are truth; a PRD or concept doc is a hypothesis, so never
+cite one as evidence that something shipped. On **Claude.ai** every section is
+drawn from the conversation.
 
-1. **Context** — 2–4 sentences a zero-memory receiver on the destination side can
-   read to understand the situation and what's being worked toward.
-2. **Decisions Made** — concrete, settled choices, each as `{decision} — {why}`.
-   Include a decision only if the thread genuinely resolved it. If the reason was
-   never stated, write `(reason not stated)` rather than inventing one. Things
-   still under debate do **not** go here.
-3. **Open Questions** — unresolved items, things explicitly deferred, and any
-   in-flight debates.
-4. **Files / Repos Referenced** — only paths, filenames, repos, or URLs that
-   actually appeared in the conversation, copied **verbatim**. Never guess or
-   fabricate a path.
-5. **Next Actions for {to}** — concrete, imperative next steps aimed at the
-   destination ("Add X to Y", "Refactor Z"). When resuming, focus on what is
-   new or changed since the previous handoff.
+#### Step 3A — Claude Code only: gather repo facts first
 
-**Quality bar:** every line traces to the thread; when unsure, leave it out. No
-hedging filler. Keep decided (Decisions) separate from undecided (Open
+Before writing, collect the real state with the Bash tool (all best-effort —
+see graceful degradation below). Suggested reads:
+
+- **Repo state:** `git rev-parse --abbrev-ref HEAD` (branch),
+  `git status --short` (working tree), `git log @{upstream}..HEAD --oneline`
+  (unpushed commits), and the `version` from `package.json` if present.
+- **Timeline:** `git log --date=short --format='%ad %h %s'` — compress into a
+  handful of dated milestones, don't transcribe every commit.
+- **Session delta (what changed):** if `changelog/commits/` exists, summarize the
+  entries newer than the last handoff's date; otherwise
+  `git log --since=<last-handoff-date> --oneline` (or the last ~20 commits).
+- **Decisions cross-reference:** if `docs/decisions/` exists, read its
+  `README.md` index (or list the `NNNN-*.md` ADRs) so decisions can cite
+  `[ADR NNNN]` and its status; note real-but-unlogged decisions from
+  `docs/decisions/0000-not-logged.md` if present.
+- **Features / plan:** workspaces / packages in the repo, and any
+  `docs/phases/` task tables, for the Features and Snapshot sections.
+- **Conventions:** the target `CLAUDE.md` `## Skill protocols` blocks, for the
+  Notes-for-the-receiver section.
+
+#### Step 3B — The sections
+
+1. **What this is** — a one-line definition plus 2–4 sentences: what the project
+   or work is and what it is working toward. A zero-memory receiver reads this
+   first.
+2. **Snapshot — current state** — where it stands *right now*: what is live /
+   built / in-progress / not started, and the current phase or stage.
+3. **Progress & Timeline** — how it got here, as a few dated milestones. Code:
+   summarized from `git log`. Chat: the arc and pivots of the conversation.
+4. **Features / Components** — per-area / subsystem / workspace status, ideally a
+   `| Area | What it is | Status |` table. Code: real workspaces / phases. Chat:
+   the planned features and scope discussed.
+5. **Decisions Made** — settled choices, each as `{decision} — {why}`. Include a
+   decision only if it was genuinely resolved; `(reason not stated)` if the
+   reason was never given; debated items go under Open Questions instead. On
+   Code, cite `[ADR NNNN]` and its status when a matching decision record exists.
+6. **What this session changed** — the delta since the last handoff, changelog-
+   style. Code: the changelog entries / commits since the previous handoff
+   (a `| # | Commit | Subject |` table reads well). Chat: the files or artifacts
+   produced this session.
+7. **Open Questions** — unresolved items, things explicitly deferred, and
+   in-flight debates; tag by priority or area where it helps. Code: also
+   reconcile the prior handoff's open questions (what's now closed vs. still open).
+8. **Files / Repos Referenced** — only paths, filenames, repos, or URLs that
+   actually appeared (in the conversation, or as real repo paths), copied
+   **verbatim**. Never guess or fabricate a path.
+9. **Next Actions for {to}** — concrete, imperative next steps aimed at the
+   destination ("Add X to Y", "Refactor Z"). When resuming, reconcile against the
+   previous handoff's actions and focus on what is new or changed.
+10. **Notes for the receiver** — how to orient: conventions, working style, and
+    (Code) an orientation map, **stale-doc findings**, and **exact repo state**
+    (branch / unpushed commits / version). Optional but encouraged; use an
+    explicit "None." if there's genuinely nothing.
+11. **Session Log** — a chronological, **near-verbatim** log of *this* session's
+    key exchanges: the asks, the options explored, what was chosen and why, and
+    the follow-ups — in the words actually used. This is the one section that
+    preserves the back-and-forth itself, not just its conclusions. Rules:
+    - **Near-verbatim, not fabricated** — quote what was really said; never
+      invent, embellish, or paraphrase an exchange into something never said.
+    - **The meaningful beats** — log the substantive turns; compress trivial or
+      administrative ones. A long session captures the load-bearing exchanges,
+      not literally every message.
+    - **Redact secrets** — never log credentials, tokens, or clearly sensitive
+      content verbatim; replace with `[redacted]`.
+    - If there was essentially no back-and-forth, use an explicit `- None.`.
+
+#### Per-surface sourcing
+
+| Section | Claude Code source | Claude.ai source |
+|---|---|---|
+| What this is | conversation + repo `README` / PRD | conversation |
+| Snapshot | repo state, changelog head, phase docs | conversation (decided / built / assumed) |
+| Progress & Timeline | `git log --date=short` → milestones | the conversation's arc / pivots |
+| Features / Components | workspaces, `docs/phases/` tables, subsystems | planned features / scope discussed |
+| Decisions Made | conversation + cross-ref `docs/decisions/` ADRs (cite #, status) | conversation |
+| What this session changed | `changelog/commits/` since last handoff + `git log` delta | files / artifacts produced this session |
+| Open Questions | conversation + prior handoff's unresolved + `docs/decisions/0000-not-logged.md` | conversation |
+| Files / Repos Referenced | verbatim from conversation + key repo paths | verbatim from conversation |
+| Next Actions | conversation, reconciled against prior handoff's actions | conversation |
+| Notes for the receiver | CLAUDE.md `## Skill protocols`, orientation map, stale-doc findings, exact repo state | working-style + how-to-use notes |
+| Session Log | the current Claude Code session's conversation, near-verbatim | the chat conversation, near-verbatim |
+
+**Graceful degradation (target projects are not this repo).** `changelog/`,
+`docs/decisions/`, and `docs/phases/` are conventions of *this* library, not
+universal. On Claude Code, treat every repo read as best-effort: if the source
+exists, summarize it; if it's absent, fall back to `git log` plus the
+conversation, or populate the section from whatever is available. **Never
+fabricate** a timeline, changelog, or feature status that isn't backed by git or
+the conversation — a smaller honest handoff beats a padded invented one.
+
+**Quality bar:** every line traces to a real source; when unsure, leave it out.
+No hedging filler. Keep decided (Decisions) separate from undecided (Open
 Questions).
 
 ### Step 4 — Derive date, slug, and topic
@@ -121,39 +212,73 @@ Questions).
   - Otherwise auto-derive from the main topic: 3–5 kebab-case words (e.g.
     `auth-token-refresh`, `pricing-page-redesign`).
 - **Topic** (`{topic}`), a human-readable title for the heading, in natural
-  title case (e.g. "Auth token refresh").
+  title case (e.g. "Auth token refresh"). For a whole-project handoff this is the
+  project name; for a scoped one it's the work's title.
+- **Status** (`{status}`), a short phase / stage label for the header line (e.g.
+  "Pre-beta · Validation", "Phase 9 shipped", "MVP in progress"). Derive it from
+  the conversation, or on Claude Code from the repo (current phase, latest
+  release, what's live). If there's no meaningful stage to state, omit the
+  `Status:` line rather than guessing.
 
-### Step 5 — Assemble the brief
+### Step 5 — Assemble the handoff
 
-Fill this exact template. Keep the heading structure and order unchanged. Omit
-the `Continued from:` line unless you are resuming.
+Fill this exact template. Keep the heading structure and order unchanged. The
+`Status:` and `Continued from:` header lines are conditional — omit `Status:` if
+there's no meaningful stage to state, and omit `Continued from:` unless you are
+resuming.
 
 ```md
-# Handoff Brief — {topic}
+# Handoff Brief — {project / topic}
 From: {from}   To: {to}
 Date: {date}
-Continued from: {prev filename}
+Status: {phase / stage}                 # omit if none
+Continued from: {prev filename}         # only when resuming
 
-## Context
-{2-4 sentence summary for the receiver}
+## What this is
+{one-line definition + 2–4 sentences: what the project/work is and its goal}
+
+## Snapshot — current state
+{where it stands right now: what's live / built / in-progress / not started, current phase}
+
+## Progress & Timeline
+{how it got here — a few dated milestones}
+
+## Features / Components
+| Area | What it is | Status |
+|---|---|---|
+| {area} | {what} | {live / built / in progress / not started} |
 
 ## Decisions Made
-- {decision} — {why}
+- {decision} — {why}        {on Code, cite [ADR NNNN] + status when one exists}
+
+## What this session changed
+{the delta since the last handoff — changelog-style; on Code, a commit table reads well}
 
 ## Open Questions
-- {unresolved item}
+- {unresolved item}         {optionally tagged by priority / area}
 
 ## Files / Repos Referenced
-- {path or URL}
+- {path or URL, verbatim}
 
 ## Next Actions for {to}
 - [ ] {action}
+
+## Notes for the receiver
+{orientation: conventions, working style, repo state, stale-doc warnings}
+
+## Session Log
+{chronological, near-verbatim log of this session's key exchanges — the meaningful back-and-forth, redact secrets}
+- **{who}:** {what was asked / said, near-verbatim}
+- **Explored:** {options considered} → chose {X} — {why}
+- **{who}:** {follow-up / correction}
 ```
 
 If a section has nothing, keep the header and write an explicit line rather than
-leaving it blank or omitting it: `- None yet.` / `- None.` /
+leaving it blank or omitting it — e.g. `- None.` / `- None yet.` /
 `- None referenced in this conversation.` / `- [ ] (none identified — clarify
-scope with the user)`. A stable shape makes the brief reliable for the receiver.
+scope with the user)`. (For the Features table, an explicit `_None._` line in
+place of rows is fine.) A stable shape makes the handoff reliable for the
+receiver.
 
 ### Step 6A — Claude Code: write the file
 
@@ -212,12 +337,22 @@ When work moves between Claude.ai chat and Claude Code (or to a teammate/another
 ### Step 7 — Edge cases
 
 - **Empty / very thin conversation:** if there's essentially nothing to hand off,
-  don't fabricate a brief. Say the conversation is too thin for a useful handoff
+  don't fabricate a handoff. Say the conversation is too thin for a useful one
   and ask what the user wants captured.
-- **No decisions / no files / no actions:** keep the section header and use the
-  explicit "None" line from Step 5. Never invent content to fill a section.
-- **Very long conversation:** prioritize the most recent and most load-bearing
-  decisions; compress older exploration. Context stays 2–4 sentences regardless
-  of length — favor what the receiver needs over completeness.
-- **User declines the `handoff/` folder:** print the brief inline (Step 6A.6)
+- **Any section empty:** keep the header and use the explicit "None" line from
+  Step 5. Never invent content to fill a section.
+- **Missing repo sources (Claude Code):** if `changelog/`, `docs/decisions/`, or
+  `docs/phases/` don't exist, degrade gracefully — populate the affected sections
+  from `git log` plus the conversation, or mark them from what's available. Never
+  invent a timeline, changelog delta, or feature status that isn't backed by git
+  or the conversation.
+- **Very long conversation / large repo:** prioritize the most recent and most
+  load-bearing material; compress older exploration and the timeline into
+  milestones. "What this is" stays 2–4 sentences regardless of size — favor what
+  the receiver needs over completeness. The **Session Log** likewise captures the
+  substantive beats, not every message — compress trivial or repetitive turns.
+- **Secrets in the conversation:** never carry credentials, API keys, tokens, or
+  clearly sensitive content into the handoff — the Session Log especially. Replace
+  with `[redacted]`.
+- **User declines the `handoff/` folder:** print the handoff inline (Step 6A.6)
   rather than erroring.

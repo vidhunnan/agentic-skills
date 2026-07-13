@@ -24,7 +24,7 @@ The three questions a teammate with amnesia will ask.
 |---|---|---|---|
 | **[`changelog-tracker`](skills/changelog-tracker/SKILL.md)**<br>`/plugin install changelog-tracker` | *What actually shipped?* — documents every substantive commit into a per-commit file plus a rolling index. Every fact comes from git. | Code | Live |
 | **[`decisions-logger`](skills/decisions-logger/SKILL.md)**<br>`/plugin install decisions-logger` | *Why did we choose that?* — mines the project for decisions that were really made and writes each as an ADR with its evidence. Where the reasoning was never written down, it **asks** rather than inventing one. | Code · Chat | Live |
-| **[`handoff-generator`](skills/handoff-generator/SKILL.md)**<br>`/plugin install handoff-generator` | *Where did we leave off?* — an interactive, bidirectional Chat↔Code handoff brief. Interviews you first, then writes it. | Code · Chat | Live |
+| **[`handoff-generator`](skills/handoff-generator/SKILL.md)**<br>`/plugin install handoff-generator` | *Where did we leave off?* — an interactive, bidirectional Chat↔Code **project handoff**: progress, timeline, features, decisions, changelog delta, open questions, next actions, and a near-verbatim session log. Interviews you first; on Claude Code it verifies against the repo. | Code · Chat | Live |
 
 ### Working conventions
 
