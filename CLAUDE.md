@@ -92,7 +92,7 @@ Architectural and process decisions live in `docs/decisions/` as numbered ADRs (
 2. Create `skills/<name>/SKILL.md` with frontmatter whose `name` matches the folder and whose `description` lists the trigger phrases.
 3. Add `skills/<name>/.claude-plugin/plugin.json` (minimal: `name`, `description`, `version`, `author`) so the folder is installable as a plugin.
 4. Add the corresponding entry to the repo-root `.claude-plugin/marketplace.json`, with `source` pointing at `./skills/<name>`.
-5. Add a row to the Skills table in `README.md`.
+5. Add a row to the right group in `README.md`'s Skills section (the tables are grouped by job — "Set up the repo" / "Keep the record" / "Working conventions" — not one flat list), and add its `/plugin install <name>` line to the Install block.
 
 ## Distribution
 
