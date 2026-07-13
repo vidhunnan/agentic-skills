@@ -10,6 +10,7 @@ Personal library of Claude / Cursor-compatible skills — small, focused tools y
 | [`changelog-tracker`](skills/changelog-tracker/SKILL.md) | Documents every substantive commit into per-commit files + a rolling CHANGELOG index | Claude Code | Implemented ([PRD](docs/prds/changelog-tracker.md)) |
 | [`model-strategy`](skills/model-strategy/SKILL.md) | Creates/maintains docs/MODEL-STRATEGY.md — which Claude model for which work, tailored via interview | Claude Code, Claude.ai | Implemented ([PRD](docs/prds/model-strategy.md)) |
 | [`branch-naming`](skills/branch-naming/SKILL.md) | Suggests/creates a git branch name that follows the project's convention | Claude Code | Implemented ([PRD](docs/prds/branch-naming.md)) |
+| [`repo-setup`](skills/repo-setup/SKILL.md) | Scaffolds a repo's context stack — concepts, PRDs, decisions, handoffs, changelog — surveying and adopting what's already there | Claude Code, Claude.ai | Implemented ([PRD](docs/prds/repo-setup.md)) |
 
 ## Install
 
@@ -20,6 +21,7 @@ Personal library of Claude / Cursor-compatible skills — small, focused tools y
 /plugin install changelog-tracker
 /plugin install model-strategy
 /plugin install branch-naming
+/plugin install repo-setup
 ```
 Add the marketplace once, then install whichever skills you want (each is a separate plugin).
 

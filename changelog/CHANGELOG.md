@@ -8,11 +8,18 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 
 | # | Commit | Date | Subject |
 |---|--------|------|---------|
+| [004](./commits/004-add-repo-setup-skill-and-scaffold-this-repos-context-stack.md) | `32e425a` | 2026-07-13 | Add repo-setup skill and scaffold this repo's context stack |
 | [003](./commits/003-add-changelog-baseline-model-strategy-and-skill-protocol-registrations.md) | `0fc116e` | 2026-07-12 | Add changelog baseline, model strategy, and skill protocol registrations |
 | [002](./commits/002-add-install-commands-for-all-skills-in-readme.md) | `75f7a7c` | 2026-07-12 | Add install commands for all skills in README |
 | [001](./commits/001-add-three-git-workflow-skills-shared-claude-md-registration.md) | `506a5c6` | 2026-07-12 | Add three git-workflow skills + shared CLAUDE.md registration |
 
 ---
+
+## 2026-07-13
+
+### Added
+- **`repo-setup` skill** (`32e425a`) — scaffolds a project's context stack: the tiered docs folders (concepts, PRDs, decisions, handoffs, changelog, optional phases) that let an agent with no memory be briefed on a project, each declaring the question it answers and how far it can be trusted. It surveys a repo before writing, adopts existing folder names rather than imposing canon, and is strictly additive — it never moves, renames, or overwrites.
+- **This repo's own context stack** (`32e425a`) — `repo-setup` run on `agentic-skills`: adds `docs/concepts/` and `docs/decisions/`, a README plus `_TEMPLATE.md` for all five tiers (adopting the existing `handoff/`, `docs/prds/`, and `changelog/` under their current names), and the context-stack routing table in `CLAUDE.md`.
 
 ## 2026-07-12
 

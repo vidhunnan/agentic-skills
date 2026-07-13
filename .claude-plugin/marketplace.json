@@ -24,6 +24,11 @@
       "name": "branch-naming",
       "source": "./skills/branch-naming",
       "description": "Suggests and optionally creates a git branch name following the project's convention."
+    },
+    {
+      "name": "repo-setup",
+      "source": "./skills/repo-setup",
+      "description": "Scaffolds a project's context stack — the tiered docs folders that let an agent be briefed on a project — and registers the routing table in CLAUDE.md."
     }
   ]
 }
