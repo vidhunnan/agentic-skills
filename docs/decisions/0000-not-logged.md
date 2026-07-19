@@ -28,6 +28,10 @@ Filtered out by the significance gates before ever reaching the owner.
 | 2026-07-13 | Committed on `feat/handoff-generator`, not directly on `prod-stable` | `handoff/…-build-publish-skill.md` §Decisions Made | below-bar | **Policy, not instance.** A record of *complying* with a rule is not a decision — the rule is. Collapses into the `prod-stable` row above. |
 | 2026-07-13 | Handoff filename collisions use a numeric counter (`-2`), not a timestamp | `handoff/…-build-publish-skill.md` §Decisions Made | below-bar | **Blast radius (Gate 2).** A real fork with a stated reason, but reversal is one line of one skill. Below the bar for an ADR. |
 | 2026-07-13 | PRD `## Non-goals (v1)` is deliberately unnumbered | `docs/prds/README.md` (calls it a "house quirk") | below-bar | A style quirk, not load-bearing. A quirk is not a reason. |
+| 2026-07-19 | `website/vercel.json` pins the framework preset to `nextjs` | `git:6df57db` (2026-07-19) | below-bar | **Blast radius (Gate 2).** A config fix for Vercel's framework misdetection; reversal is one file. Below the bar for an ADR. |
+| 2026-07-19 | The website uses `output: 'export'` (static export) | `git:e4a1f2e` §`website/next.config.mjs` | below-bar | **Fork Test.** For a no-dynamic-content marketing site, a server runtime is not an alternative a reasonable person picks. A fact, not a fork. |
+| 2026-07-19 | The website credits the author (footer byline + `<meta>`) | `git:d763f7a` (2026-07-19, PR #17 — not yet merged) | below-bar | **Fork Test.** No defensible loser to "put the author's name on their own site". Also unshipped to `prod-stable` at time of logging. |
+| 2026-07-19 | The site is served from the custom domain `agentic-skills.vidhunnan.design` | `website/app/layout.tsx` (`SITE_URL`) · `git:a95956e` | below-bar | A deployment/config fact, not a fork. |
 
 ---
 

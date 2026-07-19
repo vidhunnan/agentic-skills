@@ -58,10 +58,14 @@ Copy `_TEMPLATE.md`. Number decisions sequentially: `0001-use-markdown-not-a-dat
 | [0012](./0012-repo-setup-is-additive-only.md) | `repo-setup` is additive-only — never `mv`, `rm`, or overwrite | 2026-07-13 | Accepted | 0 | `skills/repo-setup/SKILL.md` |
 | [0013](./0013-append-only-is-scoped-to-the-reasoning-not-the-pointers.md) | Append-only is scoped to the reasoning, not the pointers | 2026-07-13 | Accepted | 0 | `docs/decisions/README.md` |
 | [0014](./0014-never-invent-a-rationale.md) | Never invent a rationale — an honest gap beats a plausible fiction | 2026-07-13 | Accepted | 1 | `skills/decisions-logger/SKILL.md` |
+| [0015](./0015-the-website-is-an-isolated-next-js-build.md) | The website is an isolated Next.js build under `/website` | 2026-07-19 | Accepted | 0 | `git:e4a1f2e` |
+| [0016](./0016-site-content-is-data-driven-from-one-source.md) | Site content is data-driven from one source, sourced from the repo | 2026-07-19 | Accepted | 0 | `git:e4a1f2e` |
+| [0017](./0017-the-website-design-direction-is-swiss-whitepaper.md) | The website design direction is "Swiss whitepaper" | 2026-07-19 | Accepted | 0 | this session · `git:e4a1f2e` |
+| [0018](./0018-website-styling-is-plain-css-modules.md) | Website styling is plain CSS Modules, not Tailwind | 2026-07-19 | Accepted | 0 | `git:e4a1f2e` |
 
-*No supersessions yet — the graph is omitted rather than rendered empty. 14 decisions stand.*
+*No supersessions yet — the graph is omitted rather than rendered empty. 18 decisions stand.*
 
-*See [`0000-not-logged.md`](./0000-not-logged.md) for the 11 candidates this log deliberately does **not** contain — including 5 real decisions whose reasoning was never recorded.*
+*See [`0000-not-logged.md`](./0000-not-logged.md) for the 15 candidates this log deliberately does **not** contain — including 5 real decisions whose reasoning was never recorded.*
 <!-- END decisions-index -->
 
 ## Known gaps
