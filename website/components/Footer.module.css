@@ -15,6 +15,16 @@
   font-size: 12px;
   color: var(--mute);
 }
+.author {
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.author:hover {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+  text-decoration: none;
+}
 
 .links {
   display: flex;
