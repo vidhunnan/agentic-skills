@@ -1,0 +1,135 @@
+.section {
+  padding: 88px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(26px, 3.4vw, 40px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin: 0 0 18px;
+}
+
+.intro {
+  color: var(--ink-soft);
+  max-width: 60ch;
+  font-size: 16px;
+  margin: 0 0 12px;
+}
+
+.group {
+  margin-top: 52px;
+}
+
+.groupHead {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+.groupTitle {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0;
+}
+.groupNote {
+  font-size: 13.5px;
+  color: var(--mute);
+  margin: 0;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 20px;
+  padding: 26px 4px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.row:last-child {
+  border-bottom: none;
+}
+
+.num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--mute);
+  padding-top: 3px;
+}
+
+.main {
+  min-width: 0;
+}
+.nameLine {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.name {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.surfaces {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blue);
+  white-space: nowrap;
+}
+
+.desc {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 0 16px;
+  max-width: 68ch;
+}
+
+.install {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: 3px;
+  padding: 7px 10px;
+  max-width: 100%;
+}
+.install code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+@media (max-width: 720px) {
+  .section {
+    padding: 60px 0;
+  }
+  .row {
+    grid-template-columns: 26px 1fr;
+    gap: 12px;
+  }
+  .nameLine {
+    flex-direction: column;
+    gap: 2px;
+  }
+}

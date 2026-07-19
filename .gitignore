@@ -13,3 +13,10 @@ Icon?
 # Logs / temp
 *.log
 .tmp/
+
+# website (Next.js build artifacts)
+website/node_modules/
+website/.next/
+website/out/
+website/next-env.d.ts
+website/tsconfig.tsbuildinfo

@@ -1,0 +1,93 @@
+.hero {
+  padding: 92px 0 72px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(34px, 6vw, 62px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  max-width: 15ch;
+  margin: 0 0 28px;
+}
+
+.sub {
+  font-size: clamp(16.5px, 1.7vw, 19px);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 56ch;
+  margin: 0 0 36px;
+}
+.sub em {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink);
+}
+.sub strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.command {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: 4px;
+  padding: 13px 15px;
+  max-width: 500px;
+}
+.command code {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow-x: auto;
+}
+.prompt {
+  color: var(--blue);
+}
+
+.ctas {
+  margin-top: 28px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.primary {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--paper);
+  background: var(--ink);
+  padding: 11px 18px;
+  border-radius: 3px;
+}
+.primary:hover {
+  text-decoration: none;
+  background: var(--blue);
+}
+.ghost {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.ghost:hover {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 60px 0 48px;
+  }
+  .command {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
