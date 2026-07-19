@@ -8,6 +8,8 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 
 | # | Commit | Date | Subject |
 |---|--------|------|---------|
+| [012](./commits/012-log-the-four-website-adrs.md) | `efcb70b` | 2026-07-19 | Log the four website ADRs (0015–0018) |
+| [011](./commits/011-set-vercel-framework-preset-to-next-js.md) | `6df57db` | 2026-07-19 | Set the Vercel framework preset to Next.js |
 | [010](./commits/010-add-seo-and-social-share-metadata.md) | `dfeb8cc` | 2026-07-19 | Add SEO + social share metadata and preview image to the website |
 | [009](./commits/009-add-swiss-whitepaper-landing-page.md) | `e4a1f2e` | 2026-07-19 | Add a Swiss-whitepaper landing page under /website |
 | [008](./commits/008-session-log-section.md) | `091f679` | 2026-07-13 | Add a near-verbatim Session Log section to handoff-generator |
@@ -26,6 +28,12 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 ### Added
 - **SEO + social share metadata for the landing page** (`dfeb8cc`) — the site now unfurls with a title, description, and preview card when shared. `metadataBase` moves from the GitHub repo URL to the live site (`agentic-skills.vidhunnan.design`) so the Open Graph / Twitter image resolves absolute; adds the full Open Graph set (type, url, siteName, locale, `1200×630` image + alt), a `summary_large_image` Twitter card, `keywords`, a canonical link, and `robots` directives. Ships a `1200×630` `og.png` preview image in the site's own Field Report / Swiss-whitepaper style (serif hero line, cobalt hairlines, mono install command, crop-tick frame) and a favicon set wired through the App Router file convention (`favicon.ico` 16/32/48, `icon.png` 512, full-bleed `apple-icon.png` 180) — a cobalt "a" monogram with the redline crop-tick signature.
 - **Landing page under `/website`** (`e4a1f2e`) — a Next.js static-export site for the six skills, built in the "Swiss whitepaper" direction: the talk deck's Field Report palette (paper, ink, drafting cobalt `#2743C8`, redline `#D0361B`) pared to a light, airy, minimal-ink treatment with one hairline-rule system and Newsreader / Archivo / IBM Plex Mono. Its content is data-driven from a single `components/lib/skills.ts` sourced from the README and each `SKILL.md`, so the site can't drift from the real skills. Sections: a sticky nav with scroll-progress and scrollspy, a hero with a copy-able marketplace command, the five-tier context stack, the six skills in their three groups, a "this repo runs on its own skills" proof list, and the install block. The app is isolated from the build-free skills tree (its own `package.json`), and its build artifacts are gitignored.
+
+### Changed
+- **Logged the four website ADRs** (`efcb70b`) — records the decisions behind the `/website` build in `docs/decisions/` as ADRs 0015–0018: the site is an isolated Next.js build (over a static HTML file), its content is data-driven from one `components/lib/skills.ts` sourced from the repo (over hardcoding), the design direction is "Swiss whitepaper" (over the Field Report and Blueprint concepts), and styling is plain CSS Modules (over Tailwind). Each traces to `git:e4a1f2e`, the approved plan, or the owner's own words this session. Rebuilds the decisions index (18 decisions stand, no supersessions) and adds four `below-bar` rows to the reject ledger.
+
+### Fixed
+- **Vercel framework preset** (`6df57db`) — the deploy compiled but failed at finalize with "No Output Directory named 'public' found": Vercel had detected the project as a generic static build while `next.config.mjs` uses `output: "export"` (emitting to `out/`). Adds `website/vercel.json` pinning the framework preset to `nextjs`, so Vercel uses Next's output convention and picks up the static export.
 
 ## 2026-07-13
 
