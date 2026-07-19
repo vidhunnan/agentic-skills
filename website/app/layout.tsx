@@ -25,16 +25,63 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const SITE_URL = "https://agentic-skills.vidhunnan.design";
+const TITLE = "agentic-skills — context files an agent should have anyway";
+const DESCRIPTION =
+  "Six Claude / Cursor-compatible skills that write the context files a project should have anyway: a changelog of what shipped, a decision log of why, a handoff for where you left off. All Markdown. No code.";
+const OG_DESCRIPTION =
+  "The skills that write the briefing an agent needs. A changelog of what shipped, a decision log of why, a handoff for where you left off — all Markdown, no code.";
+const OG_IMAGE_ALT =
+  "agentic-skills — the skills that write the briefing an agent needs.";
+
 export const metadata: Metadata = {
-  title: "agentic-skills — context files an agent should have anyway",
-  description:
-    "Six Claude / Cursor-compatible skills that write the context files a project should have anyway: a changelog of what shipped, a decision log of why, a handoff for where you left off. All Markdown. No code.",
-  metadataBase: new URL("https://github.com/vidhunnan/agentic-skills"),
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  applicationName: "agentic-skills",
+  keywords: [
+    "Claude skills",
+    "Claude Code",
+    "Cursor",
+    "agent context",
+    "AI agents",
+    "changelog",
+    "decision log",
+    "ADR",
+    "handoff",
+    "Markdown",
+    "agentic-skills",
+  ],
+  creator: "vidhunnan",
+  publisher: "vidhunnan",
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
   openGraph: {
-    title: "agentic-skills",
-    description:
-      "The skills that write the briefing an agent needs. A changelog, a decision log, a handoff — all Markdown, no code.",
     type: "website",
+    url: SITE_URL,
+    siteName: "agentic-skills",
+    title: "agentic-skills",
+    description: OG_DESCRIPTION,
+    locale: "en_US",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: OG_IMAGE_ALT,
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "agentic-skills",
+    description: OG_DESCRIPTION,
+    images: [{ url: "/og.png", alt: OG_IMAGE_ALT }],
   },
 };
 
