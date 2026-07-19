@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A personal library of Claude / Cursor-compatible **agent skills**. Each skill is a self-contained folder of Markdown (a `SKILL.md` plus optional supporting docs) — there is no build system, no test runner, and no application code. "Working on the code" here means authoring and refining skill definitions and their specs.
 
-Currently private; intended to go public once the first skill (`handoff-generator`) is solid.
+Public, and forkable. Treat everything here as published: it ships to the plugin marketplace and is documented at https://agentic-skills.vidhunnan.design.
 
 ## Layout & conventions
 
