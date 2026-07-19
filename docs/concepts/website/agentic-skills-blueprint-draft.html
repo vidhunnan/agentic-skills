@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>agentic-skills — context files an agent should have anyway</title>
+<meta name="description" content="Six Claude / Cursor-compatible skills that write the context files a project should have anyway: a changelog, a decision log, a handoff.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0e2942;
+    --panel:#123453;
+    --panel-2:#16405f;
+    --grid:rgba(207,227,240,.06);
+    --line:rgba(159,196,220,.28);
+    --line-strong:#9fc4dc;
+    --paper:#e8f1f7;
+    --paper-dim:#7ea3bf;
+    --accent:#e2793f;
+    --accent-dim:rgba(226,121,63,.14);
+    --maxw:980px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--ink); color:var(--paper);
+    font-family:'Space Grotesk', ui-sans-serif, sans-serif;
+    font-size:16.5px; line-height:1.6; -webkit-font-smoothing:antialiased;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:28px 28px;
+  }
+  .mono{ font-family:'IBM Plex Mono', ui-monospace, monospace; }
+  a{color:var(--accent); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  ::selection{background:var(--accent); color:var(--ink);}
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:2px; }
+  button{ font-family:inherit; -webkit-appearance:none; appearance:none; }
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--paper-dim); margin:0 0 14px; display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{ content:""; width:14px; height:1px; background:var(--accent); display:inline-block; }
+
+  /* corner-bracket "technical drawing" frame */
+  .blueprint-frame{ position:relative; }
+  .blueprint-frame::before, .blueprint-frame::after{
+    content:""; position:absolute; width:9px; height:9px; border-color:var(--line-strong); opacity:.55; pointer-events:none;
+  }
+  .blueprint-frame::before{ top:-1px; left:-1px; border-top:1px solid; border-left:1px solid; }
+  .blueprint-frame::after{ bottom:-1px; right:-1px; border-bottom:1px solid; border-right:1px solid; }
+
+  /* ---------- nav ---------- */
+  .nav-progress{ position:fixed; top:0; left:0; height:2px; width:0%; background:var(--accent); z-index:30; }
+  .nav{ position:sticky; top:0; z-index:20; background:rgba(14,41,66,.72); backdrop-filter:blur(10px); border-bottom:1px solid rgba(159,196,220,.14); transition:background .25s ease, border-color .25s ease; }
+  .nav.is-scrolled{ background:rgba(14,41,66,.95); border-bottom-color:var(--line); }
+  .nav .wrap{ display:flex; align-items:center; gap:28px; height:56px; }
+  .nav-logo{ font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:14px; color:var(--paper); letter-spacing:.02em; margin-right:auto; }
+  .nav-logo span{color:var(--accent);}
+  .nav-links{ display:flex; gap:24px; }
+  .nav-anchor{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.04em; color:var(--paper-dim); padding:4px 1px; border-bottom:2px solid transparent; transition:color .15s ease, border-color .15s ease; }
+  .nav-anchor:hover{ color:var(--paper); text-decoration:none; }
+  .nav-anchor.is-active{ color:var(--accent); border-bottom-color:var(--accent); }
+  .nav-github{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--paper-dim); border:1px solid var(--line); padding:5px 11px; border-radius:3px; transition:border-color .15s ease, color .15s ease; }
+  .nav-github:hover{ border-color:var(--accent); color:var(--accent); text-decoration:none; }
+  @media (max-width:640px){ .nav-links{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{ padding:76px 0 64px; border-bottom:1px solid rgba(159,196,220,.14); }
+  .hero .wrap{ display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:start; }
+  .hero-title{ font-size:clamp(26px, 3.6vw, 40px); font-weight:600; line-height:1.24; letter-spacing:-.01em; margin:0 0 20px; }
+  .hero-sub{ font-size:clamp(15.5px, 1.5vw, 17.5px); color:var(--paper-dim); margin:0 0 28px; }
+  .hero-sub em{ color:var(--paper); font-style:normal; border-bottom:1px dashed var(--accent); }
+
+  .code-block{ background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:16px; max-width:480px; }
+  .code-block code{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--paper); white-space:nowrap; overflow-x:auto; }
+  .code-block code .prompt{color:var(--accent);}
+  .copy-btn{ flex:0 0 auto; background:transparent; border:1px solid var(--line); color:var(--paper-dim); font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:6px 10px; border-radius:3px; cursor:pointer; transition:border-color .15s ease, color .15s ease; }
+  .copy-btn:hover{ border-color:var(--accent); color:var(--accent); }
+  .copy-btn.copied{ border-color:var(--accent); color:var(--accent); }
+
+  .hero-ctas{ margin-top:26px; display:flex; gap:22px; align-items:center; flex-wrap:wrap; }
+  .btn-primary{ font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:500; color:var(--ink); background:var(--accent); padding:11px 18px; border-radius:3px; text-decoration:none; }
+  .btn-primary:hover{ text-decoration:none; opacity:.88; }
+  .btn-ghost{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--paper-dim); }
+  .btn-ghost:hover{ color:var(--paper); text-decoration:none; }
+
+  /* ---------- console (hero demo) ---------- */
+  .console{ background:var(--panel); border:1px solid var(--line); border-radius:4px; overflow:hidden; }
+  .console-bar{ display:flex; align-items:center; gap:7px; padding:10px 14px; border-bottom:1px solid var(--line); background:var(--panel-2); }
+  .cdot{width:8px;height:8px;border-radius:1px; border:1px solid var(--line-strong); opacity:.7;}
+  .console-title{ margin-left:8px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--paper-dim); flex:1; letter-spacing:.03em; }
+  .console-replay{ background:transparent; border:1px solid var(--line); color:var(--paper-dim); font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.04em; padding:4px 9px; border-radius:3px; cursor:pointer; transition:border-color .15s ease, color .15s ease; }
+  .console-replay:hover{border-color:var(--accent); color:var(--accent);}
+  .console-replay:disabled{opacity:.4; cursor:default;}
+  .console-body{ padding:18px 16px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; line-height:1.9; min-height:290px; }
+  .cline{ opacity:0; animation:cfade .35s ease forwards; }
+  .cline.no-anim{ opacity:1; animation:none; }
+  @keyframes cfade{ to{opacity:1;} }
+  .cline .prompt{color:var(--accent);}
+  .cline.c-output{color:var(--paper-dim);}
+  .cline.c-success{color:var(--line-strong);}
+  .cline.c-muted{color:var(--paper-dim); opacity:.55; }
+  .ccursor{ display:inline-block; width:6px; height:13px; background:var(--accent); margin-left:2px; vertical-align:-2px; animation:blink 1s step-end infinite; }
+  @keyframes blink{ 50%{opacity:0;} }
+  .cdivider{ border-top:1px dashed var(--line); margin:12px 0; }
+  .cprogress-row{ display:flex; align-items:center; gap:10px; margin-top:2px; opacity:0; animation:cfade .35s ease forwards; }
+  .cprogress-label{ font-size:11px; color:var(--paper-dim); white-space:nowrap; }
+  .cprogress-track{ flex:1; height:5px; background:rgba(159,196,220,.15); border-radius:2px; overflow:hidden; }
+  .cprogress-fill{ display:block; height:100%; width:0%; background:var(--accent); transition:width .8s ease; }
+  .cprogress-pct{ font-size:11px; color:var(--accent); width:32px; text-align:right; }
+
+  /* ---------- section shell ---------- */
+  section{ padding:76px 0; border-bottom:1px solid rgba(159,196,220,.14); }
+  .section-title{ font-size:clamp(21px,2.8vw,28px); font-weight:600; margin:0 0 16px; max-width:26ch; }
+  .section-intro{ color:var(--paper-dim); max-width:64ch; font-size:16px; margin:0 0 40px; }
+
+  /* ---------- schematic (signature) ---------- */
+  .schema{ display:flex; flex-direction:column; gap:10px; max-width:760px; }
+  .node-item{ display:flex; flex-direction:column; }
+  .node{
+    position:relative; padding:16px 18px; display:grid; grid-template-columns:auto 1fr auto auto;
+    align-items:center; gap:16px; width:100%; text-align:left; cursor:pointer; color:inherit;
+    background:var(--panel); border:1px solid var(--line); border-radius:4px;
+    opacity:0; transform:translateY(12px); transition:opacity .55s ease, transform .55s ease, border-color .15s ease;
+  }
+  .node.is-visible{ opacity:1; transform:translateY(0); }
+  .node:hover{ border-color:var(--line-strong); }
+  .node-gauge{ width:34px; height:34px; border-radius:50%; background:conic-gradient(var(--accent) calc(var(--pct)*1%), rgba(159,196,220,.14) 0); position:relative; flex:0 0 auto; }
+  .node-gauge::before{ content:""; position:absolute; inset:5px; border-radius:50%; background:var(--panel); }
+  .node-pin{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; flex:0 0 auto; color:var(--line-strong); }
+  .node-folder{ font-family:'IBM Plex Mono', monospace; font-size:13.5px; font-weight:600; color:var(--paper); }
+  .node-q{ font-size:13.5px; color:var(--paper-dim); margin-top:2px; }
+  .node-trust{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; text-align:right; white-space:nowrap; color:var(--paper-dim); }
+  .node-trust.is-truth{ color:var(--accent); font-weight:600; }
+  .node-chevron{ font-size:16px; color:var(--paper-dim); transition:transform .25s ease, color .25s ease; line-height:1; }
+  .node[aria-expanded="true"] .node-chevron{ transform:rotate(45deg); color:var(--accent); }
+
+  .node-panel{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s ease; background:var(--panel-2); border:1px solid var(--line); border-top:none; border-radius:0 0 4px 4px; margin-top:-1px; }
+  .node-panel.is-open{ grid-template-rows:1fr; }
+  .node-panel-inner{ overflow:hidden; }
+  .node-panel-inner pre{ margin:0; padding:16px 20px; font-family:'IBM Plex Mono', monospace; font-size:11.5px; line-height:1.75; color:var(--paper-dim); white-space:pre-wrap; }
+  .node-panel-inner pre strong{ color:var(--paper); font-weight:600; }
+
+  .schema-note{ margin-top:26px; max-width:64ch; font-size:14.5px; color:var(--paper-dim); border-left:2px solid var(--accent); padding-left:16px; }
+  .schema-note strong{ color:var(--paper); font-weight:600; }
+
+  /* ---------- skills ---------- */
+  .filter-row{ display:flex; gap:8px; margin:-4px 0 32px; flex-wrap:wrap; }
+  .chip{ background:transparent; border:1px solid var(--line); color:var(--paper-dim); font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; padding:6px 13px; border-radius:3px; cursor:pointer; transition:all .15s ease; }
+  .chip:hover{ border-color:var(--accent); color:var(--paper); }
+  .chip.is-active{ background:var(--accent); border-color:var(--accent); color:var(--ink); font-weight:600; }
+
+  .skill-group{ margin-bottom:44px; }
+  .skill-group:last-child{ margin-bottom:0; }
+  .skill-group-title{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--paper-dim); margin:0 0 18px; padding-bottom:10px; border-bottom:1px solid rgba(159,196,220,.14); display:flex; align-items:center; gap:9px; }
+  .skill-group-title svg{ opacity:.8; flex:0 0 auto; color:var(--line-strong); }
+  .skill-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(270px, 1fr)); gap:16px; }
+  .skill-card{ background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:20px; opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease, border-color .15s ease; }
+  .skill-card.is-visible{ opacity:1; transform:translateY(0); }
+  .skill-card:hover{ border-color:var(--accent); }
+  .skill-card-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:10px; }
+  .skill-name{ font-family:'IBM Plex Mono', monospace; font-size:14.5px; font-weight:600; color:var(--paper); }
+  .skill-surfaces{ font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.06em; color:var(--line-strong); white-space:nowrap; }
+  .skill-desc{ font-size:14px; color:var(--paper-dim); margin:0 0 16px; min-height:60px; }
+  .skill-install{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--paper); background:var(--panel-2); border:1px solid var(--line); border-radius:3px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .skill-install code{ overflow-x:auto; white-space:nowrap; }
+  .skill-install .copy-btn{ padding:3px 7px; font-size:9.5px; }
+
+  .skill-example-toggle{ margin-top:13px; background:none; border:none; padding:0; cursor:pointer; font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.03em; color:var(--line-strong); display:flex; align-items:center; gap:6px; }
+  .skill-example-toggle:hover{ color:var(--accent); }
+  .skill-example-toggle .chev{ font-size:13px; transition:transform .25s ease, color .25s ease; }
+  .skill-example-toggle[aria-expanded="true"] .chev{ transform:rotate(45deg); color:var(--accent); }
+  .skill-example{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s ease; }
+  .skill-example.is-open{ grid-template-rows:1fr; margin-top:10px; }
+  .skill-example-inner{ overflow:hidden; }
+  .skill-example-inner pre{ margin:0; background:var(--panel-2); border:1px solid var(--line); border-radius:3px; padding:10px 12px; font-family:'IBM Plex Mono', monospace; font-size:11px; line-height:1.65; color:var(--paper-dim); white-space:pre-wrap; }
+
+  /* ---------- proof ---------- */
+  .proof-list{ list-style:none; margin:0; padding:0; max-width:660px; }
+  .proof-list li{ display:grid; grid-template-columns:190px 1fr; gap:18px; padding:16px 0; border-bottom:1px solid rgba(159,196,220,.14); align-items:baseline; }
+  .proof-list li:last-child{ border-bottom:none; }
+  .proof-path{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--accent); }
+  .proof-desc{ font-size:14.5px; color:var(--paper-dim); }
+  .proof-desc .by{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--paper-dim); display:block; margin-top:4px; opacity:.8; }
+
+  /* ---------- install ---------- */
+  .install-block{ background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:24px 26px; max-width:620px; }
+  .install-lines{ font-family:'IBM Plex Mono', monospace; font-size:13px; line-height:1.9; color:var(--paper); }
+  .install-lines .prompt{ color:var(--accent); }
+  .install-lines .rem{ color:var(--paper-dim); }
+  .install-alt{ margin-top:22px; padding-top:20px; border-top:1px solid rgba(159,196,220,.14); font-size:14px; color:var(--paper-dim); }
+  .install-alt strong{ color:var(--paper); font-weight:600; }
+
+  /* ---------- footer ---------- */
+  footer{ padding:40px 0; }
+  .footer-row{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; }
+  .footer-links{ display:flex; gap:20px; font-family:'IBM Plex Mono', monospace; font-size:12px; }
+  .footer-links a{ color:var(--paper-dim); }
+  .footer-links a:hover{ color:var(--accent); }
+  .footer-tag{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--paper-dim); }
+
+  @media (max-width:900px){ .hero .wrap{ grid-template-columns:1fr; } }
+  @media (max-width:640px){
+    .hero{ padding:56px 0 44px; } section{ padding:52px 0; }
+    .proof-list li{ grid-template-columns:1fr; gap:4px; }
+    .node{ grid-template-columns:auto 1fr auto; }
+    .node-trust{ display:none; }
+    .code-block{ flex-direction:column; align-items:flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .node, .skill-card{ transition:none; opacity:1; transform:none; }
+    .cline{ animation:none; opacity:1; }
+    .nav-progress{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-progress" id="navProgress"></div>
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-logo">agentic<span>-</span>skills</div>
+    <div class="nav-links">
+      <a class="nav-anchor" data-section="stack" href="#stack">System</a>
+      <a class="nav-anchor" data-section="skills" href="#skills">Skills</a>
+      <a class="nav-anchor" data-section="install" href="#install">Install</a>
+    </div>
+    <a class="nav-github" href="https://github.com/vidhunnan/agentic-skills">GitHub ↗</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">Six modules, all operational</p>
+      <h1 class="hero-title">An agent starts every session with no memory of the last one.</h1>
+      <p class="hero-sub">It doesn't need a better prompt — it needs <em>a briefing</em>. These skills author the context files a project should have anyway: a changelog of what shipped, a decision log of why, a handoff for where you left off. All markdown. No build system, no application code.</p>
+      <div class="code-block">
+        <code><span class="prompt">$</span> /plugin marketplace add vidhunnan/agentic-skills</code>
+        <button class="copy-btn" data-copy="/plugin marketplace add vidhunnan/agentic-skills">Copy</button>
+      </div>
+      <div class="hero-ctas">
+        <a class="btn-primary" href="#skills">Browse the six skills</a>
+        <a class="btn-ghost" href="https://github.com/vidhunnan/agentic-skills">View source →</a>
+      </div>
+    </div>
+
+    <div class="hero-demo">
+      <div class="console blueprint-frame">
+        <div class="console-bar">
+          <span class="cdot"></span><span class="cdot"></span><span class="cdot"></span>
+          <span class="console-title">claude — agentic-skills</span>
+          <button class="console-replay" id="replayBtn" type="button">Replay ↻</button>
+        </div>
+        <div class="console-body" id="consoleBody"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="stack">
+  <div class="wrap">
+    <p class="eyebrow">System schematic</p>
+    <h2 class="section-title">Five components, one signal path</h2>
+    <p class="section-intro">Every module reports one signal — and its gauge shows exactly how far it should be trusted. Click a node to see what it actually outputs. Cross the wires and you've fed an agent contradictory input; a human notices the static, an agent just complies.</p>
+
+    <div class="schema">
+
+      <div class="node-item">
+        <button class="node" aria-expanded="false" data-target="panel-concepts" type="button">
+          <span class="node-gauge" style="--pct:12"></span>
+          <span><span class="node-folder">concepts/</span><span class="node-q"> — What are we even trying to build?</span></span>
+          <span class="node-trust">Hypothesis</span>
+          <span class="node-chevron">＋</span>
+        </button>
+        <div class="node-panel" id="panel-concepts"><div class="node-panel-inner"><pre><strong># concepts/auto-resume.md</strong>
+
+What if handoff-generator could chain across
+*multiple* prior handoffs instead of just the
+latest one — a running thread, not a snapshot?
+
+Status: unexplored. Future tense on purpose.</pre></div></div>
+      </div>
+
+      <div class="node-item">
+        <button class="node" aria-expanded="false" data-target="panel-prds" type="button">
+          <span class="node-gauge" style="--pct:38"></span>
+          <span><span class="node-folder">docs/prds/</span><span class="node-q"> — What are we still deciding?</span></span>
+          <span class="node-trust">Proposal</span>
+          <span class="node-chevron">＋</span>
+        </button>
+        <div class="node-panel" id="panel-prds"><div class="node-panel-inner"><pre><strong>## Non-goals (v1) — handoff-generator</strong>
+
+- No live/automatic sync between Claude.ai and
+  Claude Code — the surfaces share no state, so
+  this is a manual bridge, not a sync mechanism.</pre></div></div>
+      </div>
+
+      <div class="node-item">
+        <button class="node" aria-expanded="false" data-target="panel-decisions" type="button">
+          <span class="node-gauge" style="--pct:100"></span>
+          <span><span class="node-folder">docs/decisions/</span><span class="node-q"> — Why did we choose that?</span></span>
+          <span class="node-trust is-truth">Truth · append-only</span>
+          <span class="node-chevron">＋</span>
+        </button>
+        <div class="node-panel" id="panel-decisions"><div class="node-panel-inner"><pre><strong>## ADR 0003 — Surface detection</strong>
+Status: Accepted
+
+Context: two surfaces, no shared state.
+Decision: detect via Bash availability —
+present → Claude Code, absent → Claude.ai.</pre></div></div>
+      </div>
+
+      <div class="node-item">
+        <button class="node" aria-expanded="false" data-target="panel-handoff" type="button">
+          <span class="node-pin" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s7-7.58 7-12A7 7 0 0 0 5 10c0 4.42 7 12 7 12z"/><circle cx="12" cy="10" r="2.4"/></svg>
+          </span>
+          <span><span class="node-folder">handoff/</span><span class="node-q"> — Where did we leave off?</span></span>
+          <span class="node-trust">Snapshot</span>
+          <span class="node-chevron">＋</span>
+        </button>
+        <div class="node-panel" id="panel-handoff"><div class="node-panel-inner"><pre><strong># Handoff Brief — repo setup</strong>
+From: code   To: chat
+Date: 2026-07-13
+
+Next actions for chat:
+- [ ] merge feat/comprehensive-handoff → prod-stable</pre></div></div>
+      </div>
+
+      <div class="node-item">
+        <button class="node" aria-expanded="false" data-target="panel-changelog" type="button">
+          <span class="node-gauge" style="--pct:100"></span>
+          <span><span class="node-folder">changelog/</span><span class="node-q"> — What actually shipped?</span></span>
+          <span class="node-trust is-truth">Truth · from git</span>
+          <span class="node-chevron">＋</span>
+        </button>
+        <div class="node-panel" id="panel-changelog"><div class="node-panel-inner"><pre><strong>commit 091f679</strong>
+feat(handoff-generator): add a near-verbatim
+Session Log section
+
+2026-07-13 · sourced entirely from git</pre></div></div>
+      </div>
+
+    </div>
+
+    <p class="schema-note"><strong>changelog/</strong> sits outside <strong>docs/</strong> on purpose — the folder layout is the rule. Never cite a PRD as proof a feature exists; check the changelog, or check the code.</p>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <p class="eyebrow">Install one module, or all six</p>
+    <h2 class="section-title">The skills</h2>
+
+    <div class="filter-row" role="group" aria-label="Filter skills by surface">
+      <button class="chip is-active" data-filter="all" type="button">All</button>
+      <button class="chip" data-filter="code" type="button">Claude Code</button>
+      <button class="chip" data-filter="chat" type="button">Claude.ai</button>
+    </div>
+
+    <div class="skill-group">
+      <h3 class="skill-group-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 1 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-2-2z"/></svg>
+        Set up the repo
+      </h3>
+      <div class="skill-grid">
+        <div class="skill-card blueprint-frame" data-surfaces="code chat">
+          <div class="skill-card-head"><span class="skill-name">repo-setup</span><span class="skill-surfaces">CODE · CHAT</span></div>
+          <p class="skill-desc">Scaffolds the context stack. Surveys what you already have, adopts your existing folder names, and never moves or overwrites a thing.</p>
+          <div class="skill-install"><code>/plugin install repo-setup</code><button class="copy-btn" data-copy="/plugin install repo-setup">Copy</button></div>
+          <button class="skill-example-toggle" aria-expanded="false" data-target="ex-repo-setup" type="button"><span class="chev">＋</span><span class="toggle-label">View example</span></button>
+          <div class="skill-example" id="ex-repo-setup"><div class="skill-example-inner"><pre>$ /repo-setup
+✓ docs/concepts/   (new)
+✓ docs/prds/       (existing, adopted)
+✓ docs/decisions/  (new)
+✓ handoff/         (existing, adopted)
+✓ changelog/       (new)</pre></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3 class="skill-group-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Keep the record
+      </h3>
+      <div class="skill-grid">
+        <div class="skill-card blueprint-frame" data-surfaces="code">
+          <div class="skill-card-head"><span class="skill-name">changelog-tracker</span><span class="skill-surfaces">CODE</span></div>
+          <p class="skill-desc">What actually shipped? Documents every substantive commit — a per-commit file plus a rolling index, sourced entirely from git.</p>
+          <div class="skill-install"><code>/plugin install changelog-tracker</code><button class="copy-btn" data-copy="/plugin install changelog-tracker">Copy</button></div>
+          <button class="skill-example-toggle" aria-expanded="false" data-target="ex-changelog" type="button"><span class="chev">＋</span><span class="toggle-label">View example</span></button>
+          <div class="skill-example" id="ex-changelog"><div class="skill-example-inner"><pre>changelog/commits/010-session-log.md
+
+feat(handoff-generator): add a near-verbatim
+Session Log section
+commit 091f679 · 2026-07-13</pre></div></div>
+        </div>
+        <div class="skill-card blueprint-frame" data-surfaces="code chat">
+          <div class="skill-card-head"><span class="skill-name">decisions-logger</span><span class="skill-surfaces">CODE · CHAT</span></div>
+          <p class="skill-desc">Why did we choose that? Mines real decisions and writes each as an ADR with its evidence. Where the reasoning was never written down, it asks — it never invents one.</p>
+          <div class="skill-install"><code>/plugin install decisions-logger</code><button class="copy-btn" data-copy="/plugin install decisions-logger">Copy</button></div>
+          <button class="skill-example-toggle" aria-expanded="false" data-target="ex-decisions" type="button"><span class="chev">＋</span><span class="toggle-label">View example</span></button>
+          <div class="skill-example" id="ex-decisions"><div class="skill-example-inner"><pre>## ADR 0015 — reason not stated
+
+Why: NOT STATED — asked user, tagged
+"supplied by Vids, not written down
+at the time"</pre></div></div>
+        </div>
+        <div class="skill-card blueprint-frame" data-surfaces="code chat">
+          <div class="skill-card-head"><span class="skill-name">handoff-generator</span><span class="skill-surfaces">CODE · CHAT</span></div>
+          <p class="skill-desc">Where did we leave off? An interactive, bidirectional Chat↔Code handoff: progress, decisions, changelog delta, open questions, next actions, and a near-verbatim session log.</p>
+          <div class="skill-install"><code>/plugin install handoff-generator</code><button class="copy-btn" data-copy="/plugin install handoff-generator">Copy</button></div>
+          <button class="skill-example-toggle" aria-expanded="false" data-target="ex-handoff" type="button"><span class="chev">＋</span><span class="toggle-label">View example</span></button>
+          <div class="skill-example" id="ex-handoff"><div class="skill-example-inner"><pre>---
+name: handoff-generator
+allowed-tools: Read, Write, Edit, Bash,
+  AskUserQuestion
+disable-model-invocation: false
+---</pre></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3 class="skill-group-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+        Working conventions
+      </h3>
+      <div class="skill-grid">
+        <div class="skill-card blueprint-frame" data-surfaces="code">
+          <div class="skill-card-head"><span class="skill-name">branch-naming</span><span class="skill-surfaces">CODE</span></div>
+          <p class="skill-desc">Proposes a branch name that fits your project's convention — read from CLAUDE.md, or inferred from your existing branches. Always confirms before creating.</p>
+          <div class="skill-install"><code>/plugin install branch-naming</code><button class="copy-btn" data-copy="/plugin install branch-naming">Copy</button></div>
+          <button class="skill-example-toggle" aria-expanded="false" data-target="ex-branch" type="button"><span class="chev">＋</span><span class="toggle-label">View example</span></button>
+          <div class="skill-example" id="ex-branch"><div class="skill-example-inner"><pre>$ /branch-naming "add filter chips"
+→ feat/skills-filter-chips
+  branches off prod-stable — confirm? (y/n)</pre></div></div>
+        </div>
+        <div class="skill-card blueprint-frame" data-surfaces="code">
+          <div class="skill-card-head"><span class="skill-name">model-strategy</span><span class="skill-surfaces">CODE</span></div>
+          <p class="skill-desc">Builds a model-assignment policy: which Claude model for which kind of work, tailored by interview, with a mandatory review rule for the riskiest changes.</p>
+          <div class="skill-install"><code>/plugin install model-strategy</code><button class="copy-btn" data-copy="/plugin install model-strategy">Copy</button></div>
+          <button class="skill-example-toggle" aria-expanded="false" data-target="ex-model" type="button"><span class="chev">＋</span><span class="toggle-label">View example</span></button>
+          <div class="skill-example" id="ex-model"><div class="skill-example-inner"><pre>| Model     | Use for            |
+|-----------|---------------------|
+| Opus      | default             |
+| Sonnet    | plumbing, high-vol  |
+| Haiku     | never (this repo)   |</pre></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="wrap">
+    <p class="eyebrow">Read before you install</p>
+    <h2 class="section-title">This repo runs on its own skills</h2>
+    <p class="section-intro">Everything above was used to build this repo, so you can read the output before you trust it with yours.</p>
+    <ul class="proof-list">
+      <li><span class="proof-path">docs/decisions/</span><span class="proof-desc">14 ADRs explaining why this repo is shaped the way it is, each with the evidence it was drawn from.<span class="by">— written by decisions-logger</span></span></li>
+      <li><span class="proof-path">changelog/</span><span class="proof-desc">Every substantive commit documented, with the diff and the reason.<span class="by">— written by changelog-tracker</span></span></li>
+      <li><span class="proof-path">docs/MODEL-STRATEGY.md</span><span class="proof-desc">The model policy this repo actually follows.<span class="by">— written by model-strategy</span></span></li>
+      <li><span class="proof-path">handoff/</span><span class="proof-desc">The briefs that carried this work between Claude.ai and Claude Code.<span class="by">— written by handoff-generator</span></span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <p class="eyebrow">Get started</p>
+    <h2 class="section-title">Install</h2>
+    <p class="section-intro">Add the marketplace once. Then install the skills you want — each one is a separate plugin.</p>
+    <div class="install-block blueprint-frame">
+      <div class="install-lines">
+        <div><span class="prompt">$</span> /plugin marketplace add vidhunnan/agentic-skills</div>
+        <div>&nbsp;</div>
+        <div><span class="rem"># then, any combination of —</span></div>
+        <div><span class="prompt">$</span> /plugin install repo-setup</div>
+        <div><span class="prompt">$</span> /plugin install changelog-tracker</div>
+        <div><span class="prompt">$</span> /plugin install decisions-logger</div>
+        <div><span class="prompt">$</span> /plugin install handoff-generator</div>
+        <div><span class="prompt">$</span> /plugin install branch-naming</div>
+        <div><span class="prompt">$</span> /plugin install model-strategy</div>
+      </div>
+      <div class="install-alt"><strong>Claude.ai —</strong> zip a skill folder and upload it under Settings → Customize → Skills. Skills marked Chat above have a claude.ai path; the rest need a filesystem and git.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <span class="footer-tag">MIT licensed · public on GitHub</span>
+      <div class="footer-links">
+        <a href="https://github.com/vidhunnan/agentic-skills">GitHub</a>
+        <a href="https://github.com/vidhunnan/agentic-skills/blob/prod-stable/LICENSE">License</a>
+        <a href="https://github.com/vidhunnan/agentic-skills/blob/prod-stable/CONTRIBUTING.md">Contributing</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- nav: scroll progress + scrollspy ---- */
+  (function(){
+    var navEl = document.querySelector('.nav');
+    var progressEl = document.getElementById('navProgress');
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-anchor'));
+    var sections = navLinks.map(function(a){ return document.getElementById(a.dataset.section); });
+    var ticking = false;
+    function update(){
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressEl.style.width = (docHeight > 0 ? (scrollTop/docHeight)*100 : 0) + '%';
+      navEl.classList.toggle('is-scrolled', scrollTop > 4);
+      var activeIndex = -1;
+      sections.forEach(function(sec, i){ if(sec && sec.getBoundingClientRect().top <= 130){ activeIndex = i; } });
+      navLinks.forEach(function(a, i){ a.classList.toggle('is-active', i === activeIndex); });
+      ticking = false;
+    }
+    window.addEventListener('scroll', function(){ if(!ticking){ requestAnimationFrame(update); ticking = true; } }, {passive:true});
+    update();
+  })();
+
+  /* ---- copy to clipboard ---- */
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.getAttribute('data-copy');
+      navigator.clipboard.writeText(text).then(function(){
+        var original = btn.textContent;
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(function(){ btn.textContent = original; btn.classList.remove('copied'); }, 1400);
+      });
+    });
+  });
+
+  /* ---- scroll reveal ---- */
+  var revealTargets = document.querySelectorAll('.node, .skill-card');
+  if(reduceMotion){
+    revealTargets.forEach(function(el){ el.classList.add('is-visible'); });
+  } else if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){ if(entry.isIntersecting){ entry.target.classList.add('is-visible'); io.unobserve(entry.target); } });
+    }, { threshold: 0.15 });
+    revealTargets.forEach(function(el){ io.observe(el); });
+  } else { revealTargets.forEach(function(el){ el.classList.add('is-visible'); }); }
+
+  /* ---- node expand/collapse ---- */
+  document.querySelectorAll('.node').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      document.getElementById(btn.dataset.target).classList.toggle('is-open', !expanded);
+    });
+  });
+
+  /* ---- skill example expand/collapse ---- */
+  document.querySelectorAll('.skill-example-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      document.getElementById(btn.dataset.target).classList.toggle('is-open', !expanded);
+      btn.querySelector('.toggle-label').textContent = expanded ? 'View example' : 'Hide example';
+    });
+  });
+
+  /* ---- filter chips ---- */
+  document.querySelectorAll('.chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('is-active'); });
+      chip.classList.add('is-active');
+      var f = chip.dataset.filter;
+      document.querySelectorAll('.skill-card').forEach(function(card){
+        card.hidden = !(f === 'all' || card.dataset.surfaces.indexOf(f) !== -1);
+      });
+      document.querySelectorAll('.skill-group').forEach(function(group){
+        var cards = group.querySelectorAll('.skill-card');
+        group.hidden = !Array.prototype.some.call(cards, function(c){ return !c.hidden; });
+      });
+    });
+  });
+
+  /* ---- live console demo ---- */
+  var body = document.getElementById('consoleBody');
+  var replayBtn = document.getElementById('replayBtn');
+  var script = [
+    {type:'command', text:'/handoff-generator'},
+    {type:'output',  text:'Detecting surface... Claude Code'},
+    {type:'output',  text:'Scanning session for decisions, open questions, next actions...'},
+    {type:'output',  text:'Writing handoff/2026-07-13-repo-setup.md'},
+    {type:'success', text:'✓ handoff/2026-07-13-repo-setup.md'},
+    {type:'progress', label:'Context carried forward', value:100},
+    {type:'divider'},
+    {type:'muted',   text:'— new session, three days later —'},
+    {type:'command', text:'claude'},
+    {type:'output',  text:'Reading handoff/2026-07-13-repo-setup.md ...'},
+    {type:'success', text:'✓ Context restored. Continuing from where you left off.'}
+  ];
+  function wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  function typeLine(container, text){
+    return new Promise(function(resolve){
+      var line = document.createElement('div'); line.className = 'cline no-anim';
+      var prompt = document.createElement('span'); prompt.className='prompt'; prompt.textContent = '$ ';
+      var span = document.createElement('span');
+      var cursor = document.createElement('span'); cursor.className='ccursor';
+      line.appendChild(prompt); line.appendChild(span); line.appendChild(cursor);
+      container.appendChild(line);
+      var i=0;
+      (function step(){
+        if(i<=text.length){ span.textContent = text.slice(0,i); i++; setTimeout(step, 28+Math.random()*35); }
+        else { cursor.remove(); resolve(); }
+      })();
+    });
+  }
+  function addLine(container, text, cls){ var l=document.createElement('div'); l.className='cline '+cls; l.textContent=text; container.appendChild(l); return wait(260); }
+  function addDivider(container){ var d=document.createElement('div'); d.className='cdivider'; container.appendChild(d); return wait(160); }
+  function addProgress(container,label,value){
+    var row=document.createElement('div'); row.className='cprogress-row';
+    row.innerHTML = '<span class="cprogress-label">'+label+'</span><span class="cprogress-track"><span class="cprogress-fill"></span></span><span class="cprogress-pct">0%</span>';
+    container.appendChild(row);
+    var fill=row.querySelector('.cprogress-fill'), pct=row.querySelector('.cprogress-pct');
+    return wait(80).then(function(){
+      fill.style.width=value+'%';
+      var start=null, dur=800;
+      return new Promise(function(resolve){
+        function step(ts){ if(!start) start=ts; var p=Math.min(1,(ts-start)/dur); pct.textContent = Math.round(p*value)+'%'; if(p<1) requestAnimationFrame(step); else resolve(); }
+        requestAnimationFrame(step);
+      });
+    });
+  }
+  function run(){
+    body.innerHTML=''; replayBtn.disabled = true;
+    var p = wait(400);
+    script.forEach(function(s){
+      p = p.then(function(){
+        if(s.type==='command') return typeLine(body, s.text).then(function(){ return wait(220); });
+        if(s.type==='output')  return addLine(body, s.text, 'c-output');
+        if(s.type==='success') return addLine(body, s.text, 'c-success');
+        if(s.type==='muted')   return addLine(body, s.text, 'c-muted');
+        if(s.type==='divider') return addDivider(body);
+        if(s.type==='progress')return addProgress(body, s.label, s.value).then(function(){ return wait(200); });
+      });
+    });
+    p.then(function(){ replayBtn.disabled = false; });
+  }
+  function runInstant(){
+    body.innerHTML='';
+    script.forEach(function(s){
+      if(s.type==='command'){ var l=document.createElement('div'); l.className='cline no-anim'; l.innerHTML='<span class="prompt">$ </span>'+s.text; body.appendChild(l); }
+      else if(s.type==='divider'){ var d=document.createElement('div'); d.className='cdivider'; body.appendChild(d); }
+      else if(s.type==='progress'){ var row=document.createElement('div'); row.className='cprogress-row'; row.innerHTML='<span class="cprogress-label">'+s.label+'</span><span class="cprogress-track"><span class="cprogress-fill" style="width:'+s.value+'%"></span></span><span class="cprogress-pct">'+s.value+'%</span>'; body.appendChild(row); }
+      else { var cls = s.type==='output' ? 'c-output' : s.type==='success' ? 'c-success' : 'c-muted'; var line=document.createElement('div'); line.className='cline no-anim '+cls; line.textContent=s.text; body.appendChild(line); }
+    });
+  }
+  if(reduceMotion){ runInstant(); replayBtn.addEventListener('click', runInstant); }
+  else { run(); replayBtn.addEventListener('click', run); }
+})();
+</script>
+
+</body>
+</html>
