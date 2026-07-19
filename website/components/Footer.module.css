@@ -1,0 +1,30 @@
+.footer {
+  padding: 44px 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--mute);
+}
+
+.links {
+  display: flex;
+  gap: 20px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.links a {
+  color: var(--ink-soft);
+}
+.links a:hover {
+  color: var(--blue);
+}

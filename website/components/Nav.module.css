@@ -1,0 +1,88 @@
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--blue);
+  z-index: 30;
+  transition: width 0.05s linear;
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(243, 242, 237, 0.72);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+.isScrolled {
+  background: rgba(243, 242, 237, 0.95);
+  border-bottom-color: var(--rule-soft);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 58px;
+}
+
+.logo {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  margin-right: auto;
+}
+.logo:hover {
+  text-decoration: none;
+}
+.logo span {
+  color: var(--blue);
+}
+
+.links {
+  display: flex;
+  gap: 24px;
+}
+.anchor {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--mute);
+  padding: 4px 1px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.anchor:hover {
+  color: var(--ink);
+  text-decoration: none;
+}
+.isActive {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+}
+
+.github {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+  padding: 5px 11px;
+  border-radius: 3px;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.github:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .links {
+    display: none;
+  }
+}

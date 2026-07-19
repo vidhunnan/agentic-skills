@@ -1,0 +1,22 @@
+.btn {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--mute);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.copied {
+  border-color: var(--blue);
+  color: var(--blue);
+}
