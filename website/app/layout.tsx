@@ -52,8 +52,9 @@ export const metadata: Metadata = {
     "Markdown",
     "agentic-skills",
   ],
-  creator: "vidhunnan",
-  publisher: "vidhunnan",
+  authors: [{ name: "Vidhunnan Murugan", url: "https://vidhunnan.design" }],
+  creator: "Vidhunnan Murugan",
+  publisher: "Vidhunnan Murugan",
   alternates: { canonical: "/" },
   robots: {
     index: true,

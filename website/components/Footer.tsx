@@ -6,7 +6,16 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`wrap ${styles.row}`}>
         <span className={styles.tag}>
-          MIT licensed · authored in Markdown, no code
+          Built by{" "}
+          <a
+            className={styles.author}
+            href="https://vidhunnan.design"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Vidhunnan Murugan
+          </a>{" "}
+          · MIT licensed · authored in Markdown, no code
         </span>
         <div className={styles.links}>
           <a href={REPO_URL} target="_blank" rel="noreferrer">
