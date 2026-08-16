@@ -244,104 +244,43 @@ export const RECEIPTS: Receipt[] = [
    is the same rule that stopped the site's copy going stale (see TOTAL_SKILLS).
    =========================================================================== */
 
-export type CommandKind = "skill" | "tier" | "section" | "record";
-
 export interface CommandItem {
   id: string;
-  kind: CommandKind;
-  /** Primary line — what the user is looking for. */
+  /** The skill name. */
   label: string;
-  /** Secondary line. */
+  /** The question it answers — what tells you whether it's the one you want. */
   detail: string;
-  /** Right-hand group label. */
+  /** Its group, shown as quiet context. */
   group: string;
-  /** Extra text matched against but not displayed. */
+  /** Matched against but not displayed. */
   keywords: string;
-  /** Enter — in-page anchor or URL. */
-  href: string;
-  /** Cmd/Ctrl+Enter — clipboard payload. */
-  copy?: string;
-  /** Shift+Enter — opens on GitHub. */
-  external?: string;
+  /** The whole point: the install command. */
+  copy: string;
 }
 
-const BLOB = `${REPO_URL}/blob/prod-stable`;
-
-export const SECTIONS: { id: string; label: string; detail: string }[] = [
-  { id: "top", label: "Top", detail: "Back to the start" },
-  { id: "stack", label: "The context stack", detail: "Five tiers, one rule" },
-  { id: "design", label: "The design stack", detail: "Same idea, harder problem" },
-  { id: "skills", label: "The skills", detail: "All of them, by group" },
-  { id: "proof", label: "Proof", detail: "This repo runs on its own skills" },
-  { id: "install", label: "Install", detail: "Marketplace and plugins" },
-];
-
+/**
+ * Skills only, and one action: copy the install command.
+ *
+ * An earlier version also indexed tiers, page sections and Proof records with
+ * three modifier-key actions each. It was more than the job needed — the site
+ * is not big enough to warrant navigating by palette, and the nav already
+ * does that. See design ADR 0005, which supersedes 0004.
+ */
 export function buildCommandIndex(): CommandItem[] {
-  const items: CommandItem[] = [];
-
-  for (const group of SKILL_GROUPS) {
-    for (const s of group.skills) {
-      items.push({
-        id: `skill:${s.name}`,
-        kind: "skill",
-        label: s.name,
-        detail: s.answers ?? s.desc,
-        group: group.title,
-        // desc and surfaces are matched but not shown — searching "figma",
-        // "append-only" or "chat" should find the right skill.
-        keywords: `${s.desc} ${s.surfaces.join(" ")} ${group.title} ${group.note}`,
-        href: "#skills",
-        copy: s.install,
-        external: `${BLOB}/skills/${s.name}/SKILL.md`,
-      });
-    }
-  }
-
-  const tiers: [string, Tier[], string][] = [
-    ["Context stack", CONTEXT_STACK, "#stack"],
-    ["Design stack", DESIGN_STACK, "#design"],
-  ];
-  for (const [group, list, anchor] of tiers) {
-    for (const t of list) {
-      items.push({
-        id: `tier:${group}:${t.folder}`,
-        kind: "tier",
-        label: t.folder,
-        detail: t.question,
-        group,
-        keywords: `${t.trust} ${t.qualifier ?? ""} ${group}`,
-        href: anchor,
-        external: `${BLOB}/${t.folder}`,
-      });
-    }
-  }
-
-  for (const s of SECTIONS) {
-    items.push({
-      id: `section:${s.id}`,
-      kind: "section",
-      label: s.label,
-      detail: s.detail,
-      group: "Go to",
-      keywords: s.id,
-      href: `#${s.id}`,
-    });
-  }
-
-  for (const r of RECEIPTS) {
-    items.push({
-      id: `record:${r.path}`,
-      kind: "record",
-      label: r.path,
-      detail: r.desc,
-      group: "Written by a skill",
-      keywords: `${r.by} proof receipt`,
-      href: "#proof",
-      external: `${BLOB}/${r.path.replace(/…$/, "")}`,
-    });
-  }
-
-  return items;
+  return SKILL_GROUPS.flatMap((group) =>
+    group.skills.map((s) => ({
+      id: s.name,
+      label: s.name,
+      detail: s.answers ?? s.desc,
+      group: group.title,
+      // desc, surfaces and the group's note are matched but not shown, so
+      // "figma", "append-only" and "chat" all find the right skill. The note
+      // matters more than it looks: "a Figma file shows the winner" lives
+      // there, and dropping it silently lost the query "figma" entirely.
+      keywords: `${s.desc} ${s.surfaces.join(" ")} ${group.title} ${group.note}`,
+      copy: s.install,
+    })),
+  );
 }
 
 /**
@@ -398,13 +337,8 @@ export function searchCommands(
   index: CommandItem[],
   q: string,
 ): CommandItem[] {
-  if (!q.trim()) {
-    // Empty query: the things most people want, in a useful order.
-    const order: CommandKind[] = ["section", "skill", "tier", "record"];
-    return [...index].sort(
-      (a, b) => order.indexOf(a.kind) - order.indexOf(b.kind),
-    );
-  }
+  // Empty query: every skill, in the order the page lists them.
+  if (!q.trim()) return index;
   return index
     .map((item) => ({ item, score: scoreItem(item, q) }))
     .filter((r) => r.score >= 0)

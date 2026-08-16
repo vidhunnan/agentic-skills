@@ -132,7 +132,7 @@
 .rowMeta {
   flex-shrink: 0;
 }
-.kind,
+.group,
 .copied {
   font-family: var(--mono);
   font-size: 10px;
@@ -156,32 +156,6 @@
   font-size: 13px;
   color: var(--ink);
   font-weight: 500;
-}
-
-/* ---- footer ---- */
-.footer {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 9px 14px;
-  border-top: 1px solid var(--rule-soft);
-  background: var(--paper-2);
-  font-family: var(--mono);
-  font-size: 10.5px;
-  color: var(--mute);
-  flex-wrap: wrap;
-}
-.footer kbd {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--ink-soft);
-  border: 1px solid var(--rule-soft);
-  border-radius: 3px;
-  padding: 1px 4px;
-  margin-right: 3px;
-}
-.footerEnd {
-  margin-left: auto;
 }
 
 .srOnly {
@@ -214,10 +188,6 @@
   }
   .dialog {
     max-height: 76vh;
-  }
-  /* The modifier hints are meaningless without a physical keyboard. */
-  .footer {
-    display: none;
   }
 }
 

@@ -1,6 +1,6 @@
 # 0004. A command palette with actions, not a search box
 
-- **Status:** **Accepted**
+- **Status:** Superseded by [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md)
 - **Date:** 2026-08-16
 - **Supersedes:** —
 
@@ -86,6 +86,15 @@ label length.
   "changelog-tracker", which is Code-only). Subsequence now ranks below keyword
   matches and is gated to short single-word queries. Evidence:
   `website/components/lib/skills.ts` §`scoreItem`.
+- **2026-08-16** — **Superseded by [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md)**,
+  the same day, after review: *"this is too much, just search for skill and copy
+  the command."* Two costs named in this ADR's own *What we gave up* came due
+  immediately rather than eventually — the desktop-only modifier actions, and
+  the palette becoming a second way to reach everything the nav already reached.
+  Worth noting that this ADR's premise — *"the site's actual job is getting an
+  install command into someone's clipboard"* — was correct, and the thing built
+  did not follow from it. Evidence:
+  `design/decisions/0005-the-palette-searches-skills-and-copies-one-thing.md`.
 
 ---
 

@@ -18,13 +18,6 @@ import styles from "./CommandPalette.module.css";
 /** Nav dispatches this; the palette listens. One consumer, so no context. */
 export const OPEN_EVENT = "agentic-skills:open-palette";
 
-const KIND_LABEL: Record<CommandItem["kind"], string> = {
-  skill: "Skill",
-  tier: "Tier",
-  section: "Go to",
-  record: "Record",
-};
-
 /** Splits a label so a substring match can be marked without dangerouslySetInnerHTML. */
 function highlight(label: string, q: string) {
   const query = q.trim().toLowerCase();
@@ -45,23 +38,14 @@ export default function CommandPalette() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const [copied, setCopied] = useState<string | null>(null);
-  const [isMac, setIsMac] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
-  const dialogRef = useRef<HTMLDivElement>(null);
   /** Focus returns here on close — a palette that drops focus is a keyboard trap. */
   const restoreRef = useRef<HTMLElement | null>(null);
 
   const index = useMemo(() => buildCommandIndex(), []);
-  const results = useMemo(
-    () => searchCommands(index, query),
-    [index, query],
-  );
-
-  useEffect(() => {
-    setIsMac(/Mac|iPhone|iPad/.test(navigator.platform ?? ""));
-  }, []);
+  const results = useMemo(() => searchCommands(index, query), [index, query]);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -76,14 +60,16 @@ export default function CommandPalette() {
     setOpen(true);
   }, []);
 
-  /* ---- global shortcuts ------------------------------------------------- */
   useEffect(() => {
     function isTyping(el: EventTarget | null) {
       const n = el as HTMLElement | null;
       if (!n) return false;
       const tag = n.tagName;
       return (
-        tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || n.isContentEditable
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        tag === "SELECT" ||
+        n.isContentEditable
       );
     }
     function onKey(e: globalThis.KeyboardEvent) {
@@ -98,18 +84,14 @@ export default function CommandPalette() {
         show();
       }
     }
-    function onOpenEvent() {
-      show();
-    }
     window.addEventListener("keydown", onKey);
-    window.addEventListener(OPEN_EVENT, onOpenEvent);
+    window.addEventListener(OPEN_EVENT, show);
     return () => {
       window.removeEventListener("keydown", onKey);
-      window.removeEventListener(OPEN_EVENT, onOpenEvent);
+      window.removeEventListener(OPEN_EVENT, show);
     };
   }, [open, close, show]);
 
-  /* ---- focus + scroll lock ---------------------------------------------- */
   useEffect(() => {
     if (!open) return;
     inputRef.current?.focus();
@@ -123,43 +105,22 @@ export default function CommandPalette() {
   /* Keep the active row in view when arrowing past the fold. */
   useEffect(() => {
     if (!open) return;
-    const el = listRef.current?.querySelector<HTMLElement>('[data-active="true"]');
-    el?.scrollIntoView({ block: "nearest" });
+    listRef.current
+      ?.querySelector<HTMLElement>('[data-active="true"]')
+      ?.scrollIntoView({ block: "nearest" });
   }, [active, open]);
 
   useEffect(() => setActive(0), [query]);
 
-  async function copyToClipboard(text: string) {
+  async function copyInstall(item: CommandItem) {
     try {
-      await navigator.clipboard.writeText(text);
-      setCopied(text);
-      window.setTimeout(() => setCopied(null), 1400);
+      await navigator.clipboard.writeText(item.copy);
+      setCopied(item.id);
+      // Stay open — copying two commands is a normal thing to want.
+      window.setTimeout(() => setCopied(null), 1600);
     } catch {
       /* insecure context or denied — fail quiet, same as CopyButton */
     }
-  }
-
-  function run(item: CommandItem, mode: "go" | "copy" | "external") {
-    if (mode === "copy" && item.copy) {
-      copyToClipboard(item.copy);
-      return; // stay open so you can copy another
-    }
-    if (mode === "external" && item.external) {
-      window.open(item.external, "_blank", "noopener,noreferrer");
-      close();
-      return;
-    }
-    if (item.href.startsWith("#")) {
-      close();
-      // after close, so focus restore doesn't fight the scroll
-      window.requestAnimationFrame(() => {
-        document.querySelector(item.href)?.scrollIntoView({ block: "start" });
-        window.history.replaceState(null, "", item.href);
-      });
-      return;
-    }
-    window.open(item.href, "_blank", "noopener,noreferrer");
-    close();
   }
 
   function onKeyDown(e: ReactKeyboardEvent) {
@@ -177,21 +138,10 @@ export default function CommandPalette() {
         e.preventDefault();
         setActive((i) => (i <= 0 ? last : i - 1));
         break;
-      case "Home":
-        e.preventDefault();
-        setActive(0);
-        break;
-      case "End":
-        e.preventDefault();
-        setActive(last);
-        break;
       case "Enter": {
         e.preventDefault();
         const item = results[active];
-        if (!item) return;
-        if (e.metaKey || e.ctrlKey) run(item, "copy");
-        else if (e.shiftKey) run(item, "external");
-        else run(item, "go");
+        if (item) copyInstall(item);
         break;
       }
       case "Tab":
@@ -205,7 +155,6 @@ export default function CommandPalette() {
 
   if (!open) return null;
 
-  const mod = isMac ? "⌘" : "Ctrl";
   const activeId = results[active] ? `cmd-${results[active].id}` : undefined;
 
   return (
@@ -216,11 +165,10 @@ export default function CommandPalette() {
       }}
     >
       <div
-        ref={dialogRef}
         className={styles.dialog}
         role="dialog"
         aria-modal="true"
-        aria-label="Search skills, tiers and sections"
+        aria-label="Find a skill and copy its install command"
         onKeyDown={onKeyDown}
       >
         <div className={styles.inputRow}>
@@ -232,8 +180,8 @@ export default function CommandPalette() {
             className={styles.input}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search skills, tiers, records…"
-            aria-label="Search"
+            placeholder="Find a skill…"
+            aria-label="Find a skill"
             aria-controls="cmd-results"
             aria-activedescendant={activeId}
             autoComplete="off"
@@ -243,14 +191,15 @@ export default function CommandPalette() {
         </div>
 
         <p className={styles.srOnly} role="status" aria-live="polite">
-          {results.length} result{results.length === 1 ? "" : "s"}
-          {copied ? ", copied to clipboard" : ""}
+          {results.length} skill{results.length === 1 ? "" : "s"}
+          {copied ? ", install command copied to clipboard" : ""}
         </p>
 
         {results.length === 0 ? (
           <p className={styles.empty}>
-            Nothing matches <strong>{query}</strong>. Try a skill name, a folder,
-            or what you want to answer — &ldquo;why did we choose this&rdquo;.
+            No skill matches <strong>{query}</strong>. Try what you want it to
+            answer — &ldquo;why did we choose this&rdquo;, &ldquo;what did we
+            try&rdquo;.
           </p>
         ) : (
           <ul
@@ -258,10 +207,11 @@ export default function CommandPalette() {
             id="cmd-results"
             className={styles.list}
             role="listbox"
-            aria-label="Results"
+            aria-label="Skills"
           >
             {results.map((item, i) => {
               const isActive = i === active;
+              const isCopied = copied === item.id;
               return (
                 <li
                   key={item.id}
@@ -271,7 +221,7 @@ export default function CommandPalette() {
                   data-active={isActive}
                   className={`${styles.row} ${isActive ? styles.isActive : ""}`}
                   onMouseMove={() => setActive(i)}
-                  onClick={() => run(item, "go")}
+                  onClick={() => copyInstall(item)}
                 >
                   <span className={styles.rowMain}>
                     <span className={styles.label}>
@@ -279,42 +229,17 @@ export default function CommandPalette() {
                     </span>
                     <span className={styles.detail}>{item.detail}</span>
                   </span>
-                  <span className={styles.rowMeta}>
-                    {copied && copied === item.copy ? (
-                      <span className={styles.copied}>copied</span>
-                    ) : (
-                      <span className={styles.kind}>
-                        {KIND_LABEL[item.kind]}
-                      </span>
-                    )}
+                  <span
+                    className={isCopied ? styles.copied : styles.group}
+                    aria-hidden="true"
+                  >
+                    {isCopied ? "copied ✓" : isActive ? "↵ copy" : item.group}
                   </span>
                 </li>
               );
             })}
           </ul>
         )}
-
-        <div className={styles.footer}>
-          <span>
-            <kbd>↵</kbd> go
-          </span>
-          {results[active]?.copy ? (
-            <span>
-              <kbd>{mod}</kbd>
-              <kbd>↵</kbd> copy install
-            </span>
-          ) : null}
-          {results[active]?.external ? (
-            <span>
-              <kbd>⇧</kbd>
-              <kbd>↵</kbd> open on GitHub
-            </span>
-          ) : null}
-          <span className={styles.footerEnd}>
-            <kbd>↑</kbd>
-            <kbd>↓</kbd> navigate
-          </span>
-        </div>
       </div>
     </div>
   );

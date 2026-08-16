@@ -46,9 +46,20 @@ Copy `_TEMPLATE.md`. Run `/design-decisions` to log one.
 | [0001](./0001-two-stacks-equal-billing.md) | Context engineering for code *and* design, at equal billing | 2026-08-16 | Accepted | The tight single-thesis pitch; a clean design-first relaunch later | 0 |
 | [0002](./0002-a-three-family-type-system-for-the-site.md) | A three-family type system: Newsreader, Archivo, IBM Plex Mono | 2026-07-19 *(approx.)* | Accepted | *(none identified — never articulated)* | 1 |
 | [0003](./0003-the-site-follows-the-system-colour-scheme.md) | The site follows the system colour scheme, re-lit rather than inverted | 2026-08-16 | Accepted | The paper metaphor; two palettes to keep honest; deck-divergent accents | 0 |
-| [0004](./0004-a-command-palette-with-actions-not-a-search-box.md) | A command palette with actions, not a search box | 2026-08-16 | Accepted | A convention people must know; desktop-only actions; ~20KB JS; a second way to reach everything | 1 |
+| [0004](./0004-a-command-palette-with-actions-not-a-search-box.md) | A command palette with actions, not a search box | 2026-08-16 | Superseded by [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | A convention people must know; desktop-only actions; ~20KB JS; a second way to reach everything | 2 |
+| [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | The palette searches skills and copies one thing | 2026-08-16 | Accepted | Discovery of tiers and records; a reason to open it when not installing | 1 |
 
-*No supersessions yet — the graph is omitted rather than rendered empty. 4 decisions stand.*
+### Supersession
+
+```mermaid
+graph LR
+  0004["0004 · Palette with actions"]:::superseded
+  0005["0005 · Skills only, one action"]
+  0004 -.->|superseded by| 0005
+  classDef superseded fill:#f4f4f5,stroke:#a1a1aa,color:#71717a,stroke-dasharray:3 3;
+```
+
+*Only superseded and superseding decisions appear in the graph. 4 decisions stand unsuperseded — see the table.*
 
 **One of these two has no recorded rationale.** [0002](./0002-a-three-family-type-system-for-the-site.md) reads `*(reason not stated)*`: its alternatives were recovered from the exploration drafts, but why the winner won was never written down and nobody remembers. That is a legitimate and useful record — it tells the next reader they are changing something whose reasoning was never captured, which is not the same as changing something nobody thought about.
 <!-- END design-decisions-index -->
