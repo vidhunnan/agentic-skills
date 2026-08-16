@@ -1,28 +1,6 @@
+import { RECEIPTS } from "./lib/skills";
 import Reveal from "./Reveal";
 import styles from "./Proof.module.css";
-
-const RECEIPTS = [
-  {
-    path: "docs/decisions/",
-    desc: "ADRs explaining why this repo is shaped the way it is, each with the evidence it was drawn from.",
-    by: "decisions-logger",
-  },
-  {
-    path: "changelog/",
-    desc: "Every substantive commit documented, with the diff and the reason.",
-    by: "changelog-tracker",
-  },
-  {
-    path: "docs/MODEL-STRATEGY.md",
-    desc: "The model policy this repo actually follows.",
-    by: "model-strategy",
-  },
-  {
-    path: "handoff/",
-    desc: "The briefs that carried this work between Claude.ai and Claude Code.",
-    by: "handoff-generator",
-  },
-];
 
 export default function Proof() {
   return (
@@ -32,12 +10,17 @@ export default function Proof() {
         <h2 className={styles.title}>This repo runs on its own skills.</h2>
         <p className={styles.intro}>
           Everything below was written by the skills above, while building this
-          repo. Read the output before you trust it with yours.
+          repo. Read the output before you trust it with yours — including the
+          one record that says it doesn&rsquo;t know.
         </p>
 
         <ul className={styles.list}>
           {RECEIPTS.map((r) => (
-            <Reveal as="li" key={r.path} className={styles.row}>
+            <Reveal
+              as="li"
+              key={r.path}
+              className={`${styles.row} ${r.highlight ? styles.isHighlight : ""}`}
+            >
               <span className={styles.path}>{r.path}</span>
               <span className={styles.desc}>
                 {r.desc}

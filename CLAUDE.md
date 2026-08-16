@@ -75,6 +75,8 @@ Project docs are tiered by the question they answer. Before writing a doc, route
 | What actually shipped? | Changelog | `changelog/` | TRUTH — generated from git |
 
 **Done vs. explored:** `changelog/` is what shipped; everything under `docs/` is what we *thought*. Never cite a concept or a PRD as evidence something exists — check the changelog or the code. Never hand-edit the changelog. Each folder's `README.md` states its tense and lifecycle. Run `/repo-setup check` to re-verify the stack.
+
+**One exemption:** `docs/concepts/website/` is **not** disposable. It is the explorations tier of the design context stack (see the Design context stack block below) and is **append-only** — the rejected landing-page directions in it are the asset. It is the only subfolder of `docs/concepts/` this applies to.
 <!-- END skill:repo-setup -->
 
 <!-- BEGIN skill:decisions-logger -->
@@ -86,13 +88,45 @@ Architectural and process decisions live in `docs/decisions/` as numbered ADRs (
 **Never invent a rationale.** If the reasoning isn't in a source, ask — and if nobody remembers, write `*(reason not stated)*`. A decision with an honest gap is worth more than one with a plausible fiction. Run `/decisions-logger` to mine the project for decisions not yet logged.
 <!-- END skill:decisions-logger -->
 
+<!-- BEGIN skill:design-setup -->
+### Design context stack
+Design work is tiered by the question it answers. Before writing a design doc, route it. Before trusting one, check its tier.
+
+| Question | Tier | Path | Status |
+|---|---|---|---|
+| What problem are we solving? | Briefs | `design/briefs/` | proposal — the design PRD |
+| What did we learn? | Research | `design/research/` | evidence — observation ≠ interpretation |
+| What did we try? | Explorations | `docs/concepts/website/` | history — includes what was killed |
+| Why did we choose this? | Decisions | `design/decisions/` | truth — past tense, append-only |
+| What is it, exactly? | Specs | `design/specs/` | spec — pinned to a source version |
+| What's reusable? | System | `design/system/` | truth — the system of record |
+| What actually shipped? | Changelog | `changelog/` | TRUTH — generated from git |
+
+**A Figma file is not the record.** It shows what won; it never shows what was tried, what was given up, or why. Never cite a brief as evidence something exists — check the changelog or the built product. **A killed direction is never deleted from the explorations tier** — that record is the point of it.
+
+**Note the explorations path.** It is adopted, not canonical: the design drafts already lived in `docs/concepts/website/`, and this stack is additive-only, so it never moved them. That subfolder is exempt from the concepts tier's disposable lifecycle — see the exemption in the Context stack block above. Run `/design-setup check` to re-verify the stack.
+<!-- END skill:design-setup -->
+
+<!-- BEGIN skill:design-decisions -->
+### Design decision log
+Design forks live in `design/decisions/` as numbered ADRs (`NNNN-slug.md`), **separate from the architectural log** in `docs/decisions/`. The tier is **truth**: past tense, **append-only**. The only edit ever permitted to a logged ADR is its `**Status:**` line; everything else is superseded or appended under `## Follow-up`.
+
+Every design ADR records **what we gave up** and **what would make us revisit** — a design choice is a trade, and the traded-away half is what decays into "that's just how it is."
+
+**Offer to log at the fork, not later.** Design reasoning is not recoverable: there is no diff, no commit, no blame line. When a direction is chosen over a named alternative, offer once — specifically — and take no for an answer. **Never invent a rationale.** If nobody remembers why, write `*(reason not stated)*`; an honest gap is worth more than a plausible fiction, and here there is nothing to check the fiction against. Run `/design-decisions` to log one.
+<!-- END skill:design-decisions -->
+
 ## Adding a new skill
+
+**Run `/skill-scaffold` — it does all seven steps below.** Do them by hand only if that skill is unavailable.
 
 1. Write `docs/prds/<name>.md` for anything non-trivial (problem, goals/non-goals, workflow, output template, per-surface trigger + output table).
 2. Create `skills/<name>/SKILL.md` with frontmatter whose `name` matches the folder and whose `description` lists the trigger phrases.
 3. Add `skills/<name>/.claude-plugin/plugin.json` (minimal: `name`, `description`, `version`, `author`) so the folder is installable as a plugin.
 4. Add the corresponding entry to the repo-root `.claude-plugin/marketplace.json`, with `source` pointing at `./skills/<name>`.
-5. Add a row to the right group in `README.md`'s Skills section (the tables are grouped by job — "Set up the repo" / "Keep the record" / "Working conventions" — not one flat list), and add its `/plugin install <name>` line to the Install block.
+5. Add a row to the right group in `README.md`'s Skills section (the tables are grouped by job — "Set up the repo" / "Keep the record" / "Working conventions" / "Design work" / "Build the skills themselves" — not one flat list), and add its `/plugin install <name>` line to the Install block.
+6. **Add the entry to `website/components/lib/skills.ts` (`SKILL_GROUPS`)** — it is the site's single source of truth, it is typed, and skipping it silently leaves the published site stale. This is the step that used to get missed.
+7. Verify: `python3 -m json.tool .claude-plugin/marketplace.json`, the new `plugin.json`, and `cd website && npm run build`.
 
 ## Distribution
 

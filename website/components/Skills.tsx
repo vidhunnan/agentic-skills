@@ -1,4 +1,4 @@
-import { SKILL_GROUPS } from "./lib/skills";
+import { SKILL_GROUPS, TOTAL_SKILLS } from "./lib/skills";
 import CopyButton from "./CopyButton";
 import Reveal from "./Reveal";
 import styles from "./Skills.module.css";
@@ -12,11 +12,13 @@ export default function Skills() {
   return (
     <section id="skills" className={styles.section}>
       <div className="wrap">
-        <p className="eyebrow">Install one, or all six</p>
+        <p className="eyebrow">Install one, or all {TOTAL_SKILLS}</p>
         <h2 className={styles.title}>The skills.</h2>
         <p className={styles.intro}>
-          Each is a separate plugin. Every fact each one writes is pulled from
-          your repo — git, CLAUDE.md, the files themselves — never invented.
+          Each is a separate plugin. <strong>None of them invents anything</strong>{" "}
+          — the code skills read it from your repo (git, CLAUDE.md, the files
+          themselves); the design skills ask you, and mark what you couldn&rsquo;t
+          answer rather than filling it in.
         </p>
 
         {SKILL_GROUPS.map((group) => (
@@ -27,13 +29,14 @@ export default function Skills() {
             </div>
 
             <ul className={styles.list}>
-              {group.skills.map((skill) => {
+              {group.skills.map((skill, i) => {
                 counter += 1;
                 return (
                   <Reveal
                     as="li"
                     key={skill.name}
                     className={styles.row}
+                    index={i}
                   >
                     <span className={styles.num}>{pad(counter)}</span>
                     <div className={styles.main}>
@@ -43,6 +46,9 @@ export default function Skills() {
                           {skill.surfaces.join(" · ")}
                         </span>
                       </div>
+                      {skill.answers ? (
+                        <p className={styles.answers}>{skill.answers}</p>
+                      ) : null}
                       <p className={styles.desc}>{skill.desc}</p>
                       <div className={styles.install}>
                         <code>{skill.install}</code>

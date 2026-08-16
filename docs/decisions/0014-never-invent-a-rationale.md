@@ -45,6 +45,7 @@ The hazard is not hypothetical. A survey of this repo found 22 decisions, of whi
 *Append-only. Everything above this heading is frozen.*
 
 - **2026-07-13** — Held, on its first real run. The backfill that produced this log classified four candidates as `NOT STATED` and routed them to the user rather than writing a rationale for any of them. Evidence: `docs/decisions/0000-not-logged.md`, and the `*(reason not stated)*` ADRs in this folder.
+- **2026-08-16** — **Scope widened; the decision did not change.** Extended from code to design work, where the backstop this decision assumed does not exist: an invented rationale for code can eventually be checked against a diff, but a plausible reason for a layout choice is uncheckable forever. [0021](./0021-design-skills-never-make-the-design-decision.md) restates the rule for the design territory and hardens it into a scope limit on what those skills may produce at all. Evidence: `docs/decisions/0021-design-skills-never-make-the-design-decision.md`, `skills/design-decisions/SKILL.md`.
 
 ---
 

@@ -34,6 +34,31 @@
       "name": "decisions-logger",
       "source": "./skills/decisions-logger",
       "description": "Mines a project for the decisions that were actually made and writes each as a numbered ADR with its evidence — asking when the \"why\" was never written down, and never inventing one."
+    },
+    {
+      "name": "skill-scaffold",
+      "source": "./skills/skill-scaffold",
+      "description": "Generates a new skill in this library's conventions — PRD, SKILL.md skeleton, plugin.json, marketplace entry, README row and website entry — from a short interview."
+    },
+    {
+      "name": "design-setup",
+      "source": "./skills/design-setup",
+      "description": "Scaffolds a project's design context stack — briefs, research, explorations, decisions, specs, system — and registers the routing table in CLAUDE.md."
+    },
+    {
+      "name": "design-brief",
+      "source": "./skills/design-brief",
+      "description": "Interviews you into a short, structured design brief — problem, who feels it, jobs to be done, constraints, success criteria and non-goals — and marks what wasn't stated rather than inventing it."
+    },
+    {
+      "name": "design-decisions",
+      "source": "./skills/design-decisions",
+      "description": "Records a design fork as a numbered, append-only ADR — options, what was chosen, what was given up, and what would make us revisit — and never invents a rationale."
+    },
+    {
+      "name": "exploration-log",
+      "source": "./skills/exploration-log",
+      "description": "Records a round of design iteration — what it tested, what changed, what was learned, and whether it was kept, killed or parked — append-only, and answers \"have we tried this before?\" from the log."
     }
   ]
 }

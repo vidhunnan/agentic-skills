@@ -2,7 +2,7 @@
   "name": "agentic-skills-website",
   "version": "0.1.0",
   "private": true,
-  "description": "Landing page for the agentic-skills repo — a Swiss-whitepaper site for the six context-writing skills.",
+  "description": "Landing page for the agentic-skills repo — a Swiss-whitepaper site for the context-writing skills, code and design.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -1,0 +1,8 @@
+{
+  "name": "skill-scaffold",
+  "description": "Generates a new skill in this library's conventions — PRD, SKILL.md skeleton, plugin.json, marketplace entry, README row and website entry — from a short interview.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

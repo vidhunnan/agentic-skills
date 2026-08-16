@@ -1,4 +1,8 @@
-import { MARKETPLACE_CMD, ALL_INSTALL_LINES } from "./lib/skills";
+import {
+  MARKETPLACE_CMD,
+  ALL_INSTALL_LINES,
+  TOTAL_SKILLS_WORD,
+} from "./lib/skills";
 import CopyButton from "./CopyButton";
 import styles from "./Install.module.css";
 
@@ -10,7 +14,7 @@ export default function Install() {
         <h2 className={styles.title}>Install.</h2>
         <p className={styles.intro}>
           Add the marketplace once. Then install the skills you want — each is a
-          separate plugin, so take one or take all six.
+          separate plugin, so take one or take all {TOTAL_SKILLS_WORD}.
         </p>
 
         <div className={styles.block}>
