@@ -164,6 +164,32 @@ export function spellCount(n: number): string {
 export const TOTAL_SKILLS_WORD = spellCount(TOTAL_SKILLS);
 
 /**
+ * The hero specimen — a verbatim fragment of a real ADR in this repo.
+ *
+ * Not illustrative copy. Every line below is quoted from
+ * design/decisions/0002-a-three-family-type-system-for-the-site.md, which
+ * records a real fork (the site's typefaces) whose reasoning nobody ever
+ * wrote down. It is the fastest way to show what these skills produce *and*
+ * that they decline to invent — which is the one behaviour that distinguishes
+ * them. If that ADR is ever superseded, re-quote it or drop the specimen;
+ * do not paraphrase it.
+ */
+export const SPECIMEN = {
+  source: "design/decisions/0002",
+  href: `${REPO_URL}/blob/prod-stable/design/decisions/0002-a-three-family-type-system-for-the-site.md`,
+  lines: [
+    { text: "## What we gave up", kind: "heading" as const },
+    { text: "*(none identified)*", kind: "gap" as const },
+    { text: "— the trade was never articulated.", kind: "body" as const },
+    { text: "**Rationale:**", kind: "heading" as const },
+    { text: "*(reason not stated)*", kind: "gap" as const },
+    { text: "— no reason was ever recorded.", kind: "body" as const },
+  ],
+  caption:
+    "A real decision in this repo. Nobody remembered why — so it says so, instead of inventing a reason.",
+};
+
+/**
  * Artifacts in this repo written by the skills themselves — the Proof section.
  * Lives here rather than in the component so all site content has one source
  * (ADR 0016); it was the last hardcoded content outside it.
