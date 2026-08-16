@@ -1,6 +1,6 @@
 ---
 name: skill-scaffold
-description: Generates a new skill in this library's conventions — the PRD, the SKILL.md skeleton, plugin.json, the marketplace entry, the README row and install line, and the website's SKILL_GROUPS entry — from a short interview. Interviews for the real trigger phrases rather than inventing them, and writes nothing until you confirm the full file plan. Use when the user says "add a new skill", "scaffold a skill", "create a skill", "new skill called X", "set up the boilerplate for a skill", or runs /skill-scaffold. Claude Code primary; on Claude.ai it emits the files as downloadable artifacts plus the registry snippets to paste.
+description: Registers a new skill across all seven touchpoints of the agentic-skills library — the PRD, the SKILL.md skeleton, plugin.json, the marketplace entry, the README row and install line, and the website's SKILL_GROUPS entry — from a short interview. Interviews for the real trigger phrases rather than inventing them, and writes nothing until you confirm the full file plan. Use when the user says "add a skill to this library", "scaffold a skill", "wire up a new skill", "new skill called X", "set up the boilerplate for a skill", or runs /skill-scaffold. This is the plumbing for *this repo's* conventions — for authoring or improving a skill's content in general, or for skills outside this library, use skill-creator instead. Claude Code primary; on Claude.ai it emits the files as downloadable artifacts plus the registry snippets to paste.
 argument-hint: "[<skill-name>]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 disable-model-invocation: false
@@ -75,7 +75,9 @@ Do not scaffold from memory. Read, every run:
 
 - **Two existing `SKILL.md` files** — one that registers a CLAUDE.md protocol block
   (`skills/decisions-logger/SKILL.md`) and one that doesn't
-  (`skills/branch-naming/SKILL.md`). These are the shape.
+  (`skills/design-brief/SKILL.md`). These are the shape. *(Most skills here do
+  register a block — `branch-naming` and `model-strategy` included. Only
+  `design-brief`, `exploration-log` and this skill don't.)*
 - `docs/prds/_TEMPLATE.md` — including the house quirk: `## Non-goals (v1)` is
   deliberately unnumbered, sitting between `## 2. Goals` and `## 3. Primary user`.
 - `.claude-plugin/marketplace.json` — for entry shape and ordering.
@@ -88,9 +90,22 @@ the six skills already here.
 
 ### Step 2 — Interview
 
-Cap at **two rounds**. Use `AskUserQuestion` on Claude Code, plain text on
-Claude.ai, and **wait for answers**. If the user passed a name as an argument, use
-it and don't ask again.
+**First, read the room.** The fastest interview is the one that skips what is
+already settled. Before asking anything, harvest answers from:
+
+- **the current conversation** — if the user has been describing the skill for ten
+  turns, you already have its purpose, its group and its output shape;
+- **an approved plan or a concept doc** naming this skill — treat what it fixed as
+  answered;
+- **the argument**, if a name was passed.
+
+Then **confirm the harvested answers in one pass rather than re-asking them**, and
+interview only for what's genuinely open. A skill built as part of a larger piece
+of work usually has one real unknown — the trigger phrases — and re-asking the other
+seven wastes the user's patience on the run where they have least of it.
+
+Cap the remaining questions at **two rounds**. Use `AskUserQuestion` on Claude Code,
+plain text on Claude.ai, and **wait for answers**.
 
 **Round 1 — identity and placement:**
 
@@ -115,6 +130,13 @@ it and don't ask again.
    registers a CLAUDE.md protocol block and the skeleton gains that Step. If the
    user is unsure, the test is: *would a future session need to know this rule
    without being told?*
+
+   **Then check whether a sibling already states it.** Read the existing
+   `<!-- BEGIN skill:* -->` blocks in this repo's CLAUDE.md. If one already carries
+   the rule, **do not add a second block** — say which block covers it and offer to
+   name the new skill inside that block instead. One block per skill, and one rule
+   in one place: two blocks asserting the same convention is exactly the drift the
+   marker convention exists to prevent, and the duplicate will rot first.
 7. **Argument modes** — e.g. `check`, `add <thing>`, free text. Optional; skip if
    none, and omit `argument-hint` entirely rather than emitting an empty one.
 8. **Tools** — propose a set from the answers and confirm. The house default is
@@ -131,16 +153,34 @@ Use when the user says "{phrase}", "{phrase}", "{phrase}", or runs /{name}.
 {Surface note}.
 ```
 
-Then **show it to the user verbatim** and say what it is: *"This is the text that
-decides whether the skill fires on its own. Does it match how you'd actually ask?"*
+**Overflow goes in `when_to_use`, not in `description`.** It is the documented
+field for extended trigger phrases, and the cap is on the two fields *combined*
+(~1,536 characters), so a long phrase list belongs there rather than bloating the
+lead. Keep `description` leading with the key use case; put the remaining phrases,
+and any "for X, use Y instead" pointer, in `when_to_use`.
 
-Two failure modes to check before showing it:
+**Three failure modes to check before showing it:**
 
 - **Too abstract to match** — "improves documentation quality" matches nothing.
   Trigger phrases must be lexically close to what a user types.
 - **So broad it fires constantly** — a description matching every mention of
   "design" or "docs" will hijack unrelated turns. If the phrases are that generic,
   say so and ask for narrower ones.
+- **Collides with a skill that already exists.** *The one that actually bites.*
+  Compare the proposed phrases against every installed skill — the siblings in this
+  repo **and** the first-party ones (`skill-creator`, `code-review`, `init`, …).
+  Two skills a single word apart will compete, and the more established one tends
+  to win. Check with `ListSkills` or `SearchSkills` where available; otherwise read
+  the `description` of every `skills/*/SKILL.md`.
+
+  **Fix a collision by scoping, never by broadening.** Add an explicit negative
+  clause naming the sibling and what this skill is *not* for — e.g. *"for this
+  library's conventions, not general skill authoring; use `skill-creator` for
+  that."* Widening your own phrasing to win the match just moves the collision.
+
+Then **show the assembled fields to the user verbatim** and say what they are:
+*"This is the text that decides whether the skill fires on its own. Does it match
+how you'd actually ask?"*
 
 ### Step 4 — Present the file plan and get one confirmation (the write gate)
 
@@ -170,10 +210,11 @@ relevant interview answer — don't force a cancel to fix one field) / **Cancel*
 **`skills/<name>/SKILL.md`** — frontmatter, then this skeleton. Section headings
 and a one-line statement of intent per Step. **No invented Step bodies.**
 
-```md
+````md
 ---
 name: {name}
-description: {assembled in Step 3}
+description: {assembled in Step 3 — leads with the key use case}
+when_to_use: {overflow trigger phrases + any "for X, use Y instead" pointer; omit if description covers it}
 argument-hint: "[{modes}]"          # omit the line entirely if there are none
 allowed-tools: {tools}
 disable-model-invocation: false
@@ -208,7 +249,7 @@ Using **Bash availability**:
 - {TODO: what happens when the input is empty}
 - {TODO: what happens when the user declines at the gate — print inline, write
   nothing. A legitimate outcome, not a failure.}
-```
+````
 
 When the skill produces an artifact, split delivery by surface as two steps
 (`Step N — Claude Code: write the file` / `Step N — Claude.ai: produce a
@@ -217,7 +258,7 @@ downloadable artifact`), matching `handoff-generator`.
 **Protocol-block Step** — scaffold it verbatim; only the block text is the
 author's:
 
-```md
+`````md
 1. Locate CLAUDE.md: `git rev-parse --show-toplevel` → `<root>/CLAUDE.md` (accept
    `.claude/CLAUDE.md`; prefer existing).
 2. **Exists** → Read; search for the literal `<!-- BEGIN skill:{name} -->`. Absent:
@@ -234,7 +275,12 @@ Canonical block:
 {1–5 lines. TODO — the rule a future session must follow.}
 <!-- END skill:{name} -->
 ```
-```
+`````
+
+**Fence depth matters.** This template nests a fenced block inside a fenced block.
+The outer fence must use *more* backticks than the inner one, or the inner opener
+silently terminates the outer block and everything after it renders as code. Use
+five backticks outside, three inside.
 
 **`skills/<name>/.claude-plugin/plugin.json`** — copy the `author` block from an
 existing one; `version` starts at `0.1.0`; `description` is the **one-line** form
@@ -269,6 +315,11 @@ be cited by a phase doc later.
    ```
    A **new group** gets an `### {Title}` heading and its one-line note above the
    table, placed in lifecycle order among the existing groups.
+
+   **The note is not optional, and it must match `skills.ts`.** `SkillGroup.note`
+   is a required field of the TypeScript type, so a group always has a note on the
+   site; if you omit it from the README the two sources silently disagree and the
+   README is the one that looks wrong. Write the same sentence in both places.
 
 3. **`README.md` — the Install block.** Add `/plugin install {name}` to the fenced
    list, in the same order as the tables.
