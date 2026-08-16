@@ -1,0 +1,8 @@
+{
+  "name": "design-brief",
+  "description": "Interviews you into a short, structured design brief — problem, who feels it, jobs to be done, constraints, success criteria and non-goals — and marks what wasn't stated rather than inventing it.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}
