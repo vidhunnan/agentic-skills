@@ -164,30 +164,163 @@ export function spellCount(n: number): string {
 export const TOTAL_SKILLS_WORD = spellCount(TOTAL_SKILLS);
 
 /**
- * The hero specimen — a verbatim fragment of a real ADR in this repo.
+ * The hero specimens — verbatim fragments of real files in this repo.
  *
- * Not illustrative copy. Every line below is quoted from
- * design/decisions/0002-a-three-family-type-system-for-the-site.md, which
- * records a real fork (the site's typefaces) whose reasoning nobody ever
- * wrote down. It is the fastest way to show what these skills produce *and*
- * that they decline to invent — which is the one behaviour that distinguishes
- * them. If that ADR is ever superseded, re-quote it or drop the specimen;
- * do not paraphrase it.
+ * Not illustrative copy. Every line below is quoted from a file committed
+ * here, by the skill named in `by`. Together they are the fastest way to show
+ * what these skills produce *and* that they decline to invent — which is the
+ * one behaviour that distinguishes them.
+ *
+ * THE RULE: quoted exactly, never paraphrased. Trimming at a sentence or
+ * markdown soft-wrap boundary is typesetting and is allowed; dropping words
+ * from the middle is not. If a source is superseded or rewritten, re-quote it
+ * or drop that specimen — a specimen that no longer matches its file is worse
+ * than no specimen, because the whole page rests on this being checkable.
+ * Every line here was verified with `grep -F` against its source.
+ *
+ * ORDER MATTERS: [0] ships in the static HTML and is the one a JS-off or
+ * reduced-motion visitor sees. It stays the ADR that says it doesn't know.
  */
-export const SPECIMEN = {
-  source: "design/decisions/0002",
-  href: `${REPO_URL}/blob/prod-stable/design/decisions/0002-a-three-family-type-system-for-the-site.md`,
-  lines: [
-    { text: "## What we gave up", kind: "heading" as const },
-    { text: "*(none identified)*", kind: "gap" as const },
-    { text: "— the trade was never articulated.", kind: "body" as const },
-    { text: "**Rationale:**", kind: "heading" as const },
-    { text: "*(reason not stated)*", kind: "gap" as const },
-    { text: "— no reason was ever recorded.", kind: "body" as const },
-  ],
-  caption:
-    "A real decision in this repo. Nobody remembered why — so it says so, instead of inventing a reason.",
-};
+export type SpecimenLineKind = "heading" | "gap" | "body" | "blank";
+
+export interface Specimen {
+  /** Display path, elided if long — the card head is narrow. */
+  source: string;
+  /** Deep link to the file on prod-stable. */
+  href: string;
+  /** The skill that wrote it. Shown in the card head, so it names a plugin. */
+  by: string;
+  lines: { text: string; kind: SpecimenLineKind }[];
+  caption: string;
+}
+
+const blob = (path: string) => `${REPO_URL}/blob/prod-stable/${path}`;
+
+/**
+ * `kind: "gap"` paints a line in --red, which in this palette means
+ * hypothesis, failure, the unrecorded reason — never decoration
+ * (design/system/palette.md). So it is reserved for a real honest gap:
+ * *(reason not stated)*, *(not stated)*, *(none identified)*. Three of the
+ * six specimens below have no red line at all. Making them uniform would
+ * destroy the signal that makes the first one mean anything.
+ */
+export const SPECIMENS: Specimen[] = [
+  {
+    source: "design/decisions/0002",
+    href: blob(
+      "design/decisions/0002-a-three-family-type-system-for-the-site.md",
+    ),
+    by: "design-decisions",
+    lines: [
+      { text: "## What we gave up", kind: "heading" },
+      { text: "*(none identified)*", kind: "gap" },
+      { text: "— the trade was never articulated.", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "**Rationale:**", kind: "heading" },
+      { text: "*(reason not stated)*", kind: "gap" },
+      { text: "— no reason was ever recorded.", kind: "body" },
+    ],
+    caption:
+      "A real decision in this repo. Nobody remembered why — so it says so, instead of inventing a reason.",
+  },
+  {
+    source: "docs/decisions/0000-not-logged",
+    href: blob("docs/decisions/0000-not-logged.md"),
+    by: "decisions-logger",
+    lines: [
+      { text: "## Below the bar", kind: "heading" },
+      { text: "**Fork Test.**", kind: "heading" },
+      { text: 'The loser would be "commit `.DS_Store`".', kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "**Policy, not instance.**", kind: "heading" },
+      {
+        text: "A record of *complying* with a rule is not a decision — the rule is.",
+        kind: "body",
+      },
+    ],
+    caption:
+      "A ledger of the decisions the log deliberately does not contain, and why — so a re-run never proposes them again.",
+  },
+  {
+    source: "design/briefs/positioning",
+    href: blob("design/briefs/positioning.md"),
+    by: "design-brief",
+    lines: [
+      { text: "## Anti-goals", kind: "heading" },
+      {
+        text: "*What would count as failure even if it tested well:*",
+        kind: "body",
+      },
+      { text: "- **Engineers bounce.**", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "## Constraints", kind: "heading" },
+      { text: "| Time | *(not stated)* |", kind: "gap" },
+    ],
+    caption:
+      "The brief for this page. It asks what failure looks like — and leaves the constraint nobody answered blank.",
+  },
+  {
+    source: "handoff/…-skills-library-as-a-system",
+    href: blob(
+      "handoff/handoff-code-to-chat-2026-07-13-skills-library-as-a-system.md",
+    ),
+    by: "handoff-generator",
+    lines: [
+      { text: "## Open Questions", kind: "heading" },
+      {
+        text: "- **The changelog protocol has a hole, and it will recur.**",
+        kind: "heading",
+      },
+      { text: "Fixing entry 007 does not fix the mechanism.", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "- **`docs/concepts/` is empty.**", kind: "heading" },
+      { text: "The tier exists with a README and template;", kind: "body" },
+      { text: "nothing has been filed in it.", kind: "body" },
+    ],
+    caption:
+      "The brief that carried this work between Claude.ai and Claude Code — including the hole it found in its own protocol.",
+  },
+  {
+    source: "changelog/commits/022-…",
+    href: blob(
+      "changelog/commits/022-run-design-brief-and-design-decisions-for-real.md",
+    ),
+    by: "changelog-tracker",
+    lines: [
+      { text: "design/decisions/0002 -- THE TEST.", kind: "heading" },
+      {
+        text: "ADR 0017 states the site's typefaces and never justifies them;",
+        kind: "body",
+      },
+      { text: "the owner did not remember why when asked.", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "No rationale was invented.", kind: "heading" },
+      { text: "Zero hits on the tripwire phrases;", kind: "body" },
+      { text: "every named loser traces to a file on disk.", kind: "body" },
+    ],
+    caption:
+      "Every substantive commit documented from git. This one records a deliberate test: would the skill invent a reason if it had none?",
+  },
+  {
+    source: "docs/concepts/website/type-system",
+    href: blob("docs/concepts/website/type-system.md"),
+    by: "exploration-log",
+    lines: [
+      { text: "### Verdict", kind: "heading" },
+      {
+        text: "**Killed** — superseded by round 3's three-family system.",
+        kind: "body",
+      },
+      { text: "*(reason not stated)*", kind: "gap" },
+      { text: "", kind: "blank" },
+      { text: "### Verdict", kind: "heading" },
+      { text: "**Kept** — shipped, and still live.", kind: "body" },
+      { text: "*(reason not stated)*", kind: "gap" },
+    ],
+    caption:
+      "The rounds that lost, kept on disk rather than deleted — the only reason the decision above could name its alternatives at all.",
+  },
+];
 
 /**
  * Artifacts in this repo written by the skills themselves — the Proof section.

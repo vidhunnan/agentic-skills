@@ -1,0 +1,203 @@
+/* ---- specimens -----------------------------------------------------------
+   Verbatim fragments of real files in this repo. Set as records, not as
+   quotes: the hairline frame and mono face say "this is a file", and the gaps
+   are redlined because --red means hypothesis and failure in this palette,
+   and an unrecorded reason is exactly that. See design/system/palette.md.
+
+   The card rotates. That is a deliberate exception to design/specs/motion.md
+   — see design/decisions/0006. */
+
+.wrap {
+  margin: 0 0 32px;
+  max-width: 520px;
+}
+
+/* All six specimens occupy one grid cell, so the card is permanently as tall
+   as the tallest and the CTAs below it never move. Reserving a min-height
+   instead would be a guess, and the captions differ enough that the guess
+   would be wrong. */
+.stack {
+  display: grid;
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+
+/* Before JS mounts, only the first specimen exists as far as CSS is
+   concerned. Without this, a JS-off visitor gets all six printed on top of
+   one another — the same class of bug that once blanked every reveal on a
+   fully static export. */
+.slide + .slide {
+  display: none;
+}
+.stack[data-ready] .slide {
+  display: block;
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  /* Out: short, so the outgoing card has cleared before the incoming one
+     settles. Delaying visibility keeps it in the box until then. */
+  transition:
+    opacity 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+    visibility 0s linear 0.22s;
+}
+.stack[data-ready] .isActive {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  /* In: the reveal's own duration and curve. No new easing in this system. */
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+    visibility 0s;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+.path {
+  color: var(--blue);
+}
+.tag {
+  color: var(--mute);
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* The container is `.lines`, not `.body`: the line kinds are looked up as
+   styles[kind], so a container named .body would shadow the "body" kind. */
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.heading {
+  color: var(--ink);
+  font-weight: 600;
+}
+/* The lines the specimens exist for. Never decorative — a line is only red
+   when the file really did record nothing there. */
+.gap {
+  color: var(--red);
+}
+.body {
+  color: var(--ink-soft);
+}
+/* The stanza break, as data rather than as an :nth-child guess. The old rule
+   hardcoded the 4th child, which was true of exactly one card. */
+.blank {
+  height: 10px;
+}
+
+.caption {
+  margin: 0;
+  padding: 11px 14px 13px;
+  border-top: 1px solid var(--rule-soft);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.caption a {
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ---- controls ---------------------------------------------------------- */
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.dots {
+  display: flex;
+  gap: 2px;
+}
+/* The mark is 6px; the target is 24px. */
+.dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.dotMark {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mute);
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+.dot:hover .dotMark {
+  background: var(--ink-soft);
+}
+.dotOn .dotMark {
+  background: var(--ink);
+  transform: scale(1.34);
+}
+
+.pause {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mute);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  padding: 2px 0;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.pause:hover {
+  color: var(--ink);
+  border-bottom-color: var(--rule);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 720px) {
+  .lines {
+    font-size: 11.5px;
+  }
+  .head {
+    font-size: 10px;
+  }
+}
