@@ -48,6 +48,7 @@ Copy `_TEMPLATE.md`. Run `/design-decisions` to log one.
 | [0003](./0003-the-site-follows-the-system-colour-scheme.md) | The site follows the system colour scheme, re-lit rather than inverted | 2026-08-16 | Accepted | The paper metaphor; two palettes to keep honest; deck-divergent accents | 0 |
 | [0004](./0004-a-command-palette-with-actions-not-a-search-box.md) | A command palette with actions, not a search box | 2026-08-16 | Superseded by [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | A convention people must know; desktop-only actions; ~20KB JS; a second way to reach everything | 2 |
 | [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | The palette searches skills and copies one thing | 2026-08-16 | Accepted | Discovery of tiers and records; a reason to open it when not installing | 1 |
+| [0006](./0006-the-hero-specimen-rotates-through-six-skills.md) | The hero specimen rotates through six skills, on a timer | 2026-08-16 | Accepted | The motion spec's absolutism; the undivided single specimen; ~2KB JS; a permanently taller hero | 0 |
 
 ### Supersession
 
@@ -59,7 +60,7 @@ graph LR
   classDef superseded fill:#f4f4f5,stroke:#a1a1aa,color:#71717a,stroke-dasharray:3 3;
 ```
 
-*Only superseded and superseding decisions appear in the graph. 4 decisions stand unsuperseded — see the table.*
+*Only superseded and superseding decisions appear in the graph. 5 decisions stand unsuperseded — see the table.*
 
 **One of these two has no recorded rationale.** [0002](./0002-a-three-family-type-system-for-the-site.md) reads `*(reason not stated)*`: its alternatives were recovered from the exploration drafts, but why the winner won was never written down and nobody remembers. That is a legitimate and useful record — it tells the next reader they are changing something whose reasoning was never captured, which is not the same as changing something nobody thought about.
 <!-- END design-decisions-index -->

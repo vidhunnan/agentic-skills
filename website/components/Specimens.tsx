@@ -27,6 +27,17 @@ export default function Specimens() {
     [],
   );
 
+  /**
+   * Choosing a specimen also stops the rotation. Without this the timer takes
+   * the card away from the one person who actually asked for it — and the
+   * pause control would be the only way to hold something you just picked.
+   * Resuming is one press of the same control.
+   */
+  const pick = useCallback((n: number) => {
+    setI(n);
+    setStopped(true);
+  }, []);
+
   useEffect(() => setReady(true), []);
 
   // Reduced motion is a live setting, not a one-shot read: a visitor can turn
@@ -109,7 +120,7 @@ export default function Specimens() {
     e.preventDefault();
     // Selection follows focus, per the tabs pattern — the panel is already
     // rendered, so there is nothing to defer.
-    setI(next);
+    pick(next);
     tabs[next]?.focus();
   };
 
@@ -183,7 +194,7 @@ export default function Specimens() {
                 aria-controls={`specimen-${n}`}
                 tabIndex={n === i ? 0 : -1}
                 className={`${styles.dot} ${n === i ? styles.dotOn : ""}`}
-                onClick={() => setI(n)}
+                onClick={() => pick(n)}
               >
                 <span className={styles.dotMark} />
                 <span className={styles.srOnly}>{`${s.by} — ${s.source}`}</span>
