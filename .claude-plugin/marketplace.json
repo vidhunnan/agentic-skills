@@ -54,6 +54,11 @@
       "name": "design-decisions",
       "source": "./skills/design-decisions",
       "description": "Records a design fork as a numbered, append-only ADR — options, what was chosen, what was given up, and what would make us revisit — and never invents a rationale."
+    },
+    {
+      "name": "exploration-log",
+      "source": "./skills/exploration-log",
+      "description": "Records a round of design iteration — what it tested, what changed, what was learned, and whether it was kept, killed or parked — append-only, and answers \"have we tried this before?\" from the log."
     }
   ]
 }

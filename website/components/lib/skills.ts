@@ -110,6 +110,13 @@ export const SKILL_GROUPS: SkillGroup[] = [
         install: "/plugin install design-decisions",
         answers: "Why is it like this?",
       },
+      {
+        name: "exploration-log",
+        desc: "Did we already try that? — logs a round of iteration: what it tested, what changed, what you learned, and whether it was kept, killed or parked. Append-only, so the directions you abandoned are still readable a year later. Also answers the question back.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install exploration-log",
+        answers: "Did we already try that?",
+      },
     ],
   },
   {

@@ -1,0 +1,8 @@
+{
+  "name": "exploration-log",
+  "description": "Records a round of design iteration — what it tested, what changed, what was learned, and whether it was kept, killed or parked — append-only, and answers \"have we tried this before?\" from the log.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

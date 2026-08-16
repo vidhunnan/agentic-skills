@@ -4,7 +4,7 @@ An agent starts every session with no memory of the last one. It doesn't need a 
 
 These are the skills that write that briefing. They author the context files a project should have anyway: a changelog of what actually shipped, a decision log of why you chose what you chose, a handoff for where you left off. All of it is Markdown. None of it is code.
 
-**Ten skills, all live.** Install one, or all of them.
+**Eleven skills, all live.** Install one, or all of them.
 
 ## Skills
 
@@ -28,6 +28,8 @@ The three questions a teammate with amnesia will ask.
 
 ### Working conventions
 
+Two small habits, made to stick across sessions.
+
 | Skill | What it does | Surfaces | Status |
 |---|---|---|---|
 | **[`branch-naming`](skills/branch-naming/SKILL.md)**<br>`/plugin install branch-naming` | Suggests and creates a branch name that follows your project's convention — read from CLAUDE.md, or inferred from your existing branches. | Code | Live |
@@ -42,12 +44,15 @@ Code has `git log`. Design has nothing — a Figma file shows the winner and nev
 | **[`design-setup`](skills/design-setup/SKILL.md)**<br>`/plugin install design-setup` | Scaffolds the **design context stack** — briefs, research, explorations, decisions, specs, system. Same rules as `repo-setup`: adopts your existing folder names, never moves a thing. The `design/explorations/` tier is the one no design tool has: a durable record of the directions you killed, and why. | Code · Chat | Live |
 | **[`design-brief`](skills/design-brief/SKILL.md)**<br>`/plugin install design-brief` | *What are we actually solving?* — interviews you into a brief: problem, who feels it, jobs to be done, constraints, success criteria, non-goals. The stated intent everything downstream cites. Marks what you couldn't answer instead of inventing it. | Code · Chat | Live |
 | **[`design-decisions`](skills/design-decisions/SKILL.md)**<br>`/plugin install design-decisions` | *Why is it like this?* — records a design fork as an append-only ADR, including **what you gave up** and what would make you revisit. Where nobody remembers the reason, it writes `(reason not stated)` — in design there's no diff to catch a plausible fiction. | Code · Chat | Live |
+| **[`exploration-log`](skills/exploration-log/SKILL.md)**<br>`/plugin install exploration-log` | *Did we already try that?* — logs a round of iteration: what it tested, what changed, what you learned, and whether it was kept, **killed** or parked. Append-only, so the directions you abandoned are still readable a year later. Also answers the question back. | Code · Chat | Live |
 
 ### Build the skills themselves
 
+The library, building itself.
+
 | Skill | What it does | Surfaces | Status |
 |---|---|---|---|
-| **[`skill-scaffold`](skills/skill-scaffold/SKILL.md)**<br>`/plugin install skill-scaffold` | Generates a new skill in this library's conventions — all seven touchpoints, from the PRD to the website entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently. | Code · Chat | Live |
+| **[`skill-scaffold`](skills/skill-scaffold/SKILL.md)**<br>`/plugin install skill-scaffold` | Wires a new skill into this library — all seven touchpoints, from the PRD to the website entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently. For authoring skill *content* in general, use Anthropic's `skill-creator` instead. | Code · Chat | Live |
 
 Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and the thing to read before you change one. Where the library is going next is in [`docs/concepts/`](docs/concepts/) — a roadmap, and the case for [a context stack for design work](docs/concepts/design-context-stack.md).
 
@@ -71,10 +76,11 @@ Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and 
 /plugin install design-setup
 /plugin install design-brief
 /plugin install design-decisions
+/plugin install exploration-log
 /plugin install skill-scaffold
 ```
 
-Each skill is a separate plugin, so take one or take all ten. The command for a single skill sits next to its name in the tables above.
+Each skill is a separate plugin, so take one or take all eleven. The command for a single skill sits next to its name in the tables above.
 
 ### Other surfaces
 
