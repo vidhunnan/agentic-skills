@@ -6,8 +6,11 @@ export default function Hero() {
   return (
     <header className={styles.hero} id="top">
       <div className="wrap">
+        {/* One text node on purpose: .eyebrow is display:flex, so React's
+            split text nodes become separate anonymous flex items and the
+            leading space in " skills" is stripped — it renders "11skills". */}
         <p className="eyebrow">
-          {TOTAL_SKILLS} skills · code &amp; design · all live · MIT
+          {`${TOTAL_SKILLS} skills · code & design · all live · MIT`}
         </p>
         <h1 className={styles.title}>
           An agent starts every session with no memory of the last one.

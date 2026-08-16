@@ -51,17 +51,15 @@ export default function ContextStack({
           {tiers.map((tier, i) => (
             <Reveal
               as="li"
-              key={tier.folder}
+              key={`${tier.folder}-${i}`}
               className={styles.row}
-              style={{ transitionDelay: `${i * 40}ms` }}
+              index={i}
             >
               <span className={styles.num}>{pad(i + 1)}</span>
               <span className={styles.folder}>{tier.folder}</span>
               <span className={styles.q}>{tier.question}</span>
               <span
-                className={`${styles.trust} ${
-                  tier.trust === "Truth" ? styles.isTruth : ""
-                }`}
+                className={`${styles.trust} ${styles[`is${tier.trust}`] ?? ""}`}
               >
                 {tier.trust}
                 {tier.qualifier ? (

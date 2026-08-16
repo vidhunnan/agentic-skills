@@ -8,6 +8,7 @@ const LINKS = [
   { id: "stack", label: "System" },
   { id: "design", label: "Design" },
   { id: "skills", label: "Skills" },
+  { id: "proof", label: "Proof" },
   { id: "install", label: "Install" },
 ];
 

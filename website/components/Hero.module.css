@@ -82,7 +82,7 @@
   text-decoration: none;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 720px) {
   .hero {
     padding: 60px 0 48px;
   }

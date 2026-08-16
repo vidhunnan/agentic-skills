@@ -4,18 +4,29 @@
    ============================================================ */
 
 :root {
-  /* palette — from the talk deck's Field Report system */
+  color-scheme: light dark;
+
+  /* palette — from the talk deck's Field Report system.
+     Every value below clears WCAG AA (4.5:1) against --paper. Two did not:
+     --mute was #8b8b7e (3.08:1) on ~10 small-text elements including every
+     nav link, and --red was #d0361b (4.43:1). Both were darkened; the
+     visual character is unchanged. See design/system/palette.md. */
   --paper: #f3f2ed;
   --paper-2: #ecebe4;
-  --ink: #16160f;
-  --ink-soft: #4e4e45;
-  --mute: #8b8b7e;
-  --blue: #2743c8; /* drafting cobalt — structure, truth, links */
-  --red: #d0361b; /* redline — hypothesis, failure */
+  --ink: #16160f; /* 16.21:1 */
+  --ink-soft: #4e4e45; /* 7.49:1 */
+  --mute: #6b6b60; /* 4.81:1 — was #8b8b7e, 3.08:1 */
+  --blue: #2743c8; /* 6.88:1 — drafting cobalt: structure, truth, links */
+  --red: #bf3018; /* 5.13:1 — redline: hypothesis, failure. was #d0361b */
 
   /* one hairline system */
   --rule: rgba(22, 22, 15, 0.22);
   --rule-soft: rgba(22, 22, 15, 0.12);
+
+  /* nav scrim — derived, not a literal. Nav.module.css hardcoded --paper as
+     rgba twice, so the nav desynced from any palette change. */
+  --scrim: rgba(243, 242, 237, 0.72);
+  --scrim-solid: rgba(243, 242, 237, 0.95);
 
   /* type — set by next/font, referenced here */
   --serif: var(--font-newsreader), Georgia, serif;
@@ -24,6 +35,34 @@
 
   --maxw: 960px;
   --pad: 28px;
+
+  /* one breakpoint, named. There were two (720/640) with no shared token, so
+     the layout shifted twice for no design reason. */
+  --bp: 720px;
+}
+
+/* ---- dark ----------------------------------------------------------------
+   Not an inversion. The paper stays the ground and the ink stays the figure;
+   the light source moves. Cobalt and redline are lifted, because both lose
+   contrast fast on a dark ground. Logged as a design decision — see
+   design/decisions/0003 — because a second palette is a design choice, not a
+   media query. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #14140f;
+    --paper-2: #1c1c16;
+    --ink: #edece4; /* 15.29:1 */
+    --ink-soft: #b3b2a6; /* 8.44:1 */
+    --mute: #85857a; /* 4.53:1 */
+    --blue: #8fa2ff; /* 7.72:1 — lifted; #2743c8 is 1.9:1 here */
+    --red: #ff8a6d; /* 7.53:1 — lifted; #bf3018 is 2.9:1 here */
+
+    --rule: rgba(237, 236, 228, 0.26);
+    --rule-soft: rgba(237, 236, 228, 0.14);
+
+    --scrim: rgba(20, 20, 15, 0.72);
+    --scrim-solid: rgba(20, 20, 15, 0.95);
+  }
 }
 
 *,
@@ -113,24 +152,44 @@ h3 {
   color: var(--red);
 }
 
-/* reveal-on-scroll (JS toggles .is-in) */
+/* ---------- reveal-on-scroll ----------------------------------------------
+   Content is visible by default and only hidden once JS has proved it can
+   show it again. Previously `.reveal { opacity: 0 }` shipped in the static
+   HTML and was cleared only by client JS, so with JS off every stack tier
+   and all eleven skill rows rendered blank — on an otherwise fully static
+   export. The `js-reveal` class is set on <html> by Reveal.tsx on mount.
+
+   Stagger is driven by --reveal-i (row index), set inline. See
+   design/specs/motion.md. */
 .reveal {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: calc(var(--reveal-i, 0) * 45ms);
 }
-.reveal.is-in {
-  opacity: 1;
-  transform: none;
+
+.js-reveal .reveal:not(.is-in) {
+  opacity: 0;
+  transform: translateY(8px);
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
+  /* Covers the reveal, every hover transition, and the nav progress bar —
+     previously only the reveal was neutralised. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js-reveal .reveal:not(.is-in) {
     opacity: 1;
     transform: none;
-    transition: none;
   }
 }

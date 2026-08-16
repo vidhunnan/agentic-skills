@@ -21,7 +21,7 @@ export default function Home() {
           tiers={DESIGN_STACK}
           intro={
             <>
-              Code has <span style={{ fontFamily: "var(--mono)" }}>git log</span>
+              Code has <code>git log</code>
               . Every decision leaves a commit, a diff, a blame line — a bad
               record, but a recoverable one. A Figma file is a snapshot of the
               winner: it never holds the problem, the directions that were
@@ -33,9 +33,7 @@ export default function Home() {
           rule={
             <>
               <strong>The tier with no equivalent:</strong>{" "}
-              <span style={{ fontFamily: "var(--mono)" }}>
-                design/explorations/
-              </span>{" "}
+              <code>docs/concepts/website/</code>{" "}
               — a durable record of the directions you killed, and why. No design
               tool stores it. It&rsquo;s the first thing anyone wants a year
               later, and the first thing that disappears.

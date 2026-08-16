@@ -29,13 +29,14 @@ export default function Skills() {
             </div>
 
             <ul className={styles.list}>
-              {group.skills.map((skill) => {
+              {group.skills.map((skill, i) => {
                 counter += 1;
                 return (
                   <Reveal
                     as="li"
                     key={skill.name}
                     className={styles.row}
+                    index={i}
                   >
                     <span className={styles.num}>{pad(counter)}</span>
                     <div className={styles.main}>
@@ -45,6 +46,9 @@ export default function Skills() {
                           {skill.surfaces.join(" · ")}
                         </span>
                       </div>
+                      {skill.answers ? (
+                        <p className={styles.answers}>{skill.answers}</p>
+                      ) : null}
                       <p className={styles.desc}>{skill.desc}</p>
                       <div className={styles.install}>
                         <code>{skill.install}</code>

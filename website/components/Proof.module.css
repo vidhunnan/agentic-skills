@@ -53,6 +53,36 @@
   color: var(--mute);
 }
 
+/*
+ * The one receipt that demonstrates the honest gap — a real ADR in this repo
+ * whose rationale reads "(reason not stated)". It is the library's strongest
+ * claim, so it gets a redline marker: --red is reserved for hypothesis and
+ * failure in this palette, and an unrecorded reason is exactly that.
+ */
+.isHighlight {
+  position: relative;
+  padding-left: 16px;
+}
+.isHighlight::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 20px;
+  bottom: 18px;
+  width: 2px;
+  background: var(--red);
+}
+.isHighlight .path {
+  color: var(--red);
+}
+
+@media (max-width: 720px) {
+  .isHighlight::before {
+    top: 16px;
+    bottom: 14px;
+  }
+}
+
 @media (max-width: 720px) {
   .section {
     padding: 60px 0;
