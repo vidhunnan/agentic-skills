@@ -110,6 +110,31 @@ This is what `repo-setup` builds, and it's the idea the whole library is organis
 
 Mix the two and you've handed a teammate contradictory instructions. A human pushes back. An agent just agrees — confidently, in both directions.
 
+## The design stack
+
+Same idea, harder problem. This is what `design-setup` builds.
+
+Code has `git log`. Every decision leaves a commit, a diff, a blame line — a bad record, but a recoverable one. **A Figma file is a snapshot of the winner.** It never holds the problem, the directions that were killed, why the survivor won, or which details were load-bearing decisions rather than leftovers. That reasoning lives in comment threads and one person's memory, and within months it's gone from both.
+
+| Question | Folder | How far to trust it |
+|---|---|---|
+| What problem are we solving? | [`design/briefs/`](design/briefs/README.md) | Proposal — the design PRD |
+| What did we learn? | [`design/research/`](design/research/README.md) | Evidence — observation kept separate from interpretation |
+| What did we try? | [`design/explorations/`](docs/concepts/website/README.md) | History — includes everything killed |
+| Why did we choose this? | [`design/decisions/`](design/decisions/README.md) | **Truth** — past tense, append-only |
+| What is it, exactly? | [`design/specs/`](design/specs/README.md) | Spec — pinned to a source version |
+| What's reusable? | [`design/system/`](design/system/README.md) | **Truth** — the system of record |
+| What actually shipped? | [`changelog/`](changelog/CHANGELOG.md) | **Truth** — generated from git |
+
+Two distinctions code doesn't need, and design collapses constantly:
+
+- **Evidence vs. interpretation.** *"7 of 9 users scrolled past the CTA"* is an observation. *"Users ignore the CTA"* is a claim about why. Collapse them and the claim hardens into folklore, cited a year later as fact.
+- **What was tried vs. what won.** Code deletes the rejected approach and git keeps it anyway. Design deletes it and it's simply gone.
+
+**`explorations/` is the one with no equivalent in any design tool** — a durable record of the directions you killed and why. It's the first thing anyone wants a year later, and the first thing that disappears. In this repo it's adopted at `docs/concepts/website/`, where the drafts already lived: the design stack is additive-only, so it never moved them.
+
+There is deliberately **no design changelog**. What shipped is `changelog/`, generated from git — a hand-written parallel would be hypothesis wearing the costume of truth.
+
 ## This repo runs on its own skills
 
 Everything above was used to build this repo, so you can read the output before you install anything:
@@ -118,6 +143,7 @@ Everything above was used to build this repo, so you can read the output before 
 - **[`changelog/`](changelog/CHANGELOG.md)** — every substantive commit documented, with the diff and the reason. Written by `changelog-tracker`.
 - **[`docs/MODEL-STRATEGY.md`](docs/MODEL-STRATEGY.md)** — the model policy this repo actually follows. Written by `model-strategy`.
 - **[`handoff/`](handoff/)** — the briefs that carried this work between Claude.ai and Claude Code. Written by `handoff-generator`.
+- **[`design/`](design/decisions/README.md)** — the design stack, scaffolded by `design-setup` on this repo. Its explorations tier is [`docs/concepts/website/`](docs/concepts/website/README.md), adopted where the landing-page drafts already lived rather than moved — including the **Blueprint direction that was killed**, still readable, which is the entire point of the tier.
 - **[`CLAUDE.md`](CLAUDE.md)** § Skill protocols — the live protocol blocks each skill registered, which is how the conventions survive a new session.
 
 ## Repo conventions

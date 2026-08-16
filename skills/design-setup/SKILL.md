@@ -155,10 +155,40 @@ trustworthy.
 the disk has `brand/` with the content, the repo is telling an agent two different
 things. Surface it loudly. Default: change nothing, report, recommend the fix.
 
+**2f. Nested adoption — and the trust-label conflict it creates.** A candidate may
+sit *inside* a folder another stack declares, without being that folder:
+`docs/concepts/website/` is not `docs/concepts/`, so the never-claim-a-declared-path
+rule does not strictly forbid adopting it.
+
+**But check the trust labels before you do.** The parent tier's status governs its
+contents, and the two can directly contradict — `docs/concepts/` is *"hypothesis,
+disposable"* and its README says *delete it or graduate it*, while explorations is
+**append-only** and a killed direction is never deleted. Adopt a subfolder of it and
+an agent reading both routing tables concludes the same files are simultaneously
+disposable and undeletable.
+
+So when a nested adoption is proposed:
+
+1. **Name the conflict out loud** before writing anything. Do not let it land latent.
+2. If the user wants the adoption anyway (a legitimate choice — it avoids moving
+   files, and this skill never moves files), resolve it **in both places**: the
+   adopted folder's own `README.md` carries an exemption notice, and one sentence is
+   added to the parent stack's block exempting that subfolder from its lifecycle.
+3. Editing another skill's block requires **explicit confirmation, never a default** —
+   show the exact diff and ask. This is the sanctioned exception in Step 10, and the
+   only one.
+4. If the user declines the exemption, do **not** adopt. An unreconciled contradiction
+   in the routing tables is worse than a tier that starts empty.
+
 ### Step 3 — Interview (ask only what the survey couldn't answer)
 
 Cap: **4 questions, ideally 0.** A greenfield repo should get none — the scope
 question below only fires when the stack is mostly missing.
+
+**If scope is the only triggered question, do not ask it here — fold it into the
+Step 4 gate as that gate's option set.** Otherwise a greenfield repo gets two
+`AskUserQuestion`s back to back about substantially the same thing: *which tiers?*
+then *proceed with these tiers?* One interaction, one decision.
 
 **Ask only if triggered:**
 
