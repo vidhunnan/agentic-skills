@@ -85,6 +85,46 @@ export const SKILL_GROUPS: SkillGroup[] = [
       },
     ],
   },
+  {
+    title: "Design work",
+    note: "Code has git log. Design has nothing — a Figma file shows the winner and never what was tried, or why.",
+    skills: [
+      {
+        name: "design-setup",
+        desc: "Scaffolds the design context stack — briefs, research, explorations, decisions, specs, system. Same rules as repo-setup: adopts your existing folder names, never moves a thing. The explorations tier is the one no design tool has: a durable record of the directions you killed, and why.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install design-setup",
+        answers: "Where does this design doc go?",
+      },
+      {
+        name: "design-brief",
+        desc: "What are we actually solving? — interviews you into a brief: problem, who feels it, jobs to be done, constraints, success criteria, non-goals. The stated intent everything downstream cites. Marks what you couldn't answer instead of inventing it.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install design-brief",
+        answers: "What are we actually solving?",
+      },
+      {
+        name: "design-decisions",
+        desc: "Why is it like this? — records a design fork as an append-only ADR, including what you gave up and what would make you revisit. Where nobody remembers the reason, it writes (reason not stated) — in design there's no diff to catch a plausible fiction.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install design-decisions",
+        answers: "Why is it like this?",
+      },
+    ],
+  },
+  {
+    title: "Build the skills themselves",
+    note: "The library, building itself.",
+    skills: [
+      {
+        name: "skill-scaffold",
+        desc: "Generates a new skill in this library's conventions — all seven touchpoints, from the PRD to this website's own entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install skill-scaffold",
+        answers: "How do I add another one?",
+      },
+    ],
+  },
 ];
 
 export const ALL_INSTALL_LINES = SKILL_GROUPS.flatMap((g) =>

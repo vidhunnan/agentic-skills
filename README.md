@@ -4,7 +4,7 @@ An agent starts every session with no memory of the last one. It doesn't need a 
 
 These are the skills that write that briefing. They author the context files a project should have anyway: a changelog of what actually shipped, a decision log of why you chose what you chose, a handoff for where you left off. All of it is Markdown. None of it is code.
 
-**Six skills, all live.** Install one, or all of them.
+**Ten skills, all live.** Install one, or all of them.
 
 ## Skills
 
@@ -33,7 +33,23 @@ The three questions a teammate with amnesia will ask.
 | **[`branch-naming`](skills/branch-naming/SKILL.md)**<br>`/plugin install branch-naming` | Suggests and creates a branch name that follows your project's convention — read from CLAUDE.md, or inferred from your existing branches. | Code | Live |
 | **[`model-strategy`](skills/model-strategy/SKILL.md)**<br>`/plugin install model-strategy` | Builds `docs/MODEL-STRATEGY.md` — which Claude model for which kind of work, tailored by interview, with a mandatory review rule. | Code | Live |
 
-Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and the thing to read before you change one.
+### Design work
+
+Code has `git log`. Design has nothing — a Figma file shows the winner and never what was tried, what was given up, or why. These write the record design doesn't leave behind.
+
+| Skill | What it does | Surfaces | Status |
+|---|---|---|---|
+| **[`design-setup`](skills/design-setup/SKILL.md)**<br>`/plugin install design-setup` | Scaffolds the **design context stack** — briefs, research, explorations, decisions, specs, system. Same rules as `repo-setup`: adopts your existing folder names, never moves a thing. The `design/explorations/` tier is the one no design tool has: a durable record of the directions you killed, and why. | Code · Chat | Live |
+| **[`design-brief`](skills/design-brief/SKILL.md)**<br>`/plugin install design-brief` | *What are we actually solving?* — interviews you into a brief: problem, who feels it, jobs to be done, constraints, success criteria, non-goals. The stated intent everything downstream cites. Marks what you couldn't answer instead of inventing it. | Code · Chat | Live |
+| **[`design-decisions`](skills/design-decisions/SKILL.md)**<br>`/plugin install design-decisions` | *Why is it like this?* — records a design fork as an append-only ADR, including **what you gave up** and what would make you revisit. Where nobody remembers the reason, it writes `(reason not stated)` — in design there's no diff to catch a plausible fiction. | Code · Chat | Live |
+
+### Build the skills themselves
+
+| Skill | What it does | Surfaces | Status |
+|---|---|---|---|
+| **[`skill-scaffold`](skills/skill-scaffold/SKILL.md)**<br>`/plugin install skill-scaffold` | Generates a new skill in this library's conventions — all seven touchpoints, from the PRD to the website entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently. | Code · Chat | Live |
+
+Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and the thing to read before you change one. Where the library is going next is in [`docs/concepts/`](docs/concepts/) — a roadmap, and the case for [a context stack for design work](docs/concepts/design-context-stack.md).
 
 ## Install
 
@@ -52,9 +68,13 @@ Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and 
 /plugin install handoff-generator
 /plugin install branch-naming
 /plugin install model-strategy
+/plugin install design-setup
+/plugin install design-brief
+/plugin install design-decisions
+/plugin install skill-scaffold
 ```
 
-Each skill is a separate plugin, so take one or take all six. The command for a single skill sits next to its name in the tables above.
+Each skill is a separate plugin, so take one or take all ten. The command for a single skill sits next to its name in the tables above.
 
 ### Other surfaces
 
@@ -88,7 +108,7 @@ Mix the two and you've handed a teammate contradictory instructions. A human pus
 
 Everything above was used to build this repo, so you can read the output before you install anything:
 
-- **[`docs/decisions/`](docs/decisions/README.md)** — 14 ADRs explaining why this repo is shaped the way it is, each with the evidence it was drawn from. Written by `decisions-logger`. It also records the [five decisions whose reasoning was never written down](docs/decisions/0000-not-logged.md) — the honest gaps, kept visible rather than filled in with a plausible guess.
+- **[`docs/decisions/`](docs/decisions/README.md)** — 21 ADRs explaining why this repo is shaped the way it is, each with the evidence it was drawn from. Written by `decisions-logger`. It also records the [five decisions whose reasoning was never written down](docs/decisions/0000-not-logged.md) — the honest gaps, kept visible rather than filled in with a plausible guess.
 - **[`changelog/`](changelog/CHANGELOG.md)** — every substantive commit documented, with the diff and the reason. Written by `changelog-tracker`.
 - **[`docs/MODEL-STRATEGY.md`](docs/MODEL-STRATEGY.md)** — the model policy this repo actually follows. Written by `model-strategy`.
 - **[`handoff/`](handoff/)** — the briefs that carried this work between Claude.ai and Claude Code. Written by `handoff-generator`.
