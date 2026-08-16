@@ -125,7 +125,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     skills: [
       {
         name: "skill-scaffold",
-        desc: "Generates a new skill in this library's conventions — all seven touchpoints, from the PRD to this website's own entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently.",
+        desc: "Wires a new skill into this library — all seven touchpoints, from the PRD to this website's own entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently. For authoring skill content in general, use Anthropic's skill-creator instead.",
         surfaces: ["Code", "Chat"],
         install: "/plugin install skill-scaffold",
         answers: "How do I add another one?",
@@ -137,6 +137,78 @@ export const SKILL_GROUPS: SkillGroup[] = [
 export const ALL_INSTALL_LINES = SKILL_GROUPS.flatMap((g) =>
   g.skills.map((s) => s.install),
 );
+
+/**
+ * Derived, never hardcoded. The site said "six skills" in six places long after
+ * there were eleven, because ADR 0016 made the skill *data* single-source and
+ * left the copy *about* it as string literals. Anything that states a count
+ * reads it from here.
+ */
+export const TOTAL_SKILLS = SKILL_GROUPS.reduce(
+  (n, g) => n + g.skills.length,
+  0,
+);
+
+const NUMBER_WORDS = [
+  "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
+  "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+  "sixteen", "seventeen", "eighteen", "nineteen", "twenty",
+];
+
+/** Spelled-out count for prose; falls back to digits past twenty. */
+export function spellCount(n: number): string {
+  return NUMBER_WORDS[n] ?? String(n);
+}
+
+/** e.g. "eleven" — for sentences. Use TOTAL_SKILLS where a numeral reads better. */
+export const TOTAL_SKILLS_WORD = spellCount(TOTAL_SKILLS);
+
+/**
+ * Artifacts in this repo written by the skills themselves — the Proof section.
+ * Lives here rather than in the component so all site content has one source
+ * (ADR 0016); it was the last hardcoded content outside it.
+ */
+export interface Receipt {
+  path: string;
+  desc: string;
+  by: string;
+  /** Set on the one receipt that demonstrates the honest-gap behaviour. */
+  highlight?: boolean;
+}
+
+export const RECEIPTS: Receipt[] = [
+  {
+    path: "design/decisions/0002-…",
+    desc: "A real design fork in this repo — which typefaces the site uses. Its two alternatives were recovered from killed drafts; why the winner won was never written down. So the rationale reads (reason not stated), rather than a plausible sentence about serifs.",
+    by: "design-decisions",
+    highlight: true,
+  },
+  {
+    path: "docs/concepts/website/",
+    desc: "Three landing-page directions, including the one that was killed. Kept, not deleted — which is the only reason the decision above could name its alternatives at all.",
+    by: "exploration-log",
+  },
+  {
+    path: "design/briefs/positioning.md",
+    desc: "The brief for this very page: the problem, the success criterion, and two anti-goals. Sections nobody could answer are marked, not filled in.",
+    by: "design-brief",
+  },
+  {
+    path: "docs/decisions/",
+    desc: "ADRs explaining why this repo is shaped the way it is, each with the evidence it was drawn from.",
+    by: "decisions-logger",
+  },
+  {
+    path: "changelog/",
+    desc: "Every substantive commit documented, with the diff and the reason.",
+    by: "changelog-tracker",
+  },
+  {
+    path: "handoff/",
+    desc: "The briefs that carried this work between Claude.ai and Claude Code.",
+    by: "handoff-generator",
+  },
+];
 
 // The context stack — the five tiers from CLAUDE.md's routing table.
 export type Trust =
@@ -205,7 +277,10 @@ export const DESIGN_STACK: Tier[] = [
     qualifier: "observation ≠ interpretation",
   },
   {
-    folder: "design/explorations/",
+    // Adopted, not canonical: the drafts already lived here and the design
+    // stack is additive-only, so it never moved them. Must match the
+    // Explorations row of CLAUDE.md's skill:design-setup routing table.
+    folder: "docs/concepts/website/",
     question: "What did we try?",
     trust: "History",
     qualifier: "includes what was killed",

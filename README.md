@@ -120,7 +120,7 @@ Code has `git log`. Every decision leaves a commit, a diff, a blame line — a b
 |---|---|---|
 | What problem are we solving? | [`design/briefs/`](design/briefs/README.md) | Proposal — the design PRD |
 | What did we learn? | [`design/research/`](design/research/README.md) | Evidence — observation kept separate from interpretation |
-| What did we try? | [`design/explorations/`](docs/concepts/website/README.md) | History — includes everything killed |
+| What did we try? | [`docs/concepts/website/`](docs/concepts/website/README.md) *(adopted)* | History — includes everything killed |
 | Why did we choose this? | [`design/decisions/`](design/decisions/README.md) | **Truth** — past tense, append-only |
 | What is it, exactly? | [`design/specs/`](design/specs/README.md) | Spec — pinned to a source version |
 | What's reusable? | [`design/system/`](design/system/README.md) | **Truth** — the system of record |
