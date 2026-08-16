@@ -45,8 +45,9 @@ Copy `_TEMPLATE.md`. Run `/design-decisions` to log one.
 |---|---|---|---|---|---|
 | [0001](./0001-two-stacks-equal-billing.md) | Context engineering for code *and* design, at equal billing | 2026-08-16 | Accepted | The tight single-thesis pitch; a clean design-first relaunch later | 0 |
 | [0002](./0002-a-three-family-type-system-for-the-site.md) | A three-family type system: Newsreader, Archivo, IBM Plex Mono | 2026-07-19 *(approx.)* | Accepted | *(none identified — never articulated)* | 1 |
+| [0003](./0003-the-site-follows-the-system-colour-scheme.md) | The site follows the system colour scheme, re-lit rather than inverted | 2026-08-16 | Accepted | The paper metaphor; two palettes to keep honest; deck-divergent accents | 0 |
 
-*No supersessions yet — the graph is omitted rather than rendered empty. 2 decisions stand.*
+*No supersessions yet — the graph is omitted rather than rendered empty. 3 decisions stand.*
 
 **One of these two has no recorded rationale.** [0002](./0002-a-three-family-type-system-for-the-site.md) reads `*(reason not stated)*`: its alternatives were recovered from the exploration drafts, but why the winner won was never written down and nobody remembers. That is a legitimate and useful record — it tells the next reader they are changing something whose reasoning was never captured, which is not the same as changing something nobody thought about.
 <!-- END design-decisions-index -->
