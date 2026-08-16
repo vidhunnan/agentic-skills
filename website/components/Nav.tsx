@@ -6,6 +6,7 @@ import styles from "./Nav.module.css";
 
 const LINKS = [
   { id: "stack", label: "System" },
+  { id: "design", label: "Design" },
   { id: "skills", label: "Skills" },
   { id: "install", label: "Install" },
 ];

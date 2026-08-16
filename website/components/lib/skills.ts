@@ -139,7 +139,14 @@ export const ALL_INSTALL_LINES = SKILL_GROUPS.flatMap((g) =>
 );
 
 // The context stack — the five tiers from CLAUDE.md's routing table.
-export type Trust = "Hypothesis" | "Proposal" | "Truth" | "Snapshot";
+export type Trust =
+  | "Hypothesis"
+  | "Proposal"
+  | "Truth"
+  | "Snapshot"
+  | "Evidence"
+  | "History"
+  | "Spec";
 
 export interface Tier {
   folder: string;
@@ -173,6 +180,53 @@ export const CONTEXT_STACK: Tier[] = [
     question: "Where did we leave off?",
     trust: "Snapshot",
     qualifier: "the latest one wins",
+  },
+  {
+    folder: "changelog/",
+    question: "What actually shipped?",
+    trust: "Truth",
+    qualifier: "generated from git",
+  },
+];
+
+// The design stack — the seven tiers from CLAUDE.md's design routing table.
+// Code has git log; design has nothing. These are the tiers that fix that.
+export const DESIGN_STACK: Tier[] = [
+  {
+    folder: "design/briefs/",
+    question: "What problem are we solving?",
+    trust: "Proposal",
+    qualifier: "the design PRD",
+  },
+  {
+    folder: "design/research/",
+    question: "What did we learn?",
+    trust: "Evidence",
+    qualifier: "observation ≠ interpretation",
+  },
+  {
+    folder: "design/explorations/",
+    question: "What did we try?",
+    trust: "History",
+    qualifier: "includes what was killed",
+  },
+  {
+    folder: "design/decisions/",
+    question: "Why did we choose this?",
+    trust: "Truth",
+    qualifier: "past tense, append-only",
+  },
+  {
+    folder: "design/specs/",
+    question: "What is it, exactly?",
+    trust: "Spec",
+    qualifier: "pinned to a source version",
+  },
+  {
+    folder: "design/system/",
+    question: "What's reusable?",
+    trust: "Truth",
+    qualifier: "the system of record",
   },
   {
     folder: "changelog/",
