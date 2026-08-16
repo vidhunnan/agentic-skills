@@ -23,6 +23,8 @@ below, which runs once per element.
 | Hover / state | `0.15s ease` | links, buttons |
 | Nav scrim | `0.25s ease` | background + border on scroll |
 | Scroll progress | `0.05s linear` | near-instant; it tracks a value, it doesn't animate |
+| Palette backdrop | `0.14s ease-out` | fade only |
+| Palette dialog | `0.16s` same ease-out curve | 6px lift; short enough not to delay typing |
 
 ## States
 
@@ -32,6 +34,11 @@ below, which runs once per element.
 | Pointer over a link | `color` | 0.15s | — | interactive |
 | Page scrolled > 4px | nav `background`, `border-color` | 0.25s | — | the nav has detached from the page |
 | Scroll position changes | progress bar `width` | 0.05s | — | position in the document |
+| Command palette opens | backdrop `opacity`, dialog `opacity` + `translateY` | 0.14s / 0.16s | — | a layer above the page, not a new page |
+
+**The palette has no exit animation.** Closing is instant: it unmounts. An exit
+transition on a keyboard-driven surface makes `esc` feel unresponsive, and the
+palette is opened and dismissed far more often than any other element here.
 
 ## Interaction
 

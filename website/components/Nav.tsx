@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { REPO_URL } from "./lib/skills";
+import { OPEN_EVENT } from "./CommandPalette";
 import styles from "./Nav.module.css";
 
 const LINKS = [
@@ -16,7 +17,14 @@ export default function Nav() {
   const [progress, setProgress] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState<string>("");
+  // Rendered after mount only — navigator.platform on the server would be a
+  // hydration mismatch, and the shortcut hint is decorative anyway.
+  const [modKey, setModKey] = useState<string | null>(null);
   const ticking = useRef(false);
+
+  useEffect(() => {
+    setModKey(/Mac|iPhone|iPad/.test(navigator.platform ?? "") ? "⌘" : "Ctrl");
+  }, []);
 
   useEffect(() => {
     function update() {
@@ -68,14 +76,33 @@ export default function Nav() {
               </a>
             ))}
           </div>
-          <a
-            className={styles.github}
-            href={REPO_URL}
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub ↗
-          </a>
+          <div className={styles.tail}>
+            {/* Rendered only after mount. The palette is JS-only, so shipping
+                this button in the static HTML would put a dead control on the
+                page for anyone without it. */}
+            {modKey ? (
+              <button
+                type="button"
+                className={styles.search}
+                onClick={() => window.dispatchEvent(new CustomEvent(OPEN_EVENT))}
+                aria-label="Search skills, tiers and sections"
+                aria-keyshortcuts="Meta+K Control+K"
+              >
+                <span aria-hidden="true">Search</span>
+                <kbd className={styles.kbd} aria-hidden="true">
+                  {modKey}K
+                </kbd>
+              </button>
+            ) : null}
+            <a
+              className={styles.github}
+              href={REPO_URL}
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub ↗
+            </a>
+          </div>
         </div>
       </nav>
     </>

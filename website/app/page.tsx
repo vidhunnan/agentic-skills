@@ -1,4 +1,5 @@
 import Nav from "@/components/Nav";
+import CommandPalette from "@/components/CommandPalette";
 import Hero from "@/components/Hero";
 import ContextStack from "@/components/ContextStack";
 import { DESIGN_STACK } from "@/components/lib/skills";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <>
       <Nav />
+      <CommandPalette />
       <main>
         <Hero />
         <ContextStack />

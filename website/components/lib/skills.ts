@@ -236,6 +236,182 @@ export const RECEIPTS: Receipt[] = [
   },
 ];
 
+/* ===========================================================================
+   Command palette index
+   ---------------------------------------------------------------------------
+   Derived from the constants above — never a second copy of the content. Add
+   a skill or a tier and it appears in the palette with no further work, which
+   is the same rule that stopped the site's copy going stale (see TOTAL_SKILLS).
+   =========================================================================== */
+
+export type CommandKind = "skill" | "tier" | "section" | "record";
+
+export interface CommandItem {
+  id: string;
+  kind: CommandKind;
+  /** Primary line — what the user is looking for. */
+  label: string;
+  /** Secondary line. */
+  detail: string;
+  /** Right-hand group label. */
+  group: string;
+  /** Extra text matched against but not displayed. */
+  keywords: string;
+  /** Enter — in-page anchor or URL. */
+  href: string;
+  /** Cmd/Ctrl+Enter — clipboard payload. */
+  copy?: string;
+  /** Shift+Enter — opens on GitHub. */
+  external?: string;
+}
+
+const BLOB = `${REPO_URL}/blob/prod-stable`;
+
+export const SECTIONS: { id: string; label: string; detail: string }[] = [
+  { id: "top", label: "Top", detail: "Back to the start" },
+  { id: "stack", label: "The context stack", detail: "Five tiers, one rule" },
+  { id: "design", label: "The design stack", detail: "Same idea, harder problem" },
+  { id: "skills", label: "The skills", detail: "All of them, by group" },
+  { id: "proof", label: "Proof", detail: "This repo runs on its own skills" },
+  { id: "install", label: "Install", detail: "Marketplace and plugins" },
+];
+
+export function buildCommandIndex(): CommandItem[] {
+  const items: CommandItem[] = [];
+
+  for (const group of SKILL_GROUPS) {
+    for (const s of group.skills) {
+      items.push({
+        id: `skill:${s.name}`,
+        kind: "skill",
+        label: s.name,
+        detail: s.answers ?? s.desc,
+        group: group.title,
+        // desc and surfaces are matched but not shown — searching "figma",
+        // "append-only" or "chat" should find the right skill.
+        keywords: `${s.desc} ${s.surfaces.join(" ")} ${group.title} ${group.note}`,
+        href: "#skills",
+        copy: s.install,
+        external: `${BLOB}/skills/${s.name}/SKILL.md`,
+      });
+    }
+  }
+
+  const tiers: [string, Tier[], string][] = [
+    ["Context stack", CONTEXT_STACK, "#stack"],
+    ["Design stack", DESIGN_STACK, "#design"],
+  ];
+  for (const [group, list, anchor] of tiers) {
+    for (const t of list) {
+      items.push({
+        id: `tier:${group}:${t.folder}`,
+        kind: "tier",
+        label: t.folder,
+        detail: t.question,
+        group,
+        keywords: `${t.trust} ${t.qualifier ?? ""} ${group}`,
+        href: anchor,
+        external: `${BLOB}/${t.folder}`,
+      });
+    }
+  }
+
+  for (const s of SECTIONS) {
+    items.push({
+      id: `section:${s.id}`,
+      kind: "section",
+      label: s.label,
+      detail: s.detail,
+      group: "Go to",
+      keywords: s.id,
+      href: `#${s.id}`,
+    });
+  }
+
+  for (const r of RECEIPTS) {
+    items.push({
+      id: `record:${r.path}`,
+      kind: "record",
+      label: r.path,
+      detail: r.desc,
+      group: "Written by a skill",
+      keywords: `${r.by} proof receipt`,
+      href: "#proof",
+      external: `${BLOB}/${r.path.replace(/…$/, "")}`,
+    });
+  }
+
+  return items;
+}
+
+/**
+ * Ranked match. Deliberately not a fuzzy-search dependency — the index is
+ * ~35 items, and the site ships with no runtime deps beyond React.
+ *
+ * Bands, highest first: exact label · label prefix · word-start in label ·
+ * substring in label · substring in detail · substring in keywords ·
+ * subsequence in label. Ties break on shorter labels, so "design-brief"
+ * outranks "design-decisions" for the query "design-b".
+ *
+ * Subsequence ranks **last** and is gated to short, single-word queries. It
+ * earns its place on "dsn" → design-setup, but ungated it ranked
+ * changelog-tracker above every Chat skill for the query "chat" (c-h-a…t
+ * appears in order), which is worse than no fuzzy matching at all.
+ */
+export function scoreItem(item: CommandItem, q: string): number {
+  if (!q) return 0;
+  const query = q.toLowerCase().trim();
+  const label = item.label.toLowerCase();
+  const detail = item.detail.toLowerCase();
+  const keywords = item.keywords.toLowerCase();
+
+  if (label === query) return 1000;
+  if (label.startsWith(query)) return 900 - label.length;
+
+  // word-start: after a space, hyphen or slash
+  if (new RegExp(`(^|[\\s\\-/])${escapeRe(query)}`).test(label)) {
+    return 800 - label.length;
+  }
+  if (label.includes(query)) return 700 - label.length;
+  if (detail.includes(query)) return 500;
+  if (keywords.includes(query)) return 400;
+  const fuzzyEligible = query.length <= 6 && !query.includes(" ");
+  if (fuzzyEligible && isSubsequence(query, label)) return 300 - label.length;
+  return -1;
+}
+
+function escapeRe(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** "dsn" matches "design-setup" — cheap fuzzy, in order, not necessarily adjacent. */
+function isSubsequence(needle: string, hay: string): boolean {
+  let i = 0;
+  for (const ch of hay) {
+    if (ch === needle[i]) i += 1;
+    if (i === needle.length) return true;
+  }
+  return needle.length === 0;
+}
+
+export function searchCommands(
+  index: CommandItem[],
+  q: string,
+): CommandItem[] {
+  if (!q.trim()) {
+    // Empty query: the things most people want, in a useful order.
+    const order: CommandKind[] = ["section", "skill", "tier", "record"];
+    return [...index].sort(
+      (a, b) => order.indexOf(a.kind) - order.indexOf(b.kind),
+    );
+  }
+  return index
+    .map((item) => ({ item, score: scoreItem(item, q) }))
+    .filter((r) => r.score >= 0)
+    .sort((a, b) => b.score - a.score)
+    .map((r) => r.item);
+}
+
 // The context stack — the five tiers from CLAUDE.md's routing table.
 export type Trust =
   | "Hypothesis"

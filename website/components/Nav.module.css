@@ -66,6 +66,41 @@
   border-bottom-color: var(--blue);
 }
 
+.tail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* The palette's discoverable affordance. ⌘K alone is invisible to anyone who
+   doesn't already know the convention, which is most first-time visitors. */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--mute);
+  background: none;
+  border: 1px solid var(--rule-soft);
+  padding: 5px 9px 5px 11px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.search:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.kbd {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--mute);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  padding: 1px 4px;
+}
+
 .github {
   font-family: var(--mono);
   font-size: 12px;
@@ -99,7 +134,11 @@
   .anchor {
     white-space: nowrap;
   }
+  /* Search survives on mobile; the GitHub link doesn't — it's in the footer. */
   .github {
     display: none;
+  }
+  .search {
+    padding: 5px 9px;
   }
 }
