@@ -8,6 +8,11 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 
 | # | Commit | Date | Subject |
 |---|--------|------|---------|
+| [017](./commits/017-log-adrs-0019-0021-and-a-follow-up-on-0014.md) | `4328aa1` | 2026-08-16 | Log ADRs 0019–0021 and a follow-up on 0014 |
+| [016](./commits/016-register-the-four-new-skills-and-close-the-website-touchpoint-gap.md) | `60c2fd3` | 2026-08-16 | Register the four new skills and close the website touchpoint gap |
+| [015](./commits/015-add-the-first-three-design-skills.md) | `4bf5b0b` | 2026-08-16 | Add the first three design skills: design-setup, design-brief, design-decisions |
+| [014](./commits/014-add-the-skill-scaffold-skill.md) | `e84ada6` | 2026-08-16 | Add the skill-scaffold skill |
+| [013](./commits/013-add-the-expansion-roadmap-and-design-context-stack-concepts.md) | `3cc7b68` | 2026-08-16 | Add the expansion roadmap and the design context stack concepts |
 | [012](./commits/012-log-the-four-website-adrs.md) | `efcb70b` | 2026-07-19 | Log the four website ADRs (0015–0018) |
 | [011](./commits/011-set-vercel-framework-preset-to-next-js.md) | `6df57db` | 2026-07-19 | Set the Vercel framework preset to Next.js |
 | [010](./commits/010-add-seo-and-social-share-metadata.md) | `dfeb8cc` | 2026-07-19 | Add SEO + social share metadata and preview image to the website |
@@ -22,6 +27,19 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 | [001](./commits/001-add-three-git-workflow-skills-shared-claude-md-registration.md) | `506a5c6` | 2026-07-12 | Add three git-workflow skills + shared CLAUDE.md registration |
 
 ---
+
+## 2026-08-16
+
+### Added
+- **Four new skills, taking the library from six to ten** (`e84ada6`, `4bf5b0b`) — `skill-scaffold` generates a new skill in this library's conventions from a short interview, covering all seven touchpoints from the PRD to the website entry; it scaffolds structure but never invents Step bodies, and interviews for trigger phrases rather than inventing them, because a `description` that matches nothing fails silently. Alongside it, the first three skills of the **design territory**: `design-setup` scaffolds a six-tier design context stack (briefs, research, explorations, decisions, specs, system) using `repo-setup`'s detect-map-confirm and additive-only rules, and deliberately refuses a seventh tier — there is no design changelog, because `changelog/` is generated from git and a hand-written parallel would be hypothesis dressed as truth. `design-brief` interviews into the stated intent every later design skill cites, marking unanswered sections `(not stated)` instead of inventing success criteria. `design-decisions` logs a design fork as an append-only ADR carrying two fields architectural ADRs usually omit — *what we gave up* and *what would make us revisit*. All three are restricted to interview, record, structure, check.
+- **The first two entries in `docs/concepts/`** (`3cc7b68`) — the tier had a README and a template and had never been used. `skill-library-expansion.md` maps four territories and a 6 → 32 roadmap; `design-context-stack.md` argues that design is the strongest case for this library rather than a side quest — code has `git log`, and a Figma file is a snapshot of the winner that records neither the rejected directions nor the reasoning — then specifies seven tiers and twenty skills with a build order and an explicit kill condition. Both are filed as concepts rather than PRDs on purpose (ADR 0019).
+
+### Changed
+- **Two new README and website groups, and the ADR count corrected** (`60c2fd3`) — the Skills section gains **Design work** and **Build the skills themselves**; the intro, the Install block and `website/components/lib/skills.ts` all reflect ten skills. The "this repo runs on its own skills" ADR count moves from 14 to 21, having been stale since 0015–0018 landed.
+- **Logged ADRs 0019–0021** (`4328aa1`) — roadmapped skills live in `docs/concepts/` rather than `docs/prds/`; design gets its own stack under `design/` rather than a shoehorn into `docs/`; and design skills record and check but never make the design decision. 0014 (*never invent a rationale*) gains a follow-up under trigger 2 — scope widened from code to design, where the diff-shaped backstop it assumed does not exist. The connector degradation ladder was considered and deliberately **not** logged: nothing depending on a connector has shipped, so it fails the shipping-evidence invariant.
+
+### Fixed
+- **The seventh touchpoint for adding a skill** (`60c2fd3`) — `CLAUDE.md` and `CONTRIBUTING.md` both documented adding a skill as six steps, omitting `website/components/lib/skills.ts`. Following the documented process to the letter left the published site silently stale. Both now list seven steps plus a verification pass (JSON manifests parse, the site builds), and `CONTRIBUTING.md` asks contributors to trigger a new skill two ways — the slash form and a natural phrase — since a non-matching description fails invisibly.
 
 ## 2026-07-19
 
