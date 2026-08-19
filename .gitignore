@@ -20,3 +20,6 @@ website/.next/
 website/out/
 website/next-env.d.ts
 website/tsconfig.tsbuildinfo
+
+# Playwright MCP scratch output
+.playwright-mcp/
