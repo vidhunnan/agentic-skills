@@ -24,5 +24,6 @@ website/tsconfig.tsbuildinfo
 # Playwright MCP scratch output
 .playwright-mcp/
 
-# generated per-skill zips (see website/scripts/build-skill-zips.mjs)
-website/public/skills/
+# NOTE: website/public/skills/ is deliberately NOT ignored. Vercel's Root
+# Directory is website/, so skills/ is not on disk at build time and the zips
+# have to be committed. tests/skill-zips.spec.ts fails if they go stale.
