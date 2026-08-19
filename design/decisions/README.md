@@ -50,9 +50,9 @@ Copy `_TEMPLATE.md`. Run `/design-decisions` to log one.
 | [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | The palette searches skills and copies one thing | 2026-08-16 | Superseded by [0009](./0009-the-command-palette-is-retired.md) | Discovery of tiers and records; a reason to open it when not installing | 2 |
 | [0006](./0006-the-hero-specimen-rotates-through-six-skills.md) | The hero specimen rotates through six skills, on a timer | 2026-08-16 | Superseded by [0010](./0010-one-hero-specimen-not-six.md) | The motion spec's absolutism; the undivided single specimen; ~2KB JS; a permanently taller hero | 1 |
 | [0007](./0007-the-site-is-terminal-rendered-markdown.md) | The site's visual direction is terminal-rendered markdown | 2026-08-19 | Accepted | The paper metaphor; typographic range; two axes that were never fairly tested | 0 |
-| [0008](./0008-geist-mono-alone.md) | The site's type is Geist Mono alone | 2026-08-19 | Accepted | Italic entirely; the zero-webfont page; Latin-only coverage | 0 |
-| [0009](./0009-the-command-palette-is-retired.md) | The command palette is retired, not rebuilt | 2026-08-19 | Accepted | Search entirely; the evidence 0005 asked for; the keyboard route to the install command | 0 |
-| [0010](./0010-one-hero-specimen-not-six.md) | The hero shows one specimen; the rotation is retired | 2026-08-19 | Accepted | Five records off the page; range without a click; 0006's own questions, unanswered | 0 |
+| [0008](./0008-geist-mono-alone.md) | The site's type is Geist Mono alone | 2026-08-19 | Accepted | Italic entirely; the zero-webfont page; Latin-only coverage |1 |
+| [0009](./0009-the-command-palette-is-retired.md) | The command palette is retired, not rebuilt | 2026-08-19 | Accepted | Search entirely; the evidence 0005 asked for; the keyboard route to the install command |1 |
+| [0010](./0010-one-hero-specimen-not-six.md) | The hero shows one specimen; the rotation is retired | 2026-08-19 | Accepted | Five records off the page; range without a click; 0006's own questions, unanswered |1 |
 | [0011](./0011-one-matrix-not-two-parallel-stacks.md) | One nine-question matrix replaces the two parallel stack sections | 2026-08-19 | Accepted | Equal billing as a visible thing; the real folder names; a structure that scaled by stack | 0 |
 
 ### Supersession
@@ -84,9 +84,11 @@ graph LR
 
 **One supersession crosses tiers and is not in the graph.** [0007](./0007-the-site-is-terminal-rendered-markdown.md) replaces the direction stated in [repo ADR 0017](../../docs/decisions/0017-the-website-design-direction-is-swiss-whitepaper.md), which predates this tier and therefore lives in `docs/decisions/`. The `**Supersedes:**` field points inside this tier only, so the link is carried as a note in 0007 and as a dated Follow-up on 0017.
 
-**Four records in this tier carry an unrecorded rationale.** [0002](./0002-a-three-family-type-system-for-the-site.md) reads `*(reason not stated)*`: its alternatives were recovered from the exploration drafts, but why the winner won was never written down and nobody remembers. Its successor [0008](./0008-geist-mono-alone.md) carries the same gap for the same reason — why Geist Mono beat the incumbent mono is asserted in a code comment and stated in no source. [0009](./0009-the-command-palette-is-retired.md) records that why the palette was *retired rather than rebuilt* was never stated, and [0010](./0010-one-hero-specimen-not-six.md) marks one of its own alternatives `*(not recorded)*`.
+**Four records carried an unrecorded rationale; three were answered by asking.** On 2026-08-19 the owner supplied reasons for [0008](./0008-geist-mono-alone.md) (Geist Mono is a variable font and reads like a marked-up file), [0009](./0009-the-command-palette-is-retired.md) (the new direction did not call for a palette — retirement for fit, not failure), and [0010](./0010-one-hero-specimen-not-six.md) (the "static gallery" alternative was not recognised, so it was never a weighed option). Each is a dated Follow-up; the frozen text above each is unchanged and still reads `*(reason not stated)*`, because that is what was true when the decision was made.
 
-That is a legitimate and useful record — it tells the next reader they are changing something whose reasoning was never captured, which is not the same as changing something nobody thought about. **If you remember any of these four, append the reason as a dated Follow-up entry.** Do not edit the frozen text.
+**One stands unfilled.** [0002](./0002-a-three-family-type-system-for-the-site.md): its alternatives were recovered from the exploration drafts, but why the winner won was never written down and nobody remembers. That is a legitimate and useful record — it tells the next reader they are changing something whose reasoning was never captured, which is not the same as changing something nobody thought about.
+
+**The lesson worth keeping:** three of four gaps closed because somebody asked, four hours after the records were written. A gap is worth marking precisely because it is answerable later; it is not worth inventing a reason to avoid.
 <!-- END design-decisions-index -->
 
 Previously declined or filtered: 0. *(No reject ledger yet — `0000-not-logged.md` is created the first time a candidate is rejected.)*

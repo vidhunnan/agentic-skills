@@ -66,7 +66,7 @@ Copy `_TEMPLATE.md`. Number decisions sequentially: `0001-use-markdown-not-a-dat
 | [0020](./0020-design-gets-its-own-stack-not-a-shoehorn-into-docs.md) | Design gets its own context stack, not a shoehorn into `docs/` | 2026-08-16 | Accepted | 0 | `skills/design-setup/SKILL.md` §The canon |
 | [0021](./0021-design-skills-never-make-the-design-decision.md) | Design skills record and check; they never make the design decision | 2026-08-16 | Accepted | 1 | `skills/design-decisions/SKILL.md` |
 | [0022](./0022-generation-is-allowed-only-into-explorations.md) | Generation is allowed, but only into the explorations tier | 2026-08-19 | Accepted | 0 | `docs/concepts/design-context-stack.md` §The seven tiers |
-| [0023](./0023-site-content-is-split-by-kind-data-vs-prose.md) | Site content is split by kind: repeated and countable content is data, section prose is not | 2026-08-19 | Accepted | 0 | `git:fcea6dd` |
+| [0023](./0023-site-content-is-split-by-kind-data-vs-prose.md) | Site content is split by kind: repeated and countable content is data, section prose is not | 2026-08-19 | Accepted | 1 | `git:fcea6dd` |
 
 *23 decisions logged; 21 stand. [0022](./0022-generation-is-allowed-only-into-explorations.md) narrows [0021](./0021-design-skills-never-make-the-design-decision.md) without superseding it — the scope changed, the decision did not.*
 
