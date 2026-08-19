@@ -4,7 +4,7 @@ An agent starts every session with no memory of the last one. It doesn't need a 
 
 These are the skills that write that briefing. They author the context files a project should have anyway: a changelog of what actually shipped, a decision log of why you chose what you chose, a handoff for where you left off. All of it is Markdown. None of it is code.
 
-**Eleven skills, all live.** Install one, or all of them.
+**Fourteen skills, all live.** Install one, or all of them.
 
 ## Skills
 
@@ -43,8 +43,11 @@ Code has `git log`. Design has nothing — a Figma file shows the winner and nev
 |---|---|---|---|
 | **[`design-setup`](skills/design-setup/SKILL.md)**<br>`/plugin install design-setup` | Scaffolds the **design context stack** — briefs, research, explorations, decisions, specs, system. Same rules as `repo-setup`: adopts your existing folder names, never moves a thing. The `design/explorations/` tier is the one no design tool has: a durable record of the directions you killed, and why. | Code · Chat | Live |
 | **[`design-brief`](skills/design-brief/SKILL.md)**<br>`/plugin install design-brief` | *What are we actually solving?* — interviews you into a brief: problem, who feels it, jobs to be done, constraints, success criteria, non-goals. The stated intent everything downstream cites. Marks what you couldn't answer instead of inventing it. | Code · Chat | Live |
-| **[`design-decisions`](skills/design-decisions/SKILL.md)**<br>`/plugin install design-decisions` | *Why is it like this?* — records a design fork as an append-only ADR, including **what you gave up** and what would make you revisit. Where nobody remembers the reason, it writes `(reason not stated)` — in design there's no diff to catch a plausible fiction. | Code · Chat | Live |
+| **[`design-language`](skills/design-language/SKILL.md)**<br>`/plugin install design-language` | *What should it look like?* — interviews you into a written visual direction: the surface and whether it wears the brand, the references and the one you're **explicitly not** pulling from, constraints stated as rules that can be broken. Asks what you want rather than proposing a look for you. | Code · Chat | Live |
+| **[`design-explore`](skills/design-explore/SKILL.md)**<br>`/plugin install design-explore` | *What are the options?* — generates three directions that differ on **named structural axes**, not on hue, each with its thesis, its bet and its risk. Refuses to generate against nothing, and hands the verdict to the two skills below. | Code · Chat | Live |
 | **[`exploration-log`](skills/exploration-log/SKILL.md)**<br>`/plugin install exploration-log` | *Did we already try that?* — logs a round of iteration: what it tested, what changed, what you learned, and whether it was kept, **killed** or parked. Append-only, so the directions you abandoned are still readable a year later. Also answers the question back. | Code · Chat | Live |
+| **[`design-critique`](skills/design-critique/SKILL.md)**<br>`/plugin install design-critique` | *Does this match what we said?* — reviews built work against its stated intent, naming how the thing **reads** before proposing any fix. **Delete** is a first-class verdict, listed first. Refuses to critique without a written intent, because that's just taste with extra steps. | Code · Chat | Live |
+| **[`design-decisions`](skills/design-decisions/SKILL.md)**<br>`/plugin install design-decisions` | *Why is it like this?* — records a design fork as an append-only ADR, including **what you gave up** and what would make you revisit. Where nobody remembers the reason, it writes `(reason not stated)` — in design there's no diff to catch a plausible fiction. | Code · Chat | Live |
 
 ### Build the skills themselves
 
@@ -75,12 +78,15 @@ Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and 
 /plugin install model-strategy
 /plugin install design-setup
 /plugin install design-brief
-/plugin install design-decisions
+/plugin install design-language
+/plugin install design-explore
 /plugin install exploration-log
+/plugin install design-critique
+/plugin install design-decisions
 /plugin install skill-scaffold
 ```
 
-Each skill is a separate plugin, so take one or take all eleven. The command for a single skill sits next to its name in the tables above.
+Each skill is a separate plugin, so take one or take all fourteen. The command for a single skill sits next to its name in the tables above.
 
 ### Other surfaces
 

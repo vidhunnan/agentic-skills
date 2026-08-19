@@ -87,7 +87,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     title: "Design work",
-    note: "Code has git log. Design has nothing — a Figma file shows the winner and never what was tried, or why.",
+    note: "Code has git log. Design has nothing — a Figma file shows the winner and never what was tried, what was given up, or why. These write the record design doesn't leave behind.",
     skills: [
       {
         name: "design-setup",
@@ -104,11 +104,18 @@ export const SKILL_GROUPS: SkillGroup[] = [
         answers: "What are we actually solving?",
       },
       {
-        name: "design-decisions",
-        desc: "Why is it like this? — records a design fork as an append-only ADR, including what you gave up and what would make you revisit. Where nobody remembers the reason, it writes (reason not stated) — in design there's no diff to catch a plausible fiction.",
+        name: "design-language",
+        desc: "What should it look like? — interviews you into a written visual direction: the surface and whether it wears the brand, the references and the one you're explicitly not pulling from, constraints stated as rules that can be broken. Asks what you want rather than proposing a look for you.",
         surfaces: ["Code", "Chat"],
-        install: "/plugin install design-decisions",
-        answers: "Why is it like this?",
+        install: "/plugin install design-language",
+        answers: "What should it look like?",
+      },
+      {
+        name: "design-explore",
+        desc: "What are the options? — generates three directions that differ on named structural axes, not on hue, each with its thesis, its bet and its risk. Refuses to generate against nothing, and hands the verdict to the skills that record it.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install design-explore",
+        answers: "What are the options?",
       },
       {
         name: "exploration-log",
@@ -116,6 +123,20 @@ export const SKILL_GROUPS: SkillGroup[] = [
         surfaces: ["Code", "Chat"],
         install: "/plugin install exploration-log",
         answers: "Did we already try that?",
+      },
+      {
+        name: "design-critique",
+        desc: "Does this match what we said? — reviews built work against its stated intent, naming how the thing reads before proposing any fix. Delete is a first-class verdict, listed first. Refuses to critique without a written intent, because that's just taste with extra steps.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install design-critique",
+        answers: "Does this match what we said?",
+      },
+      {
+        name: "design-decisions",
+        desc: "Why is it like this? — records a design fork as an append-only ADR, including what you gave up and what would make you revisit. Where nobody remembers the reason, it writes (reason not stated) — in design there's no diff to catch a plausible fiction.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install design-decisions",
+        answers: "Why is it like this?",
       },
     ],
   },

@@ -59,6 +59,21 @@
       "name": "exploration-log",
       "source": "./skills/exploration-log",
       "description": "Records a round of design iteration — what it tested, what changed, what was learned, and whether it was kept, killed or parked — append-only, and answers \"have we tried this before?\" from the log."
+    },
+    {
+      "name": "design-language",
+      "source": "./skills/design-language",
+      "description": "Interviews you into a written visual direction — the surface and its brand posture, the references and the anti-reference, the constraints as breakable rules, and the vocabulary — and asks what you want rather than proposing a look for you."
+    },
+    {
+      "name": "design-explore",
+      "source": "./skills/design-explore",
+      "description": "Generates three genuinely distinct design directions from a written visual direction — each committed to a named structural axis, each with its thesis, bet and risk — ending in a comparison matrix you judge by eye. Never records the verdict."
+    },
+    {
+      "name": "design-critique",
+      "source": "./skills/design-critique",
+      "description": "Reviews a built interface against its stated design intent — naming how the thing reads before proposing a fix, ranking findings by severity, and treating removal as a first-class verdict. Refuses to critique without a written intent."
     }
   ]
 }
