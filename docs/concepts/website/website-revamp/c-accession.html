@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C — Accession · agentic-skills exploration</title>
+<style>
+:root{
+  --paper:#f3f2ed; --paper-2:#ecebe4; --ink:#16160f; --ink-soft:#4e4e45;
+  --mute:#6b6b60; --blue:#2743c8; --red:#bf3018;
+  --rule:rgba(22,22,15,.22); --rule-soft:rgba(22,22,15,.12);
+  --sans:system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#14140f; --paper-2:#1c1c16; --ink:#edece4; --ink-soft:#b3b2a6;
+  --mute:#85857a; --blue:#8fa2ff; --red:#ff8a6d;
+  --rule:rgba(237,236,228,.26); --rule-soft:rgba(237,236,228,.14);
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:400 14px/1.55 var(--sans);padding-bottom:80px}
+.bar{border-bottom:1px solid var(--rule);padding:11px 0;font:400 12px/1 var(--mono)}
+.bar .in{max-width:1080px;margin:0 auto;padding:0 22px;display:flex;justify-content:space-between;color:var(--mute)}
+.bar b{color:var(--ink);font-weight:600}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+/* DENSITY AXIS: every object carries its provenance inline, in a right-hand rail. */
+.obj{display:grid;grid-template-columns:1fr 232px;gap:32px;
+  border-bottom:1px solid var(--rule-soft);padding:22px 0;align-items:start}
+.prov{font:400 11px/1.55 var(--mono);color:var(--mute);border-left:1px solid var(--rule-soft);padding-left:14px}
+.prov dt{color:var(--ink-soft);letter-spacing:.08em;text-transform:uppercase;font-size:9.5px;margin-top:8px}
+.prov dt:first-child{margin-top:0}
+.prov dd{color:var(--mute);word-break:break-word}
+.prov .unk{color:var(--red)}
+.acc{font:400 10px/1 var(--mono);letter-spacing:.12em;color:var(--mute);
+  text-transform:uppercase;margin-bottom:9px;display:block}
+h1{font:600 27px/1.28 var(--sans);letter-spacing:-.018em;max-width:22ch;margin-bottom:11px}
+h1 span{font-weight:400;color:var(--ink-soft)}
+.sub{color:var(--ink-soft);max-width:56ch;margin-bottom:16px;font-size:14.5px}
+.sub .mark{color:var(--red)}
+.cmd{font:400 12.5px/1.5 var(--mono);background:var(--paper-2);
+  border:1px solid var(--rule-soft);padding:8px 11px;display:inline-block}
+.rec{font:400 12px/1.75 var(--mono);background:var(--paper-2);padding:12px 13px;
+  white-space:pre-wrap;color:var(--ink-soft)}
+.rec .gap{color:var(--red)}
+h2{font:600 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);
+  margin:38px 0 0;padding-bottom:9px;border-bottom:1px solid var(--rule)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font:400 9.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mute);padding:12px 10px 8px 0;border-bottom:1px solid var(--rule-soft)}
+td{padding:7px 10px 7px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+td.q{width:30%;color:var(--ink)}
+td.t{width:26%;font:400 12px/1.5 var(--mono);color:var(--red)}
+td.t.has{color:var(--ink-soft)}
+td.a{width:20%;font:400 12px/1.5 var(--mono);color:var(--blue)}
+td.p{font:400 10.5px/1.5 var(--mono);color:var(--mute)}
+.sk{display:grid;grid-template-columns:1fr 1.3fr 150px;gap:18px;padding:10px 0;
+  border-bottom:1px solid var(--rule-soft);align-items:baseline}
+.sk .n{font:400 13.5px/1.4 var(--mono);color:var(--ink)}
+.sk .q{color:var(--ink-soft);font-size:13.5px}
+.sk .m{font:400 10.5px/1.5 var(--mono);color:var(--mute);text-align:right}
+</style></head><body>
+
+<div class="bar"><div class="in"><span><b>C</b> · Accession</span><span>axis: density</span></div></div>
+
+<div class="wrap">
+
+  <div class="obj">
+    <div>
+      <span class="acc">Agent skills for Claude Code</span>
+      <h1>An agent needs context to do good work. <span>Most of it was never written down.</span></h1>
+      <p class="sub">What shipped, why you chose it, what you tried and killed — from git, your files
+      and your answers. And where nobody remembers why, <span class="mark">they say so</span>.</p>
+      <div class="cmd">/plugin marketplace add vidhunnan/agentic-skills</div>
+    </div>
+    <dl class="prov">
+      <dt>Skills</dt><dd>14, all live</dd>
+      <dt>Surfaces</dt><dd>Claude Code · Claude.ai (artifact only)</dd>
+      <dt>Licence</dt><dd>MIT</dd>
+      <dt>Source</dt><dd>vidhunnan/agentic-skills</dd>
+    </dl>
+  </div>
+
+  <div class="obj">
+    <div>
+      <span class="acc">Specimen 001 · design decision</span>
+<div class="rec">## What we gave up
+
+<span class="gap">*(none identified)*</span> — the trade was never articulated.
+
+**Rationale:**
+<span class="gap">*(reason not stated)*</span> — no reason was ever recorded.</div>
+    </div>
+    <dl class="prov">
+      <dt>Source</dt><dd>design/decisions/0002-a-three-family-type-system-for-the-site.md</dd>
+      <dt>Written by</dt><dd>design-decisions</dd>
+      <dt>Recorded</dt><dd>2026-08-16</dd>
+      <dt>Decided</dt><dd>2026-07-19 (approx.)</dd>
+      <dt>Rationale</dt><dd class="unk">provenance unknown</dd>
+    </dl>
+  </div>
+
+  <h2>What gets written</h2>
+  <table>
+    <tr><th>Question</th><th>Answers it today</th><th>This adds</th><th>Tier status</th></tr>
+    <tr><td class="q">What did we try?</td><td class="t has">git history, badly</td><td class="a">explorations</td><td class="p">history · append-only</td></tr>
+    <tr><td class="q">Why did we choose that?</td><td class="t has">commit messages, badly</td><td class="a">decisions</td><td class="p">truth · append-only</td></tr>
+    <tr><td class="q">What is it, exactly?</td><td class="t has">the code itself</td><td class="a">specs</td><td class="p">spec · pinned to a version</td></tr>
+    <tr><td class="q">What's reusable?</td><td class="t has">the package system</td><td class="a">system</td><td class="p">truth · system of record</td></tr>
+    <tr><td class="q">What actually shipped?</td><td class="t has">git, properly</td><td class="a">changelog</td><td class="p">TRUTH · generated from git</td></tr>
+    <tr><td class="q">What are we trying to build?</td><td class="t">whatever someone remembered</td><td class="a">concepts · briefs</td><td class="p">hypothesis · disposable</td></tr>
+    <tr><td class="q">What are we still deciding?</td><td class="t">whatever someone remembered</td><td class="a">prds · briefs</td><td class="p">proposal</td></tr>
+    <tr><td class="q">What did we learn?</td><td class="t">nothing, by default</td><td class="a">research</td><td class="p">evidence · observation ≠ interpretation</td></tr>
+    <tr><td class="q">Where did we leave off?</td><td class="t">nothing, by default</td><td class="a">handoffs</td><td class="p">snapshot · latest wins</td></tr>
+  </table>
+
+  <h2>The skills</h2>
+  <div class="sk"><span class="n">decisions-logger</span><span class="q">Why did we choose that?</span><span class="m">from git · Code · Chat</span></div>
+  <div class="sk"><span class="n">exploration-log</span><span class="q">Did we already try that?</span><span class="m">from you · Code · Chat</span></div>
+  <div class="sk"><span class="n">changelog-tracker</span><span class="q">What actually shipped?</span><span class="m">from git · Code</span></div>
+
+</div>
+</body></html>
