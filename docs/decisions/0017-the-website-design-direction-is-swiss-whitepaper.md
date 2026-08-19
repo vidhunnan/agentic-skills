@@ -1,6 +1,6 @@
 # 0017. The website design direction is "Swiss whitepaper"
 
-- **Status:** Accepted
+- **Status:** Superseded by [design ADR 0007](../../design/decisions/0007-the-site-is-terminal-rendered-markdown.md)
 - **Date:** 2026-07-19
 
 ## Context
@@ -31,7 +31,8 @@ We built the site in the **Swiss whitepaper** direction: a light paper backgroun
 
 *Append-only. Everything above this heading is **frozen**. Entries below are dated and additive — evidence that the world moved, not a revision of what was decided.*
 
-*(none yet)*
+- **2026-08-19** — **Superseded by [design ADR 0007](../../design/decisions/0007-the-site-is-terminal-rendered-markdown.md)**, which chose terminal-rendered markdown. The supersession crosses tiers: this decision predates the design context stack, so a design direction is logged here rather than in `design/decisions/`. Note what did **not** cause it — no evidence was found that this direction was failing. The site was three days old in its current form, `design/research/` was empty, and Vercel Web Analytics returned `404 — not found`. It was reopened because the argument the page makes changed, and because this ADR recorded **no revisit condition**, so there was no bar to clear. Its own §Consequences conceded the cost that decided it: *"it carries less of a distinctive 'signature' than the Blueprint direction's schematic would have."* Evidence: `docs/concepts/website/website-revamp.md` round 1 · `git:3333f33`.
+- **2026-08-19** — Two colour values in the Decision above never matched what shipped, and the drift was never recorded as a decision: the redline is stated here as `#D0361B` while `globals.css` and `design/system/palette.md` carry `#bf3018`, and `--mute` moved from the deck's `#8B8B7E` to `#6b6b60`. Both were darkened for contrast — `#D0361B` measures below AA on the paper ground. Recorded here rather than corrected above, because the body of a logged decision is frozen even when it is wrong.
 
 ---
 

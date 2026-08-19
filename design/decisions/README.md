@@ -49,6 +49,7 @@ Copy `_TEMPLATE.md`. Run `/design-decisions` to log one.
 | [0004](./0004-a-command-palette-with-actions-not-a-search-box.md) | A command palette with actions, not a search box | 2026-08-16 | Superseded by [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | A convention people must know; desktop-only actions; ~20KB JS; a second way to reach everything | 2 |
 | [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | The palette searches skills and copies one thing | 2026-08-16 | Accepted | Discovery of tiers and records; a reason to open it when not installing | 1 |
 | [0006](./0006-the-hero-specimen-rotates-through-six-skills.md) | The hero specimen rotates through six skills, on a timer | 2026-08-16 | Accepted | The motion spec's absolutism; the undivided single specimen; ~2KB JS; a permanently taller hero | 0 |
+| [0007](./0007-the-site-is-terminal-rendered-markdown.md) | The site's visual direction is terminal-rendered markdown | 2026-08-19 | Accepted | The paper metaphor; typographic range; two axes that were never fairly tested | 0 |
 
 ### Supersession
 
@@ -60,7 +61,9 @@ graph LR
   classDef superseded fill:#f4f4f5,stroke:#a1a1aa,color:#71717a,stroke-dasharray:3 3;
 ```
 
-*Only superseded and superseding decisions appear in the graph. 5 decisions stand unsuperseded — see the table.*
+*Only superseded and superseding decisions appear in the graph. 6 decisions stand unsuperseded — see the table.*
+
+**One supersession crosses tiers and is not in the graph.** [0007](./0007-the-site-is-terminal-rendered-markdown.md) replaces the direction stated in [repo ADR 0017](../../docs/decisions/0017-the-website-design-direction-is-swiss-whitepaper.md), which predates this tier and therefore lives in `docs/decisions/`. The `**Supersedes:**` field points inside this tier only, so the link is carried as a note in 0007 and as a dated Follow-up on 0017.
 
 **One of these two has no recorded rationale.** [0002](./0002-a-three-family-type-system-for-the-site.md) reads `*(reason not stated)*`: its alternatives were recovered from the exploration drafts, but why the winner won was never written down and nobody remembers. That is a legitimate and useful record — it tells the next reader they are changing something whose reasoning was never captured, which is not the same as changing something nobody thought about.
 <!-- END design-decisions-index -->
