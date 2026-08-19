@@ -1,148 +1,117 @@
-.section {
-  padding: 88px 0;
-  border-bottom: 1px solid var(--rule-soft);
+.sec {
+  padding-bottom: var(--sp-6);
 }
 
-.title {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(26px, 3.4vw, 40px);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-  margin: 0 0 18px;
+.rule {
+  border-top: 1px solid var(--rule);
+  margin-bottom: var(--sp-4);
 }
 
-.intro {
-  color: var(--ink-soft);
-  max-width: 60ch;
-  font-size: 16px;
-  margin: 0 0 12px;
+.h2 {
+  font-size: var(--t-h2);
+  margin-bottom: var(--sp-1);
 }
 
-.group {
-  margin-top: 52px;
+.sub {
+  color: var(--mute);
+  font-size: 14px;
+  margin: 0 0 var(--sp-4);
+  max-width: 70ch;
 }
 
-.groupHead {
+.skill {
+  padding: var(--sp-4) 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.skill:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.top {
   display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
   align-items: baseline;
-  gap: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--rule);
   flex-wrap: wrap;
 }
-.groupTitle {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+
+.nm {
   color: var(--ink);
-  margin: 0;
-}
-.groupNote {
-  font-size: 13.5px;
-  color: var(--mute);
-  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
 }
 
-.list {
-  list-style: none;
+.ans {
+  color: var(--mute);
+  font-size: var(--t-sm);
+}
+
+.desc {
+  font-size: var(--t-sm);
+  margin: var(--sp-2) 0 var(--sp-2);
+  max-width: 68ch;
+}
+
+.surf {
+  font-size: var(--t-meta);
+  white-space: nowrap;
+}
+.on {
+  color: var(--blue);
+}
+.off {
+  color: var(--mute);
+  text-decoration: line-through;
+}
+
+.fence {
   margin: 0;
+}
+.tick {
+  color: var(--mute);
+  font-size: var(--t-sm);
+}
+.cmdRow {
+  background: var(--paper-2);
+  padding: var(--sp-2) var(--sp-3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.cmd {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.idx {
+  list-style: none;
+  margin: var(--sp-2) 0 0;
   padding: 0;
 }
 
 .row {
   display: grid;
-  grid-template-columns: 34px 1fr;
-  gap: 20px;
-  padding: 26px 4px;
-  border-bottom: 1px solid var(--rule-soft);
-}
-.row:last-child {
-  border-bottom: none;
-}
-
-.num {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--mute);
-  padding-top: 3px;
-}
-
-.main {
-  min-width: 0;
-}
-.nameLine {
-  display: flex;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) auto auto;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+  border-top: 1px solid var(--rule-soft);
   align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-.name {
-  font-family: var(--mono);
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--ink);
-}
-.surfaces {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--blue);
-  white-space: nowrap;
+  font-size: var(--t-sm);
 }
 
-/* The question this skill answers, in the reader's own voice. This was already
-   in the data on all eleven skills and rendered nowhere — the type comment
-   described a column that was never built. It is the fastest way to tell
-   whether a skill is for you, so it leads. */
-.answers {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 17px;
-  line-height: 1.3;
-  color: var(--ink);
-  margin: 0 0 7px;
-}
-
-.desc {
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--ink-soft);
-  margin: 0 0 16px;
-  max-width: 68ch;
-}
-
-.install {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--paper-2);
-  border: 1px solid var(--rule-soft);
-  border-radius: 3px;
-  padding: 7px 10px;
-  max-width: 100%;
-}
-.install code {
-  font-family: var(--mono);
-  font-size: 12.5px;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow-x: auto;
+.ansInline {
+  color: var(--mute);
 }
 
 @media (max-width: 720px) {
-  .section {
-    padding: 60px 0;
-  }
   .row {
-    grid-template-columns: 26px 1fr;
-    gap: 12px;
+    grid-template-columns: minmax(0, 1fr) auto auto;
   }
-  .nameLine {
-    flex-direction: column;
-    gap: 2px;
+  .ansInline {
+    grid-column: 1 / -1;
+    order: 3;
   }
 }

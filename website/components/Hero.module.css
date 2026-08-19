@@ -1,124 +1,99 @@
 .hero {
-  padding: 92px 0 72px;
-  border-bottom: 1px solid var(--rule-soft);
+  padding-top: var(--sp-6);
 }
 
-.title {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(34px, 5.6vw, 58px);
-  line-height: 1.06;
-  letter-spacing: -0.02em;
-  /* Was 15ch, which forced four lines and left "one." as a widow.
-     At 19ch the sentence sets in three with a full last line. */
-  max-width: 19ch;
-  text-wrap: balance;
-  margin: 0 0 24px;
+/*
+  Not a flex container. The old global .eyebrow was display:flex, which split
+  React's text nodes into flex items and rendered "14 skills" as "14skills".
+*/
+.eyebrow {
+  color: var(--mute);
+  font-size: var(--t-sm);
+  margin: 0 0 var(--sp-1);
 }
 
-.sub {
-  font-size: clamp(16.5px, 1.7vw, 19px);
-  line-height: 1.55;
+.h1 {
+  font-size: var(--t-h1);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  margin: var(--sp-1) 0 var(--sp-3);
+  max-width: 46ch;
+}
+.cont {
+  display: block;
   color: var(--ink-soft);
-  max-width: 56ch;
-  margin: 0 0 32px;
-}
-.sub em {
-  font-family: var(--serif);
-  font-style: italic;
-  color: var(--ink);
-}
-/* One emphasis, not two. The subhead previously bolded both the design clause
-   and "All Markdown. None of it is code." — two emphases is no emphasis, and
-   the design clause is the one carrying new information. */
-.sub strong {
-  color: var(--ink);
-  font-weight: 600;
+  font-weight: 400;
 }
 
-.command {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+.lede {
+  font-size: 14px;
+  margin: 0 0 var(--sp-4);
+  max-width: 70ch;
+}
+
+.gap {
+  color: var(--red);
+}
+
+.fence {
+  margin: 0 0 var(--sp-3);
+}
+.tick {
+  color: var(--mute);
+  font-size: var(--t-sm);
+}
+.cmdRow {
   background: var(--paper-2);
-  border: 1px solid var(--rule-soft);
-  border-radius: 4px;
-  padding: 13px 15px;
-  max-width: 500px;
-}
-.command code {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow-x: auto;
-}
-.prompt {
-  color: var(--blue);
-}
-
-/* The specimen card moved to Specimens.module.css when it became a rotating
-   set of six. Its styles went with it. */
-
-.ctas {
-  margin-top: 28px;
+  padding: var(--sp-3) var(--sp-3);
   display: flex;
-  gap: 22px;
+  justify-content: space-between;
   align-items: center;
+  gap: var(--sp-3);
   flex-wrap: wrap;
 }
-.primary {
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--paper);
-  background: var(--ink);
-  padding: 11px 18px;
-  border-radius: 3px;
-}
-.primary:hover {
-  text-decoration: none;
-  background: var(--blue);
-}
-/* Three CTAs used to be one filled button and two identical ghosts, so the
-   design link — the new and more important of the two — read as no more
-   important than a source link. Three ranks now, not two. */
-.secondary {
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
+.cmd {
   color: var(--ink);
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 2px;
-}
-.secondary:hover {
-  color: var(--blue);
-  border-bottom-color: var(--blue);
-  text-decoration: none;
-}
-.ghost {
-  font-family: var(--mono);
   font-size: 13px;
-  color: var(--mute);
 }
-.ghost:hover {
-  color: var(--blue);
-  text-decoration: none;
+.pre {
+  background: var(--paper-2);
+  padding: var(--sp-3);
+  margin: 0;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre;
+  color: var(--ink-soft);
+}
+
+.specimen {
+  margin-top: var(--sp-6);
+}
+.h2 {
+  font-size: var(--t-h2);
+  margin-bottom: var(--sp-1);
+}
+.sub {
+  color: var(--mute);
+  margin: 0 0 var(--sp-3);
+  font-size: 14px;
+}
+.src {
+  font-size: var(--t-sm);
+  color: var(--mute);
+  margin: var(--sp-2) 0 var(--sp-3);
+  word-break: break-word;
+}
+.caption {
+  margin: 0;
+  max-width: 70ch;
 }
 
 @media (max-width: 720px) {
   .hero {
-    padding: 60px 0 48px;
+    padding-top: var(--sp-5);
   }
-  .title {
-    max-width: none;
-  }
-  .command {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .ctas {
-    gap: 16px 20px;
+  .pre {
+    font-size: 12px;
   }
 }

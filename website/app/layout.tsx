@@ -1,39 +1,25 @@
 import type { Metadata } from "next";
-import { Archivo, Newsreader, IBM_Plex_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import { TOTAL_SKILLS_WORD } from "@/components/lib/skills";
 import "./globals.css";
 
-const archivo = Archivo({
+// One family, variable — the whole weight range in a single file.
+// Geist Mono has no italic; nothing in this design uses one.
+// Chosen over IBM Plex Mono and a zero-webfont system stack — see design ADR 0008.
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-archivo",
-  display: "swap",
-});
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-plex-mono",
+  variable: "--font-geist-mono",
   display: "swap",
 });
 
 const SITE_URL = "https://agentic-skills.vidhunnan.design";
-const TITLE = "agentic-skills — context files an agent should have anyway";
+const TITLE = "agentic-skills — the context your agent doesn't have";
 // Counts come from the data, not from prose — see TOTAL_SKILLS in lib/skills.
-const DESCRIPTION = `${TOTAL_SKILLS_WORD.charAt(0).toUpperCase()}${TOTAL_SKILLS_WORD.slice(1)} Claude / Cursor-compatible skills that write the record a project should keep anyway — for code and for design: a changelog of what shipped, a decision log of why, and the design directions you killed. All Markdown. No code.`;
+const DESCRIPTION = `${TOTAL_SKILLS_WORD.charAt(0).toUpperCase()}${TOTAL_SKILLS_WORD.slice(1)} skills for Claude Code that write your project's context: what shipped, why you chose it, what you tried and killed. Taken from git, your files and your answers — and where nobody remembers why, they say so. All Markdown.`;
 const OG_DESCRIPTION =
-  "The skills that write the briefing an agent needs — for code and for design. A changelog of what shipped, a decision log of why, and the directions you killed. All Markdown, no code.";
+  "Skills that write your project's context — what shipped, why you chose it, what you tried and killed. Taken from git, your files and your answers, and where nobody remembers why, they say so.";
 const OG_IMAGE_ALT =
-  "agentic-skills — the skills that write the briefing an agent needs.";
+  "agentic-skills — skills that write the context an agent doesn't have.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -101,10 +87,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${archivo.variable} ${newsreader.variable} ${plexMono.variable}`}
-    >
+    <html lang="en" className={geistMono.variable}>
       <body>{children}</body>
     </html>
   );

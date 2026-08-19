@@ -1,61 +1,62 @@
-/* ============================================================
-   agentic-skills — Swiss whitepaper
-   Field Report palette, pared down. Light, airy, minimal ink.
-   ============================================================ */
+/* ─────────────────────────────────────────────────────────────────
+   Tokens. The only file where a colour or a scale step is defined.
+   Palette is the system of record — design/system/palette.md.
+   Do not add a colour without computing both contrast ratios.
+   ───────────────────────────────────────────────────────────────── */
 
 :root {
   color-scheme: light dark;
 
-  /* palette — from the talk deck's Field Report system.
-     Every value below clears WCAG AA (4.5:1) against --paper. Two did not:
-     --mute was #8b8b7e (3.08:1) on ~10 small-text elements including every
-     nav link, and --red was #d0361b (4.43:1). Both were darkened; the
-     visual character is unchanged. See design/system/palette.md. */
+  /* colour — 11 tokens, both modes AA-verified. See palette.md. */
   --paper: #f3f2ed;
   --paper-2: #ecebe4;
-  --ink: #16160f; /* 16.21:1 */
-  --ink-soft: #4e4e45; /* 7.49:1 */
-  --mute: #6b6b60; /* 4.81:1 — was #8b8b7e, 3.08:1 */
-  --blue: #2743c8; /* 6.88:1 — drafting cobalt: structure, truth, links */
-  --red: #bf3018; /* 5.13:1 — redline: hypothesis, failure. was #d0361b */
+  --ink: #16160f;          /* 16.21:1 */
+  --ink-soft: #4e4e45;     /* 7.49:1  */
+  --mute: #6b6b60;         /* 4.81:1 — also the recessive-syntax colour */
+  --blue: #2743c8;         /* 6.88:1 — drafting cobalt: structure, truth, links */
+  --red: #bf3018;          /* 5.13:1 — redline: hypothesis, failure, the honest gap */
 
-  /* one hairline system */
   --rule: rgba(22, 22, 15, 0.22);
   --rule-soft: rgba(22, 22, 15, 0.12);
 
-  /* nav scrim — derived, not a literal. Nav.module.css hardcoded --paper as
-     rgba twice, so the nav desynced from any palette change. */
   --scrim: rgba(243, 242, 237, 0.72);
   --scrim-solid: rgba(243, 242, 237, 0.95);
 
-  /* type — set by next/font, referenced here */
-  --serif: var(--font-newsreader), Georgia, serif;
-  --sans: var(--font-archivo), system-ui, sans-serif;
-  --mono: var(--font-plex-mono), ui-monospace, monospace;
+  /* type — one family, variable. Fallback stays monospace so a font
+     failure degrades to the right register, never to a serif. */
+  --mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, "SF Mono",
+    Menlo, Consolas, "Liberation Mono", monospace;
 
-  --maxw: 960px;
-  --pad: 28px;
+  /* type scale — five steps. Replaced 15 ad-hoc values between 10 and 17px. */
+  --t-meta: 11px;
+  --t-sm: 12.5px;
+  --t-body: 13.5px;
+  --t-h2: 15px;
+  --t-h1: 19px;
 
-  /* one breakpoint, named. There were two (720/640) with no shared token, so
-     the layout shifted twice for no design reason. */
-  --bp: 720px;
+  /* spacing scale — seven steps. Replaced 33 ad-hoc values. */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 14px;
+  --sp-4: 22px;
+  --sp-5: 34px;
+  --sp-6: 52px;
+  --sp-7: 80px;
+
+  /* layout — the measure is deliberate. A document is narrow. */
+  --maxw: 78ch;
+  --pad: 26px;
 }
 
-/* ---- dark ----------------------------------------------------------------
-   Not an inversion. The paper stays the ground and the ink stays the figure;
-   the light source moves. Cobalt and redline are lifted, because both lose
-   contrast fast on a dark ground. Logged as a design decision — see
-   design/decisions/0003 — because a second palette is a design choice, not a
-   media query. */
 @media (prefers-color-scheme: dark) {
   :root {
     --paper: #14140f;
     --paper-2: #1c1c16;
-    --ink: #edece4; /* 15.29:1 */
-    --ink-soft: #b3b2a6; /* 8.44:1 */
-    --mute: #85857a; /* 4.53:1 */
-    --blue: #8fa2ff; /* 7.72:1 — lifted; #2743c8 is 1.9:1 here */
-    --red: #ff8a6d; /* 7.53:1 — lifted; #bf3018 is 2.9:1 here */
+    --ink: #edece4;        /* 15.29:1 */
+    --ink-soft: #b3b2a6;   /* 8.44:1  */
+    --mute: #85857a;       /* 4.53:1  */
+    --blue: #8fa2ff;       /* 7.72:1 — lifted; #2743c8 is 1.9:1 here */
+    --red: #ff8a6d;        /* 7.53:1 — lifted; #bf3018 is 2.9:1 here */
 
     --rule: rgba(237, 236, 228, 0.26);
     --rule-soft: rgba(237, 236, 228, 0.14);
@@ -64,6 +65,8 @@
     --scrim-solid: rgba(20, 20, 15, 0.95);
   }
 }
+
+/* ── reset ──────────────────────────────────────────────────────── */
 
 *,
 *::before,
@@ -79,10 +82,10 @@ html {
 body {
   margin: 0;
   background: var(--paper);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 16.5px;
-  line-height: 1.6;
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: var(--t-body);
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -116,51 +119,44 @@ h1,
 h2,
 h3 {
   margin: 0;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
 }
 
-/* ---------- shared layout helpers ---------- */
+strong,
+b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ── utilities ──────────────────────────────────────────────────── */
+
 .wrap {
   max-width: var(--maxw);
   margin: 0 auto;
   padding: 0 var(--pad);
 }
 
-.eyebrow {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+/*
+  The syntax layer. Markdown markers — ## ** | ``` *(…)* — are rendered,
+  not hidden, in the weakest token that still clears AA.
+
+  This is what makes the direction work: showing the source markers IS
+  "records shown verbatim, never restyled" (design/system/language-website.md).
+  Rendering them into styled components would not be.
+*/
+.s {
   color: var(--mute);
-  margin: 0 0 16px;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-.eyebrow::before {
-  content: "";
-  width: 14px;
-  height: 1px;
-  background: var(--blue);
-  display: inline-block;
+  font-weight: 400;
 }
 
-/* accents used sparingly */
-.acc {
-  color: var(--blue);
-}
-.warn {
-  color: var(--red);
-}
+/* ── motion ─────────────────────────────────────────────────────────
+   One exception, and only one: the reveal, once per element.
+   The specimen rotation was retired — see design/specs/motion.md.
+   Nothing else on this page moves that the reader did not cause.
+   ───────────────────────────────────────────────────────────────── */
 
-/* ---------- reveal-on-scroll ----------------------------------------------
-   Content is visible by default and only hidden once JS has proved it can
-   show it again. Previously `.reveal { opacity: 0 }` shipped in the static
-   HTML and was cleared only by client JS, so with JS off every stack tier
-   and all eleven skill rows rendered blank — on an otherwise fully static
-   export. The `js-reveal` class is set on <html> by Reveal.tsx on mount.
-
-   Stagger is driven by --reveal-i (row index), set inline. See
-   design/specs/motion.md. */
 .reveal {
   transition:
     opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
@@ -168,6 +164,9 @@ h3 {
   transition-delay: calc(var(--reveal-i, 0) * 45ms);
 }
 
+/* Hiding lives behind a class set on mount, so the static export ships
+   visible. `.reveal { opacity: 0 }` in prerendered markup once blanked
+   every row on the page. */
 .js-reveal .reveal:not(.is-in) {
   opacity: 0;
   transform: translateY(8px);
@@ -177,8 +176,6 @@ h3 {
   html {
     scroll-behavior: auto;
   }
-  /* Covers the reveal, every hover transition, and the nav progress bar —
-     previously only the reveal was neutralised. */
   *,
   *::before,
   *::after {

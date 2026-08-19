@@ -1,80 +1,65 @@
-.section {
-  padding: 88px 0;
-  border-bottom: 1px solid var(--rule-soft);
+.sec {
+  padding-bottom: var(--sp-6);
 }
 
-.title {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(26px, 3.4vw, 40px);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-  margin: 0 0 18px;
+.rule {
+  border-top: 1px solid var(--rule);
+  margin-bottom: var(--sp-4);
 }
 
-.intro {
-  color: var(--ink-soft);
-  max-width: 58ch;
-  font-size: 16px;
-  margin: 0 0 36px;
+.h2 {
+  font-size: var(--t-h2);
+  margin-bottom: var(--sp-1);
+}
+
+.sub {
+  color: var(--mute);
+  font-size: 14px;
+  margin: 0 0 var(--sp-4);
+  max-width: 70ch;
+}
+
+.fence {
+  margin: 0 0 var(--sp-4);
+}
+.tick {
+  color: var(--mute);
+  font-size: var(--t-sm);
 }
 
 .block {
   background: var(--paper-2);
-  border: 1px solid var(--rule-soft);
-  border-radius: 4px;
-  padding: 24px 26px;
-  max-width: 620px;
+  padding: var(--sp-3);
 }
 
-.lineRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 4px 0;
-}
-.line {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow-x: auto;
-}
-.prompt {
-  color: var(--blue);
-}
-.rem {
-  font-family: var(--mono);
-  font-size: 13px;
+.comment {
   color: var(--mute);
-  padding: 12px 0 4px;
+  margin: 0 0 var(--sp-1);
+  font-size: var(--t-sm);
+}
+.comment:not(:first-child) {
+  margin-top: var(--sp-3);
 }
 
-.alt {
-  margin-top: 22px;
-  padding-top: 20px;
-  border-top: 1px solid var(--rule-soft);
-  font-size: 14.5px;
-  color: var(--ink-soft);
+.cmdRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
 }
-.alt strong {
+
+.cmd {
   color: var(--ink);
-  font-weight: 600;
-}
-.chat {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--blue);
+  font-size: 13px;
+  word-break: break-all;
 }
 
-@media (max-width: 720px) {
-  .section {
-    padding: 60px 0;
-  }
-  .block {
-    padding: 20px 18px;
-  }
+.body {
+  margin: 0;
+  max-width: 70ch;
+}
+
+.chat {
+  color: var(--blue);
 }

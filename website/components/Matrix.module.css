@@ -1,0 +1,102 @@
+.sec {
+  padding-bottom: var(--sp-6);
+}
+
+.rule {
+  border-top: 1px solid var(--rule);
+  margin-bottom: var(--sp-4);
+}
+
+.h2 {
+  font-size: var(--t-h2);
+  margin-bottom: var(--sp-1);
+}
+
+.sub {
+  color: var(--mute);
+  font-size: 14px;
+  margin: 0 0 var(--sp-4);
+  max-width: 70ch;
+}
+
+.head,
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) auto minmax(0, 1.15fr) auto minmax(0, 0.8fr);
+  align-items: baseline;
+  font-size: var(--t-sm);
+}
+
+.head {
+  color: var(--mute);
+  padding-bottom: var(--sp-1);
+}
+
+.row {
+  padding: var(--sp-1) 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.pipe {
+  color: var(--rule);
+  padding: 0 var(--sp-2);
+  user-select: none;
+}
+
+.q {
+  color: var(--ink);
+}
+.today {
+  color: var(--red);
+}
+.today.has {
+  color: var(--ink-soft);
+}
+.adds {
+  color: var(--blue);
+}
+
+/* Column labels, shown only once the grid collapses. */
+.mLabel {
+  display: none;
+  color: var(--mute);
+}
+
+.note {
+  color: var(--mute);
+  font-size: var(--t-sm);
+  margin: var(--sp-3) 0 0;
+  max-width: 70ch;
+}
+.red {
+  color: var(--red);
+}
+
+/*
+  Small screens stack the row and LOSE NOTHING. The old stack section set the
+  trust qualifier to display:none below 720px, which deleted the one thing the
+  table exists to say. Labels appear here because the column heads are gone.
+*/
+@media (max-width: 720px) {
+  .head {
+    display: none;
+  }
+  .row {
+    display: block;
+    padding: var(--sp-2) 0;
+  }
+  .pipe {
+    display: none;
+  }
+  .q {
+    display: block;
+    margin-bottom: 2px;
+  }
+  .today,
+  .adds {
+    display: block;
+  }
+  .mLabel {
+    display: inline;
+  }
+}

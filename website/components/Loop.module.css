@@ -1,0 +1,60 @@
+.sec {
+  padding-bottom: var(--sp-6);
+}
+
+.rule {
+  border-top: 1px solid var(--rule);
+  margin-bottom: var(--sp-4);
+}
+
+.h2 {
+  font-size: var(--t-h2);
+  margin-bottom: var(--sp-1);
+}
+
+.sub {
+  color: var(--mute);
+  font-size: 14px;
+  margin: 0 0 var(--sp-4);
+  max-width: 70ch;
+}
+
+.steps {
+  list-style: none;
+  margin: 0 0 var(--sp-4);
+  padding: 0;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: var(--sp-2);
+  padding: var(--sp-1) 0;
+  align-items: start;
+}
+
+.n {
+  color: var(--mute);
+}
+
+.t b {
+  color: var(--ink);
+}
+
+.d {
+  display: block;
+  color: var(--mute);
+  font-size: var(--t-sm);
+}
+
+.body {
+  margin: 0 0 var(--sp-3);
+  max-width: 70ch;
+}
+
+.note {
+  color: var(--mute);
+  font-size: var(--t-sm);
+  margin: 0;
+  max-width: 70ch;
+}
