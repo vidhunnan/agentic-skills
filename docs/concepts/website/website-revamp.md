@@ -76,6 +76,60 @@ a merge candidate, scoped to specimens rather than applied whole.
 
 ---
 
+## Round 2 — The same register, at full content
+
+**Date:** 2026-08-19
+**Testing:** round 1 could only test register, because its comps carried a fifth of
+the page. So: **does terminal-rendered markdown survive a full page?** Density,
+rhythm, and a fourteen-row catalogue are exactly what a thin comp cannot show, and
+they are where a monospace register is most likely to fail.
+**Links:** [`website-revamp/r2-terminal-markdown.html`](./website-revamp/r2-terminal-markdown.html) · `git:5e1d1ca`
+
+### What changed
+
+One direction, not three — the fork closed in round 1, so this is not a comparison.
+Built to the scope round 1 lacked: all 14 skills, all 9 matrix rows, six sections,
+nav and footer. 19KB against round 1's ~6.5KB.
+
+The direction was made concrete for the first time. **Markdown syntax is present but
+recessive** — `##` before a heading, `**` around bold, the pipes in a table, the
+fence ticks around a code block, all rendered in `--mute` rather than hidden.
+
+Two sections were authored that exist nowhere else:
+
+- **The worked loop** — `decisions-logger` from "you decided something" through
+  reading the evidence, asking what it cannot find, writing the record, registering
+  the rule, and offering again next session unasked. Step 4 named as the one nothing
+  else does. The shipped site has never shown the mechanism working.
+- **Install as a sequence** rather than a menu of fourteen equal commands.
+
+### What we learned
+
+**The register held.** The failure mode a monospace page is most exposed to — a long
+catalogue turning into an undifferentiated wall — did not appear at fourteen rows,
+because the compact index carries most of them at one line each and only three are
+shown in full.
+
+**Recessive syntax turned out to be the strongest reading of a constraint we already
+had.** The language doc requires records to be *"shown verbatim, never restyled."*
+Showing `##` and `*(reason not stated)*` dimmed rather than hidden **is** verbatim;
+rendering them into styled components would not be. The direction and the constraint
+turned out to be the same idea, which was not obvious when either was written.
+
+**One craft variable is unresolved and is the main risk:** how dim *recessive* should
+be. It is the line between *this is the file* and *this is a costume*, and it was set
+by eye in a single pass.
+
+### Verdict
+
+**Kept** — approved for build on 2026-08-19.
+
+Round 2's question was whether the register survives full page length; it was approved
+at full content, which answers that question. **No reason beyond round 1's was
+separately articulated, and none is invented here** — round 1's stated reason carries.
+
+---
+
 ## What this round cost, and what it bought
 
 Round 1 spent a generation cycle to learn something it could not have learned by
