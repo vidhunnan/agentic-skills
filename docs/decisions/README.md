@@ -64,9 +64,10 @@ Copy `_TEMPLATE.md`. Number decisions sequentially: `0001-use-markdown-not-a-dat
 | [0018](./0018-website-styling-is-plain-css-modules.md) | Website styling is plain CSS Modules, not Tailwind | 2026-07-19 | Accepted | 0 | `git:e4a1f2e` |
 | [0019](./0019-roadmapped-skills-live-in-concepts-not-prds.md) | Roadmapped skills live in `docs/concepts/`, not `docs/prds/` | 2026-08-16 | Accepted | 0 | `docs/prds/README.md` |
 | [0020](./0020-design-gets-its-own-stack-not-a-shoehorn-into-docs.md) | Design gets its own context stack, not a shoehorn into `docs/` | 2026-08-16 | Accepted | 0 | `skills/design-setup/SKILL.md` §The canon |
-| [0021](./0021-design-skills-never-make-the-design-decision.md) | Design skills record and check; they never make the design decision | 2026-08-16 | Accepted | 0 | `skills/design-decisions/SKILL.md` |
+| [0021](./0021-design-skills-never-make-the-design-decision.md) | Design skills record and check; they never make the design decision | 2026-08-16 | Accepted | 1 | `skills/design-decisions/SKILL.md` |
+| [0022](./0022-generation-is-allowed-only-into-explorations.md) | Generation is allowed, but only into the explorations tier | 2026-08-19 | Accepted | 0 | `docs/concepts/design-context-stack.md` §The seven tiers |
 
-*No supersessions yet — the graph is omitted rather than rendered empty. 21 decisions stand.*
+*No supersessions yet — the graph is omitted rather than rendered empty. 22 decisions stand. [0022](./0022-generation-is-allowed-only-into-explorations.md) narrows [0021](./0021-design-skills-never-make-the-design-decision.md) without superseding it — the scope changed, the decision did not.*
 
 *See [`0000-not-logged.md`](./0000-not-logged.md) for the 15 candidates this log deliberately does **not** contain — including 5 real decisions whose reasoning was never recorded.*
 <!-- END decisions-index -->

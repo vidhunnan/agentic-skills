@@ -87,7 +87,7 @@ in their frontmatter description and their edge cases.
 *Append-only. Everything above this heading is **frozen**. Entries below are dated
 and additive — evidence that the world moved, not a revision of what was decided.*
 
-*(none yet)*
+- **2026-08-19** — The boundary this decision set was narrowed, not reversed. `design-explore`, built outside the library against a real project, generates design directions as artifacts — which this decision forbids. [0022](./0022-generation-is-allowed-only-into-explorations.md) permits generation into `design/explorations/` only, under three conditions, and leaves the record tiers (`briefs`, `research`, `decisions`, `system`) under this decision unchanged. Evidence: `docs/decisions/0022-generation-is-allowed-only-into-explorations.md`.
 
 ---
 
