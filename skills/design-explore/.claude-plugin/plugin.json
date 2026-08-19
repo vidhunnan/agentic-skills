@@ -1,0 +1,8 @@
+{
+  "name": "design-explore",
+  "description": "Generates three genuinely distinct design directions from a written visual direction — each committed to a named structural axis, each with its thesis, bet and risk — ending in a comparison matrix you judge by eye. Never records the verdict.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

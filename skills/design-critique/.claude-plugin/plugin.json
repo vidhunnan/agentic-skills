@@ -1,0 +1,8 @@
+{
+  "name": "design-critique",
+  "description": "Reviews a built interface against its stated design intent — naming how the thing reads before proposing a fix, ranking findings by severity, and treating removal as a first-class verdict. Refuses to critique without a written intent.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}
