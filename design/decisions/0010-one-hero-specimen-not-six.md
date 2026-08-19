@@ -105,7 +105,19 @@ motion exception, the scroll reveal, and `globals.css` now states it in the file
 
 *Append-only. Everything above is **frozen**. Entries below are dated and additive.*
 
-*(none yet)*
+- **2026-08-19** — **On the "six specimens as a static gallery" alternative.** Asked whether
+  it was ever considered, the owner did not recognise the option: *"six specimens as a
+  gallery — I don't know what that is."*
+
+  So it was not a fork that was weighed and rejected. On the evidence it was constructed when
+  this record was written, which is exactly what the `*(not recorded)*` marker in §Evidence
+  was flagging. The row stays in the table above — that text is frozen — but a reader should
+  treat it as an option that existed on paper only, and should not cite it as proof the
+  gallery was tried.
+
+  Worth naming as a pattern rather than a one-off: an alternatives table is the easiest place
+  in an ADR for a plausible-but-unreal option to appear, because a decision reads better with
+  a loser in it.
 
 ---
 

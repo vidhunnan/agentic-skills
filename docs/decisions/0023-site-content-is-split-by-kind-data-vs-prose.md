@@ -101,7 +101,27 @@ own record, not the library, so they can't be derived from skills.ts."*
 *Append-only. Everything above this heading is **frozen**. Entries below are dated and
 additive — evidence that the world moved, not a revision of what was decided.*
 
-*(none yet)*
+- **2026-08-19** — **Asked, and the gap stands.** The owner was asked why prose stayed
+  hardcoded in components while repeated content lived in `skills.ts`. No reason for the
+  existing split was given, so the `*(reason not stated)*` markers above remain correct and
+  are not being retro-filled.
+
+  What was given instead was an instruction about what happens next:
+
+  > *"instead of hardcoding, can you maybe make it into proper tokens and things like that."*
+
+  **This is a reversal in intent, recorded the same day the decision was logged.** 0023
+  documented the split that was actually in force — repeated and countable content as data,
+  section prose as literals. The instruction is to end that split and move the prose into a
+  structured source alongside the skills data.
+
+  Nothing is superseded yet: this entry records intent, and intent is not a decision. **When
+  the prose actually moves, that needs its own ADR superseding this one** — and it should
+  state what the split cost, because 0023's own reasoning for keeping prose in components
+  will be the first thing the new record has to argue against.
+
+  Related: the page's five derived counts drifted three times in a single day (32 → 37 → 39
+  documented commits), which is the same failure in its most checkable form.
 
 ---
 

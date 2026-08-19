@@ -100,7 +100,28 @@ failure degrades to the right register rather than to a serif.
 
 *Append-only. Everything above is **frozen**. Entries below are dated and additive.*
 
-*(none yet)*
+- **2026-08-19** — **The rationale is no longer unstated.** Asked directly, hours after
+  this record was logged with `*(reason not stated)*`, the owner gave one. In their words,
+  dictated and quoted rather than tidied:
+
+  > *"it has a lot of other features. Right? For example, variable font and other things.
+  > And also, it's very close to how a marked \[-up\] file might \[read at\] top level, but
+  > we have to build on a new direction."*
+
+  Two of the three parts are checkable. **Variable font** is corroborated by `git:fcea6dd`,
+  which records 39 woff2 files and 608KB becoming 6 files and 68KB — though that commit
+  words it as *"it turned out to be a variable font"*, i.e. found during the build rather
+  than known at the fork, so it reads as a confirmed bet rather than the deciding one.
+  **Reads like a marked-up file** is [0007](./0007-the-site-is-terminal-rendered-markdown.md)'s
+  direction argument applied to the face itself, not a new claim.
+
+  The third part — *"we have to build on a new direction"* — is recorded as said. Whether it
+  means the incumbent was rejected *because* it belonged to the superseded direction is
+  **not stated**, and is deliberately not resolved here.
+
+  **This does not make the frozen text above wrong.** At the time of the decision, no reason
+  was on record; that remains true and is why the option table reads as it does. What changed
+  is what the next reader knows.
 
 ---
 

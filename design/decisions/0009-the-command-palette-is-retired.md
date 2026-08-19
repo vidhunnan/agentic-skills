@@ -101,7 +101,24 @@ removed, and that distinction is the whole reason this record exists.
 
 *Append-only. Everything above is **frozen**. Entries below are dated and additive.*
 
-*(none yet)*
+- **2026-08-19** — **The rationale is no longer unstated.** Asked why the palette was
+  retired rather than rebuilt, the owner answered on the same day this record was logged.
+  Quoted as dictated:
+
+  > *"for the new website direction, we would have not needed it. But maybe we can add it
+  > in later stages, because right now we can keep it simpler."*
+
+  So the reason is **fit, not failure**. Nothing about the palette was found wanting; the
+  direction it was built for was replaced, and the replacement did not call for it. That is
+  a materially different record from "it was cut because it was not used" — which is what a
+  reader would reasonably have assumed from the frozen text above, and which no evidence
+  ever supported.
+
+  **It also converts the retirement into a deferral.** *"Maybe we can add it in later
+  stages"* is an intent, not a plan, and is recorded here as one — but it means a future
+  rebuild would not be reversing this decision so much as resuming something parked. If it
+  comes back it needs a new decision, because the evidence [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md)
+  asked for still cannot be collected while there is nothing to measure.
 
 ---
 
