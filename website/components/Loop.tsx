@@ -16,10 +16,7 @@ export default function Loop() {
     <section id="how" className={`${styles.sec} band`}>
       <div className="shell">
         <div className={styles.head}>
-          <h2>
-            <span className="s">## </span>
-            {LOOP_COPY.heading}
-          </h2>
+          <h2>{LOOP_COPY.heading}</h2>
           <p className={styles.sub}>
             {LOOP_COPY.subLead}
             <b>{LOOP_COPY.subSkill}</b>
@@ -39,7 +36,6 @@ export default function Loop() {
               </p>
             </div>
             <p className={styles.note}>
-              <span className="s">&gt; </span>
               {COUNTS.rules} rules live in this repo&rsquo;s CLAUDE.md. They have
               produced <b>{COUNTS.decisions} decisions</b>,{" "}
               <b>{COUNTS.designDecisions} design decisions</b>,{" "}

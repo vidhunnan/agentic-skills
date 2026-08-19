@@ -20,3 +20,42 @@
   border-color: var(--blue);
   color: var(--blue);
 }
+
+/* ── primary: the command is the button ───────────────────────────
+   No fence, no tick rows. One thing to press, with the command legible on it.
+   ─────────────────────────────────────────────────────────────── */
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 13px var(--sp-3) 13px var(--sp-4);
+  font-size: var(--t-body);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  background: var(--paper-2);
+  border-radius: var(--radius);
+  max-width: 100%;
+}
+.primary:hover {
+  border-color: var(--blue);
+  color: var(--ink);
+}
+.primary .cmd {
+  font-family: inherit;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+.primary .action {
+  flex: 0 0 auto;
+  padding-left: var(--sp-3);
+  border-left: 1px solid var(--rule);
+  color: var(--mute);
+  font-size: var(--t-meta);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.primary:hover .action,
+.primary.copied .action {
+  color: var(--blue);
+}

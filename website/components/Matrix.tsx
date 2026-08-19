@@ -19,10 +19,7 @@ export default function Matrix() {
   return (
     <section id="written" className={`shell ${styles.sec}`}>
       <div className={styles.head}>
-        <h2>
-          <span className="s">## </span>
-          {MATRIX_COPY.heading}
-        </h2>
+        <h2>{MATRIX_COPY.heading}</h2>
         <p className={styles.sub}>{MATRIX_COPY.sub}</p>
       </div>
 
@@ -53,7 +50,6 @@ export default function Matrix() {
       </div>
 
       <p className={styles.note}>
-        <span className="s">&gt; </span>
         <span className={styles.red}>{MATRIX_COPY.noteRed}</span>
         {MATRIX_COPY.note}
       </p>

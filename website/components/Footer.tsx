@@ -60,13 +60,11 @@ export default function Footer() {
         </div>
 
         <p className={styles.bar}>
-          <span className="s">&lt;!-- </span>
           {FOOTER.builtBy}{" "}
           <a href={FOOTER.authorHref} className={styles.author}>
             {FOOTER.author}
           </a>{" "}
           · {FOOTER.licence}
-          <span className="s"> --&gt;</span>
         </p>
       </div>
     </footer>

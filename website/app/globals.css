@@ -56,12 +56,16 @@
   --maxw: 78ch;
   --pad: 26px;
 
-  /* surface — alpha of --ink, which is what --rule already is, so this adds no
-     colour to the palette. Contained regions only: the page never floats. */
+  /*
+    surface — a corner radius and nothing else. Round 3 added a shadow pair and a
+    dark-mode inset highlight; they were removed the same day. Depth was doing no
+    work that the border and the --paper/--paper-2 step were not already doing,
+    and least of all in light mode.
+
+    If a region stops reading as contained, strengthen its border to --rule.
+    Do not reintroduce a shadow.
+  */
   --radius: 5px;
-  --shadow: 0 1px 2px rgba(22, 22, 15, 0.06), 0 12px 26px -12px rgba(22, 22, 15, 0.26);
-  --shadow-lift: 0 2px 4px rgba(22, 22, 15, 0.07), 0 22px 40px -16px rgba(22, 22, 15, 0.34);
-  --inset: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -79,10 +83,6 @@
 
     --scrim: rgba(20, 20, 15, 0.72);
     --scrim-solid: rgba(20, 20, 15, 0.95);
-
-    --shadow: 0 12px 30px -14px rgba(0, 0, 0, 0.85);
-    --shadow-lift: 0 24px 46px -16px rgba(0, 0, 0, 0.95);
-    --inset: inset 0 1px 0 rgba(237, 236, 228, 0.09);
   }
 }
 
@@ -191,12 +191,18 @@ b {
 }
 
 /*
-  The syntax layer. Markdown markers — ## ** | ``` *(…)* — are rendered,
-  not hidden, in the weakest token that still clears AA.
+  The syntax layer, for RECORD CONTENT ONLY.
 
-  This is what makes the direction work: showing the source markers IS
-  "records shown verbatim, never restyled" (design/system/language-website.md).
-  Rendering them into styled components would not be.
+  Markdown markers — ## ** *(…)* — are rendered rather than hidden inside a quoted
+  record, because showing the source markers IS "records shown verbatim, never
+  restyled" (design/system/language-website.md). Rendering them into styled
+  components would not be.
+
+  The page's own headings do not carry them. `## The skills` is not a record; it is
+  a website heading wearing a costume, and the constraint above never applied to it
+  — note that the footer's own h3s never carried `###` either. Design ADR 0007's
+  verbatim argument cites `##` and `*(reason not stated)*`, both of which are lines
+  in the hero specimen, not page chrome.
 */
 .s {
   color: var(--mute);

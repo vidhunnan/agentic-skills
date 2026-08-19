@@ -13,47 +13,62 @@
   line-height: 1.6;
 }
 
-/* Asymmetric on purpose: one lead card, two stacked beside it. */
-.feat {
+/*
+  A list, not a table. No outer box, no column rules — one hairline between
+  entries and nothing else. The first pass boxed it and ruled it into columns,
+  and it read as a spreadsheet of the library rather than a list of things you
+  might install.
+*/
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.list > li {
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.summary {
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
-  gap: var(--sp-4);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--sp-5);
+  padding: var(--sp-5) var(--sp-2);
+  cursor: pointer;
+  list-style: none;
+}
+.summary::-webkit-details-marker {
+  display: none;
+}
+.summary::marker {
+  content: "";
+}
+.summary:hover .nm {
+  color: var(--blue);
+}
+.summary:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: -2px;
 }
 
-.skill {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  background: var(--paper-2);
-  box-shadow: var(--shadow), var(--inset);
-  overflow: hidden;
+.text {
+  display: block;
+  min-width: 0;
 }
-.lead {
-  grid-row: span 2;
-}
-
 .top {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--sp-3);
-  padding: 12px var(--sp-4);
-  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
 }
-.lead .top {
-  padding: var(--sp-4);
-}
-
 .nm {
   color: var(--ink);
   font-weight: 600;
-}
-.lead .nm {
   font-size: var(--t-lede);
+  transition: color 0.15s ease;
 }
-
 .surf {
-  margin-left: auto;
   font-size: var(--t-meta);
 }
 .on {
@@ -64,47 +79,69 @@
   text-decoration: line-through;
 }
 
-.body {
-  flex: 1;
-  padding: var(--sp-4);
-}
-.ans {
-  margin: 0;
-  color: var(--blue);
-  font-size: var(--t-sm);
-}
-.lead .ans {
-  font-size: var(--t-lede);
-  line-height: 1.5;
-}
 .desc {
-  margin: var(--sp-2) 0 0;
-  font-size: var(--t-sm);
-}
-.lead .desc {
-  margin-top: var(--sp-3);
-  font-size: var(--t-body);
-}
-.leadTag {
-  margin: 0 0 var(--sp-2);
-  font-size: var(--t-meta);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--mute);
-}
-.out {
-  margin: var(--sp-4) 0 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  margin-top: var(--sp-2);
+  max-width: 82ch;
   font-size: var(--t-sm);
   color: var(--ink-soft);
 }
+.row[open] .desc {
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  overflow: visible;
+}
 
+/* Plus becomes minus. No glyph font, no image. */
+.plus {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  margin-top: 5px;
+  flex: 0 0 auto;
+}
+.plus::before,
+.plus::after {
+  content: "";
+  position: absolute;
+  background: var(--mute);
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+.plus::before {
+  top: 6px;
+  left: 0;
+  width: 13px;
+  height: 1px;
+}
+.plus::after {
+  top: 0;
+  left: 6px;
+  width: 1px;
+  height: 13px;
+}
+.row[open] .plus::after {
+  transform: scaleY(0);
+}
+.row[open] .plus::before {
+  background: var(--blue);
+}
+
+/* One line between the description and the command. That is the whole divider. */
+.body {
+  padding: 0 var(--sp-2) var(--sp-5);
+}
 .cmdRow {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--sp-3);
-  padding: 12px var(--sp-4);
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
   border-top: 1px solid var(--rule-soft);
-  background: var(--paper);
+  width: 100%;
 }
 .cmd {
   color: var(--ink);
@@ -112,69 +149,12 @@
   overflow-wrap: anywhere;
 }
 
-/* ── the index ─────────────────────────────────────────────────── */
-.idx {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  list-style: none;
-  margin: var(--sp-4) 0 0;
-  padding: 0;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  background: var(--paper);
-  box-shadow: var(--shadow), var(--inset);
-  overflow: hidden;
-}
-.row {
-  display: grid;
-  grid-template-columns: 152px minmax(0, 1fr) auto auto;
-  align-items: center;
-  gap: var(--sp-3);
-  padding: 11px var(--sp-4);
-  border-top: 1px solid var(--rule-soft);
-  font-size: var(--t-sm);
-}
-.idx > .row:nth-child(-n + 2) {
-  border-top: 0;
-}
-.idx > .row:nth-child(odd) {
-  border-right: 1px solid var(--rule);
-}
-.row:hover {
-  background: var(--paper-2);
-}
-.ansInline {
-  color: var(--mute);
-}
-
-@media (max-width: 1040px) {
-  .idx {
-    grid-template-columns: minmax(0, 1fr);
+@media (max-width: 700px) {
+  .summary {
+    gap: var(--sp-4);
+    padding: var(--sp-4) var(--sp-1);
   }
-  .idx > .row:nth-child(odd) {
-    border-right: 0;
-  }
-  .idx > .row:nth-child(2) {
-    border-top: 1px solid var(--rule-soft);
-  }
-}
-
-@media (max-width: 900px) {
-  .feat {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .lead {
-    grid-row: auto;
-  }
-}
-
-@media (max-width: 820px) {
-  .row {
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    row-gap: 2px;
-  }
-  .ansInline {
-    grid-column: 1 / -1;
-    order: 3;
+  .body {
+    padding: 0 var(--sp-1) var(--sp-4);
   }
 }

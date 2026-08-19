@@ -56,7 +56,6 @@
   border: 1px solid var(--rule);
   border-radius: var(--radius);
   background: var(--paper);
-  box-shadow: var(--shadow), var(--inset);
   padding: 7px 15px;
   color: var(--ink);
   font-size: var(--t-sm);

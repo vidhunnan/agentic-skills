@@ -1,3 +1,8 @@
+// Round 4 note on `includeHidden` and `allTextContents` below: the catalogue is
+// now fourteen collapsed <details> rows and the install block steps one command at
+// a time, so most copy buttons are legitimately outside the accessibility tree on
+// load. The SELECTORS changed to see them; not one assertion did. If a count here
+// ever needs lowering, that is content going missing, not a test needing a tweak.
 import { expect, test } from "@playwright/test";
 import { SKILL_GROUPS, TOTAL_SKILLS } from "../components/lib/skills";
 
@@ -14,6 +19,7 @@ test("renders one catalogue entry per skill in SKILL_GROUPS", async ({
 
   const catalogue = page.locator("#skills");
   const entries = catalogue.getByRole("button", {
+    includeHidden: true,
     name: /^Copy: \/plugin install /,
   });
 
@@ -22,7 +28,10 @@ test("renders one catalogue entry per skill in SKILL_GROUPS", async ({
   for (const group of SKILL_GROUPS) {
     for (const skill of group.skills) {
       await expect(
-        catalogue.getByRole("button", { name: `Copy: ${skill.install}` }),
+        catalogue.getByRole("button", {
+          name: `Copy: ${skill.install}`,
+          includeHidden: true,
+        }),
         `catalogue entry for ${skill.name}`,
       ).toHaveCount(1);
       await expect(

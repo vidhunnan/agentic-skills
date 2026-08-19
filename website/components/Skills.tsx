@@ -1,28 +1,34 @@
 import CopyButton from "./CopyButton";
-import Reveal from "./Reveal";
 import { SKILLS_COPY } from "./lib/content";
 import { SKILL_GROUPS, type Skill } from "./lib/skills";
 import styles from "./Skills.module.css";
 
 /**
- * One lead card, two beside it, eleven as a two-column index.
+ * Fourteen rows, all closed. Open one for its description and its command.
  *
- * Equal thirds is the docs-template shape; an asymmetric grid says which skill
- * to read first. decisions-logger leads because it is the one the page's own
- * argument rests on — the hero specimen is its output.
+ * Round 3 showed three as cards and eleven as an index, and it read as
+ * congested — two shapes doing the same job, and the cards were tall enough
+ * that three of them filled a screen. One shape scales: at the thirty-two on
+ * the roadmap this is thirty-two rows, not eleven screens.
  *
- * The three are chosen to cover the three evidence sources — from git, from you,
- * and from the record itself — not to be the "best" three.
+ * <details>/<summary> rather than a JS disclosure, deliberately. It is keyboard
+ * accessible for free, and it works with JS off — which matters because this
+ * repo's rule is that JS may enhance but never reveal, and a JS toggle would
+ * ship a control that does nothing for a reader without it.
+ *
+ * WHAT THIS GIVES UP: the lead card, and with it the "start with this one"
+ * signal. decisions-logger stays first in the list, but a first row is a much
+ * weaker recommendation than a card three times the size of its neighbours.
+ * Install.tsx's own comment calls a flat menu "a paralysis machine"; this is
+ * one, mitigated only by ordering.
  */
-const LEAD = "decisions-logger";
-const BESIDE = ["exploration-log", "changelog-tracker"];
+const FIRST = "decisions-logger";
 
 const ALL: Skill[] = SKILL_GROUPS.flatMap((g) => g.skills);
-const byName = (n: string) => ALL.find((s) => s.name === n);
-
-const lead = byName(LEAD);
-const beside = BESIDE.map(byName).filter((s): s is Skill => Boolean(s));
-const rest = ALL.filter((s) => s.name !== LEAD && !BESIDE.includes(s.name));
+const ORDERED: Skill[] = [
+  ...ALL.filter((s) => s.name === FIRST),
+  ...ALL.filter((s) => s.name !== FIRST),
+];
 
 function Surfaces({ skill }: { skill: Skill }) {
   const chat = skill.surfaces.includes("Chat");
@@ -34,75 +40,39 @@ function Surfaces({ skill }: { skill: Skill }) {
   );
 }
 
-function Command({ skill }: { skill: Skill }) {
-  return (
-    <div className={styles.cmdRow}>
-      <code className={styles.cmd}>{skill.install}</code>
-      <CopyButton text={skill.install} />
-    </div>
-  );
-}
-
 export default function Skills() {
   return (
     <section id="skills" className={`shell ${styles.sec}`}>
       <div className={styles.head}>
-        <h2>
-          <span className="s">## </span>
-          {SKILLS_COPY.heading}
-        </h2>
+        <h2>{SKILLS_COPY.heading}</h2>
         <p className={styles.sub}>{SKILLS_COPY.sub}</p>
       </div>
 
-      <div className={styles.feat}>
-        {lead && (
-          <article className={`${styles.skill} ${styles.lead}`}>
-            <div className={styles.top}>
-              <span className={styles.nm}>{lead.name}</span>
-              <Surfaces skill={lead} />
-            </div>
-            <div className={styles.body}>
-              <p className={styles.leadTag}>{SKILLS_COPY.leadTag}</p>
-              {lead.answers && <p className={styles.ans}>{lead.answers}</p>}
-              <p className={styles.desc}>{lead.desc}</p>
-              <p className={styles.desc}>
-                <span className="s">&gt; </span>
-                {SKILLS_COPY.leadNote}
-              </p>
-              <p className={styles.out}>
-                <span className="s">{SKILLS_COPY.leadOutputPrefix}</span>
-                {SKILLS_COPY.leadOutput}
-                <span className="s">{SKILLS_COPY.leadOutputSuffix}</span>
-              </p>
-            </div>
-            <Command skill={lead} />
-          </article>
-        )}
-
-        {beside.map((s) => (
-          <article key={s.name} className={styles.skill}>
-            <div className={styles.top}>
-              <span className={styles.nm}>{s.name}</span>
-              <Surfaces skill={s} />
-            </div>
-            <div className={styles.body}>
-              {s.answers && <p className={styles.ans}>{s.answers}</p>}
-              <p className={styles.desc}>{s.desc}</p>
-            </div>
-            <Command skill={s} />
-          </article>
-        ))}
-      </div>
-
-      <ul className={styles.idx}>
-        {rest.map((s, i) => (
-          <Reveal as="li" key={s.name} index={i} className={styles.row}>
-            <span className={styles.nm}>{s.name}</span>
-            <span className={styles.ansInline}>{s.answers}</span>
-            <Surfaces skill={s} />
-            {/* The index is the only place these eleven commands live. */}
-            <CopyButton text={s.install} label="copy" />
-          </Reveal>
+      <ul className={styles.list}>
+        {ORDERED.map((s) => (
+          <li key={s.name}>
+            <details className={styles.row}>
+              <summary className={styles.summary}>
+                <span className={styles.text}>
+                  <span className={styles.top}>
+                    <span className={styles.nm}>{s.name}</span>
+                    <Surfaces skill={s} />
+                  </span>
+                  {/* Clamped to two lines closed, released when open. The
+                      description is the same string either way — nothing is
+                      withheld, it is only cropped. */}
+                  <span className={styles.desc}>{s.desc}</span>
+                </span>
+                <span className={styles.plus} aria-hidden="true" />
+              </summary>
+              <div className={styles.body}>
+                <div className={styles.cmdRow}>
+                  <code className={styles.cmd}>{s.install}</code>
+                  <CopyButton text={s.install} label="copy" />
+                </div>
+              </div>
+            </details>
+          </li>
         ))}
       </ul>
     </section>

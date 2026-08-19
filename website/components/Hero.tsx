@@ -20,12 +20,8 @@ export default function Hero() {
     <section id="top" className={`shell ${styles.hero}`}>
       <div className={styles.grid}>
         <div className={styles.say}>
-          <p className={styles.eyebrow}>
-            <span className="s">&lt;!--</span> {HERO.eyebrow}{" "}
-            <span className="s">--&gt;</span>
-          </p>
+          <p className={styles.eyebrow}>{HERO.eyebrow}</p>
           <h1>
-            <span className="s"># </span>
             {HERO.headline}
             <span className={styles.cont}>{HERO.headlineCont}</span>
           </h1>
@@ -38,13 +34,8 @@ export default function Hero() {
             {HERO.ledeAfter}
           </p>
 
-          <div className={`${styles.fence} ${styles.cmdFence}`}>
-            <div className={styles.tick}>```sh</div>
-            <div className={styles.cmdRow}>
-              <code className={styles.cmd}>{MARKETPLACE_CMD}</code>
-              <CopyButton text={MARKETPLACE_CMD} />
-            </div>
-            <div className={styles.tick}>```</div>
+          <div className={styles.action}>
+            <CopyButton text={MARKETPLACE_CMD} variant="primary" />
           </div>
 
           <p className={styles.meta}>
@@ -55,10 +46,21 @@ export default function Hero() {
 
         <div>
           <div className={styles.card}>
+            {/*
+              Window chrome. The controls are decorative and must stay
+              aria-hidden and non-focusable: a close button that closes nothing
+              is a lie to a keyboard user, and this repo already has a rule
+              against shipping controls that do nothing (the deleted Nav only
+              rendered its palette trigger after mount, for that reason).
+            */}
             <div className={styles.cardBar}>
-              <span className={styles.chip}>md</span>
-              <span>{spec.source}</span>
-              <span className={styles.by}>— {spec.by}</span>
+              <span className={styles.dots} aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+              <span className={styles.title}>{spec.source}</span>
+              <span className={styles.by}>{spec.by}</span>
             </div>
             <div className={styles.cardBody}>
               <pre className={styles.pre}>

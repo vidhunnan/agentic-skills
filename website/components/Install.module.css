@@ -29,42 +29,86 @@
   font-size: var(--t-meta);
 }
 
-.fence {
+.panel {
   border: 1px solid var(--rule);
   border-radius: var(--radius);
   background: var(--paper);
-  box-shadow: var(--shadow), var(--inset);
   overflow: hidden;
 }
-.tick {
-  padding: 6px 14px;
-  font-size: var(--t-meta);
-  color: var(--mute);
+
+.steps {
+  display: grid;
+  padding: var(--sp-4);
 }
-.block {
-  border-block: 1px solid var(--rule-soft);
-  background: var(--paper-2);
-  padding-bottom: var(--sp-2);
+/* Before mount every step is stacked and readable. */
+.step + .step {
+  margin-top: var(--sp-4);
 }
+
+/*
+  After mount they share one grid cell, so the panel keeps the height of the
+  tallest step and the controls below it never move as you step through.
+*/
+.stepped .steps > .step {
+  grid-area: 1 / 1;
+  margin-top: 0;
+  visibility: hidden;
+}
+.stepped .steps > .current {
+  visibility: visible;
+}
+
 .comment {
-  margin: 0;
-  padding: 12px 14px 0;
+  margin: 0 0 var(--sp-3);
   color: var(--mute);
   font-size: var(--t-sm);
-}
-.last {
-  padding-bottom: 12px;
 }
 .cmdRow {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  padding: 8px 14px 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--radius);
+  background: var(--paper-2);
 }
 .cmd {
   color: var(--ink);
   font-size: var(--t-sm);
   overflow-wrap: anywhere;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 10px var(--sp-4);
+  border-top: 1px solid var(--rule-soft);
+  background: var(--paper-2);
+}
+.nav {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: var(--t-meta);
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.nav:hover:not(:disabled) {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+.nav:disabled {
+  color: var(--mute);
+  opacity: 0.5;
+  cursor: default;
+}
+.count {
+  margin-left: auto;
+  color: var(--mute);
+  font-size: var(--t-meta);
 }
 
 @media (max-width: 900px) {
