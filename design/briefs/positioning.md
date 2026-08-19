@@ -1,6 +1,6 @@
 # Design brief — Positioning the library after the design expansion
 
-Status: active · Date: 2026-08-16
+Status: closed · Date: 2026-08-16 · Closed: 2026-08-19
 
 ## The problem
 
@@ -80,6 +80,27 @@ read.
 - Is "context engineering" still the right words for a designer audience, or is
   it engineering vocabulary that will lose the reader in the first sentence?
   Nobody has tested this.
+
+## Revisions
+
+- **2026-08-19** — **Closed.** The reposition this brief specified was delivered:
+  design ADR 0001 gave the two stacks equal billing, the site gained a *Design work*
+  group and a second stack section, and the README and `skills.ts` followed. It is
+  closed because a wider revamp now supersedes its scope — two of its own terms no
+  longer hold. Previously, **Constraints · Brand**: *"The Swiss whitepaper direction
+  stands (ADR 0017). No new visual direction."* Previously, **Non-goals**:
+  *"Redesigning the site visually. ADR 0017 stands. This is a content and structure
+  change."* Both were lifted deliberately; see the revamp brief and the design ADR
+  superseding 0017.
+- **2026-08-19** — **Its success criterion was never tested.** *"Someone lands on the
+  page cold and can say what the library is for"* is observable only by asking
+  someone who has not seen it, and nobody was asked. `design/research/` is still
+  empty and Vercel Web Analytics returns `404 — not found`, so there is no
+  behavioural data either. This brief closes **unevaluated**, not successful. The
+  revamp carries the same criterion forward and the test moves into its plan.
+- **2026-08-19** — Its second open question was answered by the revamp rather than by
+  a test: *"context engineering"* is retired from the page as jargon, while the plain
+  noun *context* stays. Still untested on a reader; decided on judgement.
 
 ---
 
