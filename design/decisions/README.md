@@ -43,29 +43,50 @@ Copy `_TEMPLATE.md`. Run `/design-decisions` to log one.
 
 | # | Decision | Date | Status | Gave up | Follow-ups |
 |---|---|---|---|---|---|
-| [0001](./0001-two-stacks-equal-billing.md) | Context engineering for code *and* design, at equal billing | 2026-08-16 | Accepted | The tight single-thesis pitch; a clean design-first relaunch later | 0 |
-| [0002](./0002-a-three-family-type-system-for-the-site.md) | A three-family type system: Newsreader, Archivo, IBM Plex Mono | 2026-07-19 *(approx.)* | Accepted | *(none identified — never articulated)* | 1 |
+| [0001](./0001-two-stacks-equal-billing.md) | Context engineering for code *and* design, at equal billing | 2026-08-16 | Superseded by [0011](./0011-one-matrix-not-two-parallel-stacks.md) | The tight single-thesis pitch; a clean design-first relaunch later | 1 |
+| [0002](./0002-a-three-family-type-system-for-the-site.md) | A three-family type system: Newsreader, Archivo, IBM Plex Mono | 2026-07-19 *(approx.)* | Superseded by [0008](./0008-geist-mono-alone.md) | *(none identified — never articulated)* | 2 |
 | [0003](./0003-the-site-follows-the-system-colour-scheme.md) | The site follows the system colour scheme, re-lit rather than inverted | 2026-08-16 | Accepted | The paper metaphor; two palettes to keep honest; deck-divergent accents | 0 |
 | [0004](./0004-a-command-palette-with-actions-not-a-search-box.md) | A command palette with actions, not a search box | 2026-08-16 | Superseded by [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | A convention people must know; desktop-only actions; ~20KB JS; a second way to reach everything | 2 |
-| [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | The palette searches skills and copies one thing | 2026-08-16 | Accepted | Discovery of tiers and records; a reason to open it when not installing | 1 |
-| [0006](./0006-the-hero-specimen-rotates-through-six-skills.md) | The hero specimen rotates through six skills, on a timer | 2026-08-16 | Accepted | The motion spec's absolutism; the undivided single specimen; ~2KB JS; a permanently taller hero | 0 |
+| [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | The palette searches skills and copies one thing | 2026-08-16 | Superseded by [0009](./0009-the-command-palette-is-retired.md) | Discovery of tiers and records; a reason to open it when not installing | 2 |
+| [0006](./0006-the-hero-specimen-rotates-through-six-skills.md) | The hero specimen rotates through six skills, on a timer | 2026-08-16 | Superseded by [0010](./0010-one-hero-specimen-not-six.md) | The motion spec's absolutism; the undivided single specimen; ~2KB JS; a permanently taller hero | 1 |
 | [0007](./0007-the-site-is-terminal-rendered-markdown.md) | The site's visual direction is terminal-rendered markdown | 2026-08-19 | Accepted | The paper metaphor; typographic range; two axes that were never fairly tested | 0 |
+| [0008](./0008-geist-mono-alone.md) | The site's type is Geist Mono alone | 2026-08-19 | Accepted | Italic entirely; the zero-webfont page; Latin-only coverage | 0 |
+| [0009](./0009-the-command-palette-is-retired.md) | The command palette is retired, not rebuilt | 2026-08-19 | Accepted | Search entirely; the evidence 0005 asked for; the keyboard route to the install command | 0 |
+| [0010](./0010-one-hero-specimen-not-six.md) | The hero shows one specimen; the rotation is retired | 2026-08-19 | Accepted | Five records off the page; range without a click; 0006's own questions, unanswered | 0 |
+| [0011](./0011-one-matrix-not-two-parallel-stacks.md) | One nine-question matrix replaces the two parallel stack sections | 2026-08-19 | Accepted | Equal billing as a visible thing; the real folder names; a structure that scaled by stack | 0 |
 
 ### Supersession
 
 ```mermaid
 graph LR
   0004["0004 · Palette with actions"]:::superseded
-  0005["0005 · Skills only, one action"]
+  0005["0005 · Skills only, one action"]:::superseded
+  0009["0009 · Palette retired"]
   0004 -.->|superseded by| 0005
+  0005 -.->|superseded by| 0009
+
+  0002["0002 · Three families"]:::superseded
+  0008["0008 · Geist Mono alone"]
+  0002 -.->|superseded by| 0008
+
+  0006["0006 · Specimen rotates"]:::superseded
+  0010["0010 · One specimen"]
+  0006 -.->|superseded by| 0010
+
+  0001["0001 · Two stacks, equal billing"]:::superseded
+  0011["0011 · One nine-question matrix"]
+  0001 -.->|superseded by| 0011
+
   classDef superseded fill:#f4f4f5,stroke:#a1a1aa,color:#71717a,stroke-dasharray:3 3;
 ```
 
-*Only superseded and superseding decisions appear in the graph. 6 decisions stand unsuperseded — see the table.*
+*Only superseded and superseding decisions appear in the graph. 11 decisions logged, 5 superseded, 6 stand — see the table. Four of the five were superseded on the same day, by the rebuild in `git:fcea6dd`: a direction change ([0007](./0007-the-site-is-terminal-rendered-markdown.md)) that reopened every decision made underneath the old one.*
 
 **One supersession crosses tiers and is not in the graph.** [0007](./0007-the-site-is-terminal-rendered-markdown.md) replaces the direction stated in [repo ADR 0017](../../docs/decisions/0017-the-website-design-direction-is-swiss-whitepaper.md), which predates this tier and therefore lives in `docs/decisions/`. The `**Supersedes:**` field points inside this tier only, so the link is carried as a note in 0007 and as a dated Follow-up on 0017.
 
-**One of these two has no recorded rationale.** [0002](./0002-a-three-family-type-system-for-the-site.md) reads `*(reason not stated)*`: its alternatives were recovered from the exploration drafts, but why the winner won was never written down and nobody remembers. That is a legitimate and useful record — it tells the next reader they are changing something whose reasoning was never captured, which is not the same as changing something nobody thought about.
+**Four records in this tier carry an unrecorded rationale.** [0002](./0002-a-three-family-type-system-for-the-site.md) reads `*(reason not stated)*`: its alternatives were recovered from the exploration drafts, but why the winner won was never written down and nobody remembers. Its successor [0008](./0008-geist-mono-alone.md) carries the same gap for the same reason — why Geist Mono beat the incumbent mono is asserted in a code comment and stated in no source. [0009](./0009-the-command-palette-is-retired.md) records that why the palette was *retired rather than rebuilt* was never stated, and [0010](./0010-one-hero-specimen-not-six.md) marks one of its own alternatives `*(not recorded)*`.
+
+That is a legitimate and useful record — it tells the next reader they are changing something whose reasoning was never captured, which is not the same as changing something nobody thought about. **If you remember any of these four, append the reason as a dated Follow-up entry.** Do not edit the frozen text.
 <!-- END design-decisions-index -->
 
 Previously declined or filtered: 0. *(No reject ledger yet — `0000-not-logged.md` is created the first time a candidate is rejected.)*

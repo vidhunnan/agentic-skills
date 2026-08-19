@@ -1,6 +1,6 @@
 # 0006. The hero specimen rotates through six skills, on a timer
 
-- **Status:** Accepted
+- **Status:** Superseded by [0010](./0010-one-hero-specimen-not-six.md)
 - **Date:** 2026-08-16
 - **Supersedes:** —
 
@@ -97,7 +97,10 @@ records could not fit any other way, and it can be stopped.
 
 *Append-only. Everything above is **frozen**. Entries below are dated and additive.*
 
-*(none yet)*
+- **2026-08-19** — **Superseded by [0010](./0010-one-hero-specimen-not-six.md)**, which
+  retired the rotation and shows one specimen. The questions this record set for itself —
+  whether the pause control beat the dots, whether six was the right number — were never
+  answered, and are now unanswerable on this page.
 
 ---
 

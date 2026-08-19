@@ -1,6 +1,6 @@
 # 0005. The palette searches skills and copies one thing
 
-- **Status:** **Accepted**
+- **Status:** Superseded by [0009](./0009-the-command-palette-is-retired.md)
 - **Date:** 2026-08-16
 - **Supersedes:** [0004](./0004-a-command-palette-with-actions-not-a-search-box.md)
 
@@ -75,6 +75,11 @@ those words is in a skill's name.
 ## Follow-up
 
 *Append-only. Everything above this heading is **frozen**.*
+
+- **2026-08-19** — **Superseded by [0009](./0009-the-command-palette-is-retired.md).**
+  The palette was removed from the page entirely rather than rebuilt in the new
+  direction, which fired this decision's own revisit condition. The evidence this
+  record asked for — what people actually searched — can no longer be collected.
 
 - **2026-08-16** — Simplifying dropped `group.note` from the search keywords,
   which silently lost the query *"figma"* — the phrase *"a Figma file shows the

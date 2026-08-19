@@ -1,6 +1,6 @@
 # 0001. The library is context engineering for code *and* design, at equal billing
 
-- **Status:** **Accepted**
+- **Status:** Superseded by [0011](./0011-one-matrix-not-two-parallel-stacks.md)
 - **Date:** 2026-08-16
 - **Supersedes:** —
 
@@ -66,7 +66,14 @@ repositioning rather than a first one.
 
 *Append-only. Everything above this heading is **frozen**.*
 
-*(none yet)*
+- **2026-08-19** — **Superseded by [0011](./0011-one-matrix-not-two-parallel-stacks.md)**,
+  which replaced the two parallel sections with one nine-question matrix. The trigger
+  was a defect in the built page, not a change of position: rendering two complete
+  stacks printed `changelog/` twice character for character, and printed two
+  `decisions/` rows sharing their trust label and qualifier. Equal billing survives in
+  the content — every design tier is still named — but the *form* that argued it, two
+  sections of equal weight, is gone. Evidence: `git:fcea6dd` ·
+  `git:fcea6dd^:website/components/lib/skills.ts` §`CONTEXT_STACK` / `DESIGN_STACK`.
 
 ---
 
