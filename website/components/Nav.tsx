@@ -1,6 +1,7 @@
 import { NAV } from "./lib/content";
 import { REPO_URL } from "./lib/skills";
 import NavLinks from "./NavLinks";
+import NavShell from "./NavShell";
 import styles from "./Nav.module.css";
 
 /**
@@ -13,7 +14,7 @@ import styles from "./Nav.module.css";
  */
 export default function Nav() {
   return (
-    <header className={styles.bar}>
+    <NavShell>
       <div className={`shell ${styles.inner}`}>
         <a className={styles.mark} href="#top">
           <span className={styles.glyph} aria-hidden="true">
@@ -32,6 +33,6 @@ export default function Nav() {
           {NAV.cta}
         </a>
       </div>
-    </header>
+    </NavShell>
   );
 }

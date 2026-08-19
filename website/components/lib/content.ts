@@ -71,6 +71,11 @@ export const SKILLS_COPY = {
   leadOutputPrefix: "→ writes ",
   leadOutput: "docs/decisions/0018-",
   leadOutputSuffix: "….md",
+  /* Shown under the download. True for every skill that offers one: the zip is
+     the skill, and on Claude.ai a skill that would normally register a standing
+     rule has nowhere to write it. */
+  downloadHint:
+    "Upload under Settings → Customize → Skills. On Claude.ai there is no file to write a standing rule into, so a skill that registers one prints it for you to paste instead.",
 } as const;
 
 export const INSTALL_COPY = {

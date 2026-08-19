@@ -28,7 +28,7 @@ When adding or editing a skill, keep this split explicit — the same skill prod
 
 ## Skill protocols — the CLAUDE.md registration pattern
 
-Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`, `repo-setup`, `decisions-logger`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
+Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`, `repo-setup`, `decisions-logger`, `design-setup`, `design-decisions`, `skill-scaffold` — nine at last count, verified with `grep -l "BEGIN skill:" skills/*/SKILL.md`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
 
 The shared mechanism, embedded as a Step in each such skill:
 

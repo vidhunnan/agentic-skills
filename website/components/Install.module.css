@@ -36,26 +36,15 @@
   overflow: hidden;
 }
 
-.steps {
-  display: grid;
+/* The one-time step. Never in the cycle — people stepped past it. */
+.once {
   padding: var(--sp-4);
-}
-/* Before mount every step is stacked and readable. */
-.step + .step {
-  margin-top: var(--sp-4);
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
 }
 
-/*
-  After mount they share one grid cell, so the panel keeps the height of the
-  tallest step and the controls below it never move as you step through.
-*/
-.stepped .steps > .step {
-  grid-area: 1 / 1;
-  margin-top: 0;
-  visibility: hidden;
-}
-.stepped .steps > .current {
-  visibility: visible;
+.cycle {
+  padding: var(--sp-4);
 }
 
 .comment {
@@ -63,28 +52,91 @@
   color: var(--mute);
   font-size: var(--t-sm);
 }
+
+/* Before mount, every skill is stacked and readable. */
+.slide + .slide {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--rule-soft);
+}
+
+/*
+  After mount they share one grid cell, so the panel holds the height of the
+  tallest slide and the controls never move as you cycle.
+*/
+.stepped .slides {
+  display: grid;
+}
+.stepped .slides > .slide {
+  grid-area: 1 / 1;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+  visibility: hidden;
+}
+.stepped .slides > .current {
+  visibility: visible;
+}
+
+.slideTop {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.nm {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: var(--t-lede);
+}
+.answers {
+  margin: var(--sp-2) 0 0;
+  color: var(--ink-soft);
+  font-size: var(--t-sm);
+}
+
 .cmdRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--sp-3);
+  margin-top: var(--sp-3);
   padding: 10px 12px;
   border: 1px solid var(--rule-soft);
   border-radius: var(--radius);
   background: var(--paper-2);
+}
+.once .cmdRow {
+  background: var(--paper);
 }
 .cmd {
   color: var(--ink);
   font-size: var(--t-sm);
   overflow-wrap: anywhere;
 }
+.download {
+  margin-left: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  color: var(--ink-soft);
+  font-size: var(--t-meta);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.download:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  text-decoration: none;
+}
 
 .controls {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  padding: 10px var(--sp-4);
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
   border-top: 1px solid var(--rule-soft);
-  background: var(--paper-2);
 }
 .nav {
   border: 1px solid var(--rule);
@@ -96,19 +148,24 @@
   cursor: pointer;
   transition: color 0.15s ease, border-color 0.15s ease;
 }
-.nav:hover:not(:disabled) {
+.nav:hover {
   color: var(--blue);
   border-color: var(--blue);
-}
-.nav:disabled {
-  color: var(--mute);
-  opacity: 0.5;
-  cursor: default;
 }
 .count {
   margin-left: auto;
   color: var(--mute);
   font-size: var(--t-meta);
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+  border-top: 1px solid var(--rule-soft);
+  color: var(--mute);
+  font-size: var(--t-meta);
+  line-height: 1.7;
 }
 
 @media (max-width: 900px) {

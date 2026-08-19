@@ -492,3 +492,108 @@ export const LOOP_STEPS: LoopStep[] = [
       "it offers to log the next one. You never have to remember the habit.",
   },
 ];
+
+/* ─────────────────────────────────────────────────────────────────
+   Search — restored from the command palette retired in design ADR 0009.
+
+   The palette itself is not coming back; this is its ranker, driving a plain
+   filter box over the catalogue. Two things it learned the hard way, both of
+   which are load-bearing and neither of which is obvious from reading it:
+
+   1. `group.note` MUST stay in the keywords. Dropping it once silently lost
+      the query "figma" — the only occurrence of that word in the entire
+      dataset is the Design work group's note, "a Figma file shows the winner".
+      Recorded in design ADR 0005's Follow-up.
+
+   2. The BAND ORDER is the fix, not the fuzzy gate. "chat" is four characters
+      and single-word, so the subsequence gate does not exclude it; what stops
+      changelog-tracker (c-h-a…t, in order) beating the eleven Chat skills is
+      that the keywords band scores 400 and subsequence scores 300 - length.
+      Reorder these and that regression returns.
+
+   Worth knowing about the data: every skill runs on Code, so a query of
+   "code" matches all fourteen. That is the truth, not a broken filter.
+   ───────────────────────────────────────────────────────────────── */
+
+export interface SearchItem {
+  name: string;
+  /** shown in the row — the question it answers */
+  detail: string;
+  /** matched but never displayed */
+  keywords: string;
+}
+
+export function buildSearchIndex(): SearchItem[] {
+  return SKILL_GROUPS.flatMap((group) =>
+    group.skills.map((s) => ({
+      name: s.name,
+      detail: s.answers ?? s.desc,
+      keywords: `${s.desc} ${s.surfaces.join(" ")} ${group.title} ${group.note}`,
+    })),
+  );
+}
+
+function escapeRe(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function isSubsequence(needle: string, hay: string): boolean {
+  let i = 0;
+  for (const ch of hay) {
+    if (ch === needle[i]) i += 1;
+    if (i === needle.length) return true;
+  }
+  return needle.length === 0;
+}
+
+export function scoreItem(item: SearchItem, q: string): number {
+  if (!q) return 0;
+  const query = q.toLowerCase().trim();
+  const label = item.name.toLowerCase();
+  const detail = item.detail.toLowerCase();
+  const keywords = item.keywords.toLowerCase();
+
+  if (label === query) return 1000;
+  if (label.startsWith(query)) return 900 - label.length;
+  // word-start: after a space, hyphen or slash
+  if (new RegExp(`(^|[\\s\\-/])${escapeRe(query)}`).test(label)) {
+    return 800 - label.length;
+  }
+  if (label.includes(query)) return 700 - label.length;
+  if (detail.includes(query)) return 500;
+  if (keywords.includes(query)) return 400;
+  const fuzzyEligible = query.length <= 6 && !query.includes(" ");
+  if (fuzzyEligible && isSubsequence(query, label)) return 300 - label.length;
+  return -1;
+}
+
+/** The subsequence band. Anything scoring below this matched only fuzzily. */
+const FUZZY_CEILING = 400;
+
+/**
+ * Names that match. Empty query → every skill.
+ *
+ * ONE DELIBERATE DIFFERENCE from the palette this ranker came from: fuzzy
+ * matches are a FALLBACK, not a peer. They are dropped whenever anything
+ * matched properly.
+ *
+ * The palette only ever sorted, so a stray subsequence hit sat harmlessly at
+ * the bottom of a list. A filter is binary — it is in or it is out — and the
+ * query "chat" is the case that proves it: changelog-tracker contains
+ * c-h-a-t in order, so it came back as a twelfth result alongside the eleven
+ * skills that actually run on Chat. Ranking hid that bug; filtering exposes it.
+ */
+export function searchSkills(q: string): string[] {
+  const index = buildSearchIndex();
+  if (!q.trim()) return index.map((i) => i.name);
+
+  const scored = index
+    .map((item) => ({ item, score: scoreItem(item, q) }))
+    .filter((r) => r.score >= 0);
+
+  const hasRealMatch = scored.some((r) => r.score >= FUZZY_CEILING);
+  return scored
+    .filter((r) => (hasRealMatch ? r.score >= FUZZY_CEILING : true))
+    .sort((a, b) => b.score - a.score)
+    .map((r) => r.item.name);
+}

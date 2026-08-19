@@ -2,8 +2,10 @@
   "name": "agentic-skills-website",
   "version": "0.1.0",
   "private": true,
-  "description": "Landing page for the agentic-skills repo — terminal-rendered markdown for the context-writing skills, code and design.",
+  "description": "Landing page for the agentic-skills repo \u2014 terminal-rendered markdown for the context-writing skills, code and design.",
   "scripts": {
+    "prebuild": "node scripts/build-skill-zips.mjs",
+    "predev": "node scripts/build-skill-zips.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -21,6 +23,7 @@
     "@types/node": "22.10.7",
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
+    "jszip": "^3.10.1",
     "typescript": "5.7.3"
   },
   "overrides": {

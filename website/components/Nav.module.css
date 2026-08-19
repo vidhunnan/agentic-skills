@@ -2,9 +2,15 @@
   position: sticky;
   top: 0;
   z-index: 40;
+  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
   background: var(--scrim);
   backdrop-filter: saturate(180%) blur(10px);
   border-bottom: 1px solid var(--rule-soft);
+}
+
+/* Out of the way on the way down; back on the way up. */
+.away {
+  transform: translateY(-100%);
 }
 
 .inner {
