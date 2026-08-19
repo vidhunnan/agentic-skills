@@ -62,6 +62,11 @@ Branches follow: `<type>/<slug>` (kebab-case; `type` ∈ `feat`/`fix`/`chore`/`d
 Model assignments for AI work in this project live in `docs/MODEL-STRATEGY.md`. Follow its assignment rules and the mandatory review rule when choosing a Claude model. Keep model IDs current (confirm against the live lineup, e.g. via the `claude-api` skill) rather than hardcoding stale ones. Update via `/model-strategy` when the lineup or task mix changes.
 <!-- END skill:model-strategy -->
 
+<!-- BEGIN skill:handoff-generator -->
+### Handoff protocol
+When work moves between Claude.ai chat and Claude Code (or to a teammate/another session), generate a handoff brief with `/handoff-generator`. Briefs live in `handoff/handoff-{from}-to-{to}-{date}-{slug}.md`. When resuming, check `handoff/` for the latest relevant brief first.
+<!-- END skill:handoff-generator -->
+
 <!-- BEGIN skill:repo-setup -->
 ### Context stack
 Project docs are tiered by the question they answer. Before writing a doc, route it. Before trusting one, check its tier.
