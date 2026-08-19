@@ -1,7 +1,7 @@
 ---
 name: exploration-log
 description: Records a round of design iteration into the explorations tier — what it was testing, what changed, what was learned, and whether it was kept, killed or parked, with the reason. Append-only, so a direction you abandoned is still readable a year later. Also answers "have we tried this before?" from the log. Use when the user says "log this round", "record this iteration", "log v3", "note what changed this round", "what did we try", or "did we already try this". Claude Code writes the file; on Claude.ai it produces a downloadable artifact.
-when_to_use: 'Also fires on: "log this exploration", "add to the exploration log", "record round 2", "this is the third pass", "why did we kill that direction", "we''re killing this direction", "log why this didn''t work", or /exploration-log. For the design fork itself and its rationale use design-decisions; for reviewing work against a brief use design-critique.'
+when_to_use: 'Also fires on: "log this exploration", "add to the exploration log", "record round 2", "this is the third pass", "why did we kill that direction", "we''re killing this direction", "log why this didn''t work", or /exploration-log. This skill *records* a round that already happened; to *generate* candidate directions use design-explore. For the design fork itself and its rationale use design-decisions; for reviewing work against a brief use design-critique.'
 argument-hint: "[round-slug]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 disable-model-invocation: false

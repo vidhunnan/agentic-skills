@@ -8,6 +8,10 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 
 | # | Commit | Date | Subject |
 |---|--------|------|---------|
+| [031](./commits/031-register-the-three-design-skills-and-reconcile-the-roadmap.md) | `a1ce0ae` | 2026-08-19 | Register the three design skills and reconcile the roadmap |
+| [030](./commits/030-add-prds-for-the-three-design-skills.md) | `c9e1883` | 2026-08-19 | Add PRDs for design-language, design-explore and design-critique |
+| [029](./commits/029-add-design-language-design-explore-and-design-critique.md) | `0606be9` | 2026-08-19 | Add design-language, design-explore and design-critique |
+| [028](./commits/028-log-adr-0022-generation-is-allowed-only-into-explorations.md) | `2c44e85` | 2026-08-19 | Log ADR 0022 — generation is allowed, but only into explorations |
 | [027](./commits/027-amend-the-motion-spec-and-log-design-adr-0006.md) | `fc1ed08` | 2026-08-16 | Amend the motion spec and log design ADR 0006 |
 | [026](./commits/026-rotate-the-hero-specimen-through-six-skill-outputs.md) | `1e30551` | 2026-08-16 | Rotate the hero specimen through six skill outputs |
 | [025](./commits/025-log-the-dark-mode-decision-and-document-palette-and-motion.md) | `6f6d6c9` | 2026-08-16 | Log the dark-mode decision and document the palette and motion |
@@ -35,6 +39,22 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 | [003](./commits/003-add-changelog-baseline-model-strategy-and-skill-protocol-registrations.md) | `0fc116e` | 2026-07-12 | Add changelog baseline, model strategy, and skill protocol registrations |
 | [002](./commits/002-add-install-commands-for-all-skills-in-readme.md) | `75f7a7c` | 2026-07-12 | Add install commands for all skills in README |
 | [001](./commits/001-add-three-git-workflow-skills-shared-claude-md-registration.md) | `506a5c6` | 2026-07-12 | Add three git-workflow skills + shared CLAUDE.md registration |
+
+---
+
+## 2026-08-19
+
+### Added
+- **Three design skills, taking the library from eleven to fourteen** (`0606be9`) — `design-language` interviews you into a written visual direction: the surface and whether it wears the brand, the references and the one you're **explicitly not** pulling from, constraints stated as rules that *can* be broken, because "clean and modern" cannot be violated and therefore cannot guide anything. `design-explore` generates three directions committed to **named structural axes** — never two that differ only in hue — each carrying its thesis, its bet and its risk. `design-critique` reviews built work against that stated intent, naming how the thing *reads* before proposing any fix, with **Delete** first among the five verdicts. All three were built outside the library against a real project first, then ported with a rigor pass: `check` mode on each, a confirmation gate before any write, and path resolution that cites ADR 0010 so an adopted tier path beats a canonical folder sitting on disk.
+- **PRDs for all three** (`c9e1883`) — R1–R11, R1–R15 and R1–R15 respectively, each opening with the per-surface trigger table. Three claims did not survive the port, all of them point-in-time statements about a private backlog rather than about the problem: the incubation paragraph, "the library has no generative design skill at all", and a problem section that was really a list of four files referencing a skill that didn't exist yet.
+
+### Changed
+- **ADR 0021's boundary was narrowed — not reversed** (`2c44e85`) — 0021 restricted every design skill to *interview, record, structure, check*, and `design-explore` generates visuals and proposes directions, which it forbids twice over. [ADR 0022](../docs/decisions/0022-generation-is-allowed-only-into-explorations.md) permits generation into `design/explorations/` **and nowhere else**, under three conditions that all must hold: a written visual intent exists first, the artifacts are candidates and never the record, and the verdict belongs to `exploration-log` or `design-decisions`. The four record tiers stay under 0021 unchanged. 0021's body was not touched — the single-line diff sits below `## Follow-up`, which is what append-only permits, and its Status stays **Accepted** because the scope changed and the decision did not. The conditions are carried in `design-explore`'s own body, not only in the ADR, because they are what make the skill legal here and an author editing it should not have to go looking.
+- **The roadmap now says what happened rather than what was planned** (`a1ce0ae`) — `design-explore` absorbed `design-brainstorm` and `design-directions`; the split did not survive contact with the work, so the count is nineteen, not twenty. `design-language` was added to Frame it, a slot the original list had no room for — the gap only became visible once `design-critique` needed something to review against. The Design work group is now ordered by workflow phase in the README, the install block and `skills.ts` alike, which moved `design-decisions` to last, where deciding belongs.
+
+### Fixed
+- **The concept doc had been claiming three skills built when four were** (`a1ce0ae`) — `exploration-log` shipped in `5919cb8` and its roadmap row was never marked, so the header note had been wrong since. Corrected to seven, and the two open questions were **revised rather than closed**: whether a model can review design craft at all is still open, now with a shipped skill to test it against, and the graduate-or-kill criterion is weaker than it was — a tier filled by a generator is not evidence that anyone *chose* to record a rejected direction, so the test is the verdicts in `exploration-log`, not the file count.
+- **The Design work group note had drifted between the README and the website** (`a1ce0ae`) — `skill-scaffold` Step 6.2 requires the two to match, and `skills.ts` had been carrying a shortened variant. They match again.
 
 ---
 

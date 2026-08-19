@@ -5,9 +5,14 @@ Status: exploring · Date: 2026-08-16
 > Hypothesis, not a plan. Nothing here is committed. Do not cite this document as
 > evidence that anything exists or has been decided.
 >
-> Three of the twenty skills below — `design-setup`, `design-brief`,
-> `design-decisions` — have since been built. **Check the changelog, not this file,
-> for what shipped.** The rest are still a hunch.
+> Seven of the skills below have since been built — `design-setup`, `design-brief`,
+> `design-language`, `design-explore`, `exploration-log`, `design-critique`,
+> `design-decisions`. **Check the changelog, not this file, for what shipped.** The
+> rest are still a hunch.
+>
+> The count moved from twenty to nineteen: `design-explore` absorbed
+> `design-brainstorm` and `design-directions`, and `design-language` was added to
+> the Frame-it group — a slot this document did not anticipate.
 
 ## The hunch
 
@@ -99,9 +104,9 @@ duplicated. What shipped is what shipped; a second, hand-written "design changel
 would be hypothesis wearing the costume of truth — exactly the failure the
 done-vs-explored rule exists to prevent.
 
-## The twenty skills
+## The nineteen skills
 
-Grouped by phase of the work. Only the first three exist.
+Grouped by phase of the work. Seven exist; the rest are still a hunch.
 
 **Set it up**
 
@@ -114,22 +119,22 @@ Grouped by phase of the work. Only the first three exist.
 | Skill | What it would produce |
 |---|---|
 | `design-brief` *(built)* | Problem, who feels it, jobs-to-be-done, constraints, success, and non-goals. The stated intent every later skill cites. |
+| `design-language` *(built)* | The other half of the brief: the surface and its brand posture, the references and the anti-reference, constraints as falsifiable rules, the vocabulary. Not on the original list — the gap only became visible once `design-critique` needed something to review against. `brand-doc` stays separate: this is a per-surface visual direction, not brand identity. |
 | `design-research-log` | Research inputs with provenance, enforcing the observation/interpretation split so later decisions cite evidence rather than folklore. |
 
 **Diverge — brainstorm and explore**
 
 | Skill | What it would produce |
 |---|---|
-| `design-brainstorm` | Structured divergence that names its method — How Might We, Crazy 8s, SCAMPER, analogical transfer, constraint injection, inversion, forced extremes — and records *every* direction including the bad ones, each with one line on why it is interesting or why it dies. |
-| `design-directions` | The brainstorm curated into 3–5 named, genuinely distinct directions: thesis, the bet, the risk, the condition under which it wins. Ends in a comparison matrix. |
-| `exploration-log` | Round N: what changed, what it was testing, what we learned, what we kept, what we abandoned — pinned to frame/version links. Append-only. |
+| `design-explore` *(built)* | **Absorbed `design-brainstorm` and `design-directions`** — the split did not survive contact with the work. Three directions, each committed to a named structural axis, each with thesis, bet and risk, ending in a comparison matrix and artifacts you open rather than prose you read. The one skill in this territory permitted to generate, under the three conditions of [ADR 0022](../decisions/0022-generation-is-allowed-only-into-explorations.md). |
+| `exploration-log` *(built)* | Round N: what changed, what it was testing, what we learned, what we kept, what we abandoned — pinned to frame/version links. Append-only. |
 | `prototype-log` | A prototype is an experiment nobody writes up. The hypothesis, what was faked vs. real, who saw it, what happened, what changed as a result. |
 
 **Converge — critique and decide**
 
 | Skill | What it would produce |
 |---|---|
-| `design-critique` | Review against **stated intent, not taste**: does it do the job the brief names, hierarchy and scan path, density, states and edge cases, system consistency, craft. Every finding cites the intent it violates. |
+| `design-critique` *(built)* | Review against **stated intent, not taste**: does it do the job the brief names, hierarchy and scan path, density, states and edge cases, system consistency, craft. Every finding cites the intent it violates. |
 | `design-decisions` *(built)* | ADRs for design forks, with `decisions-logger`'s discipline plus *what was given up* and *what would make us revisit*. |
 
 **Specify and systematize**
@@ -156,7 +161,7 @@ Grouped by phase of the work. Only the first three exist.
 
 | Skill | What it would produce |
 |---|---|
-| `case-study-writer` | Reads `design/` end to end and drafts the narrative — the problem, what was tried, what was rejected and why, what shipped, what it cost. **This is the argument for keeping the record at all**, and it is the skill that would sell the other nineteen. |
+| `case-study-writer` | Reads `design/` end to end and drafts the narrative — the problem, what was tried, what was rejected and why, what shipped, what it cost. **This is the argument for keeping the record at all**, and it is the skill that would sell the other eighteen. |
 
 The three later sub-territories reuse existing tiers rather than adding more:
 `content-guidelines` and `brand-doc` → `design/system/`; `motion-spec` →
@@ -174,6 +179,14 @@ reason for a layout choice is indistinguishable from a real one to every future
 reader, forever. So `*(reason not stated)*` is a first-class outcome in this
 territory, not a fallback.
 
+**One exception, added later.**
+[ADR 0022](../decisions/0022-generation-is-allowed-only-into-explorations.md)
+permits generation into `design/explorations/` — and nowhere else — because that
+tier is history rather than a claim to truth. It holds only while three conditions
+do: a written visual intent exists first, the artifacts are candidates and never
+the record, and the verdict belongs to `exploration-log` or `design-decisions`.
+Everything in this paragraph still governs the four record tiers unchanged.
+
 ## Open questions
 
 - **Will anyone maintain seven tiers?** The repo stack already risks being
@@ -186,10 +199,15 @@ territory, not a fallback.
   not have. The proposed answer is the degradation ladder — connector → local
   export → pasted text/screenshot — but a skill that is excellent with a connector
   and mediocre without may be worse than no skill.
-- **Is `design-critique` reviewable by a model at all?** Reviewing against a
-  written brief is checkable. Judging hierarchy and craft from a screenshot may
-  not be, and the failure mode is confident, generic, useless feedback. This one
-  may need to be scoped down to only what it can actually verify.
+- **Is `design-critique` reviewable by a model at all?** *Still open, now with a
+  shipped skill to test it against.* Reviewing against a written brief is
+  checkable. Judging hierarchy and craft from a screenshot may not be, and the
+  failure mode is confident, generic, useless feedback. The built skill hedges
+  rather than resolves: it hard-gates on a written intent, requires every finding
+  to quote the rule it violates, and drops any finding that cannot state how the
+  thing *reads*. Whether the perceptual half earns its place is the thing to watch
+  — if the constraint checks carry every useful finding, the skill should be scoped
+  down to those.
 - **Does the landing page survive this?** The site, the README and the talk all
   argue a repo-only thesis. A Design group beneath them reads as an afterthought
   until they are rewritten. That rewrite is a positioning decision, not a code
@@ -202,7 +220,9 @@ into for at least one cycle, and the absence of that skill was felt — someone
 wrote the artifact by hand and resented it.
 
 **Kill** the tier — or the whole model — when: after a full project cycle,
-`design/explorations/` is empty. That tier is the thesis. If the rejected
+`design/explorations/` is empty. `design-explore` now writes into it, which weakens
+the test — a tier filled by a generator is not evidence that anyone chose to record
+a rejected direction. Read the *verdicts* in `exploration-log`, not the file count. That tier is the thesis. If the rejected
 directions still are not getting written down when a skill exists to write them,
 the problem was never tooling, and the remaining nineteen skills will not fix it.
 
