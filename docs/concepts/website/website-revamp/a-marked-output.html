@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A — Marked Output · agentic-skills exploration</title>
+<style>
+:root{
+  --paper:#f3f2ed; --paper-2:#ecebe4; --ink:#16160f; --ink-soft:#4e4e45;
+  --mute:#6b6b60; --blue:#2743c8; --red:#bf3018;
+  --rule:rgba(22,22,15,.22); --rule-soft:rgba(22,22,15,.12);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#14140f; --paper-2:#1c1c16; --ink:#edece4; --ink-soft:#b3b2a6;
+  --mute:#85857a; --blue:#8fa2ff; --red:#ff8a6d;
+  --rule:rgba(237,236,228,.26); --rule-soft:rgba(237,236,228,.14);
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:400 14px/1.65 var(--mono);
+  -webkit-font-smoothing:antialiased;padding-bottom:80px}
+.wrap{max-width:840px;margin:0 auto;padding:0 24px}
+.bar{border-bottom:1px solid var(--rule);padding:12px 0;margin-bottom:56px}
+.bar .wrap{display:flex;justify-content:space-between;font-size:12px;color:var(--mute)}
+.bar b{color:var(--ink);font-weight:600}
+/* TYPE CONTRAST AXIS: three sizes only. Hierarchy = case, weight, colour, mark. */
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:28px}
+h1{font-size:20px;font-weight:600;line-height:1.5;letter-spacing:-.01em;max-width:52ch;margin-bottom:22px}
+h1 .dim{color:var(--ink-soft);font-weight:400}
+.sub{font-size:14px;color:var(--ink-soft);max-width:62ch;margin-bottom:36px}
+.sub .mark{color:var(--red)}
+.cmd{background:var(--paper-2);border:1px solid var(--rule-soft);padding:11px 14px;
+  font-size:13px;display:inline-block;margin-bottom:56px}
+.cmd .p{color:var(--mute);user-select:none}
+/* the specimen — a record, shown as source */
+.spec{border:1px solid var(--rule);margin-bottom:64px}
+.spec .head{border-bottom:1px solid var(--rule-soft);padding:9px 14px;display:flex;
+  justify-content:space-between;font-size:11.5px;color:var(--mute)}
+.spec .head a{color:var(--blue);text-decoration:none}
+.spec pre{padding:16px 14px;font-size:13px;line-height:1.8;white-space:pre-wrap;color:var(--ink-soft)}
+.spec .gap{color:var(--red)}
+.spec .cap{border-top:1px solid var(--rule-soft);padding:10px 14px;font-size:12px;color:var(--mute)}
+h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);
+  padding-bottom:10px;border-bottom:1px solid var(--rule);margin-bottom:0}
+section{margin-bottom:64px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:400;color:var(--mute);font-size:11.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:14px 12px 10px 0;border-bottom:1px solid var(--rule-soft)}
+td{padding:9px 12px 9px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+td:first-child{color:var(--ink);width:38%}
+td.today{color:var(--red);width:32%}
+td.today.has{color:var(--ink-soft)}
+td.adds{color:var(--blue)}
+.row{display:grid;grid-template-columns:1fr auto;gap:20px;padding:16px 0;
+  border-bottom:1px solid var(--rule-soft);align-items:baseline}
+.row .n{color:var(--ink);font-weight:600}
+.row .q{color:var(--ink-soft);font-size:13px;margin-top:3px}
+.row .s{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);white-space:nowrap}
+.note{font-size:12px;color:var(--mute);margin-top:18px;max-width:62ch}
+</style></head><body>
+
+<div class="bar"><div class="wrap"><span><b>A</b> · Marked Output</span><span>axis: type contrast</span></div></div>
+
+<div class="wrap">
+  <div class="eyebrow">Agent skills for Claude Code</div>
+  <h1>An agent needs context to do good work. <span class="dim">Most of it was never written down.</span></h1>
+  <p class="sub">What shipped, why you chose it, what you tried and killed — from git, your files
+  and your answers. And where nobody remembers why, <span class="mark">they say so</span>.</p>
+  <div class="cmd"><span class="p">$ </span>/plugin marketplace add vidhunnan/agentic-skills</div>
+
+  <div class="spec">
+    <div class="head"><span>design/decisions/0002-a-three-family-type-system-for-the-site.md</span><a href="#">read it →</a></div>
+<pre>## What we gave up
+
+<span class="gap">*(none identified)*</span> — the trade was never articulated.
+
+**Rationale:**
+<span class="gap">*(reason not stated)*</span> — no reason was ever recorded.</pre>
+    <div class="cap">A real decision in this repo. Nobody remembered why — so it says so.</div>
+  </div>
+
+  <section>
+    <h2>What gets written</h2>
+    <table>
+      <tr><th>Question</th><th>What answers it today</th><th>This adds</th></tr>
+      <tr><td>What did we try?</td><td class="today has">git history, badly</td><td class="adds">explorations</td></tr>
+      <tr><td>Why did we choose that?</td><td class="today has">commit messages, badly</td><td class="adds">decisions</td></tr>
+      <tr><td>What is it, exactly?</td><td class="today has">the code itself</td><td class="adds">specs</td></tr>
+      <tr><td>What's reusable?</td><td class="today has">the package system</td><td class="adds">system</td></tr>
+      <tr><td>What actually shipped?</td><td class="today has">git, properly</td><td class="adds">changelog</td></tr>
+      <tr><td>What are we trying to build?</td><td class="today">whatever someone remembered to write</td><td class="adds">concepts · briefs</td></tr>
+      <tr><td>What are we still deciding?</td><td class="today">whatever someone remembered to write</td><td class="adds">prds · briefs</td></tr>
+      <tr><td>What did we learn?</td><td class="today">nothing, by default</td><td class="adds">research</td></tr>
+      <tr><td>Where did we leave off?</td><td class="today">nothing, by default</td><td class="adds">handoffs</td></tr>
+    </table>
+    <p class="note">Red is not decoration here. It marks the rows where nothing answers the
+    question today — the same signal the records use for an unrecorded reason.</p>
+  </section>
+
+  <section>
+    <h2>The skills</h2>
+    <div class="row"><div><div class="n">decisions-logger</div><div class="q">Why did we choose that?</div></div><div class="s">Code · Chat</div></div>
+    <div class="row"><div><div class="n">exploration-log</div><div class="q">Did we already try that?</div></div><div class="s">Code · Chat</div></div>
+    <div class="row"><div><div class="n">changelog-tracker</div><div class="q">What actually shipped?</div></div><div class="s">Code</div></div>
+  </section>
+</div>
+</body></html>

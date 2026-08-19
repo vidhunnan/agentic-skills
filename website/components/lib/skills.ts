@@ -204,6 +204,18 @@ export const TOTAL_SKILLS_WORD = spellCount(TOTAL_SKILLS);
  */
 export type SpecimenLineKind = "heading" | "gap" | "body" | "blank";
 
+/**
+ * A line may carry inline parts. Needed because a real record wraps: the marker
+ * `*(none identified)*` opens a paragraph and the sentence continues on the same
+ * line. Painting the whole line --red would spend the honest-gap signal on
+ * ordinary prose, which design/system/palette.md forbids.
+ */
+export interface SpecimenPart {
+  text: string;
+  /** true → painted --red. Only ever a real gap marker. */
+  gap?: boolean;
+}
+
 export interface Specimen {
   /** Display path, elided if long — the card head is narrow. */
   source: string;
@@ -211,7 +223,7 @@ export interface Specimen {
   href: string;
   /** The skill that wrote it. Shown in the card head, so it names a plugin. */
   by: string;
-  lines: { text: string; kind: SpecimenLineKind }[];
+  lines: { text: string; kind: SpecimenLineKind; parts?: SpecimenPart[] }[];
   caption: string;
 }
 
@@ -234,12 +246,31 @@ export const SPECIMENS: Specimen[] = [
     by: "design-decisions",
     lines: [
       { text: "## What we gave up", kind: "heading" },
-      { text: "*(none identified)*", kind: "gap" },
-      { text: "— the trade was never articulated.", kind: "body" },
       { text: "", kind: "blank" },
-      { text: "**Rationale:**", kind: "heading" },
-      { text: "*(reason not stated)*", kind: "gap" },
-      { text: "— no reason was ever recorded.", kind: "body" },
+      {
+        text: "*(none identified)* — the trade was never articulated. Mechanically, a third",
+        kind: "body",
+        parts: [
+          { text: "*(none identified)*", gap: true },
+          { text: " — the trade was never articulated. Mechanically, a third" },
+        ],
+      },
+      {
+        text: "family is a third webfont on a page whose stated virtue is restraint, and the",
+        kind: "body",
+      },
+      {
+        text: "two-family drafts demonstrably worked without it; but **no one recorded weighing",
+        kind: "body",
+      },
+      {
+        text: "that**, and it is not this record's job to supply the reasoning after the fact.",
+        kind: "body",
+      },
+      { text: "", kind: "blank" },
+      { text: "## What would make us revisit", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "*(not stated)*", kind: "gap" },
     ],
     caption:
       "A real decision in this repo. Nobody remembered why — so it says so, instead of inventing a reason.",
@@ -343,124 +374,187 @@ export const SPECIMENS: Specimen[] = [
   },
 ];
 
-/**
- * Artifacts in this repo written by the skills themselves — the Proof section.
- * Lives here rather than in the component so all site content has one source
- * (ADR 0016); it was the last hardcoded content outside it.
- */
-export interface Receipt {
-  path: string;
-  desc: string;
-  by: string;
-  /** Set on the one receipt that demonstrates the honest-gap behaviour. */
-  highlight?: boolean;
+/* ─────────────────────────────────────────────────────────────────
+   The matrix — nine questions a project has to answer.
+
+   Replaces CONTEXT_STACK + DESIGN_STACK, which rendered as two parallel
+   sections and printed `changelog/` and `decisions/` twice with identical
+   text. See design ADR 0011.
+
+   `answeredToday` is deliberately not absolute. Plenty of teams write some
+   of this down; a reader who does will bounce off a table telling them they
+   don't. `hasAnswerToday: false` is what paints the redline.
+   ───────────────────────────────────────────────────────────────── */
+
+export interface MatrixRow {
+  question: string;
+  /** what answers it today, without this library. Never a flat "nothing". */
+  answeredToday: string;
+  /** the tier this library adds */
+  addedBy: string;
+  /** false → the row is marked in redline: nothing answers it today */
+  hasAnswerToday: boolean;
 }
 
-export const RECEIPTS: Receipt[] = [
+export const MATRIX: MatrixRow[] = [
   {
-    path: "design/decisions/0002-…",
-    desc: "A real design fork in this repo — which typefaces the site uses. Its two alternatives were recovered from killed drafts; why the winner won was never written down. So the rationale reads (reason not stated), rather than a plausible sentence about serifs.",
-    by: "design-decisions",
-    highlight: true,
+    question: "What did we try?",
+    answeredToday: "git history, badly",
+    addedBy: "explorations",
+    hasAnswerToday: true,
   },
   {
-    path: "docs/concepts/website/",
-    desc: "Three landing-page directions, including the one that was killed. Kept, not deleted — which is the only reason the decision above could name its alternatives at all.",
-    by: "exploration-log",
+    question: "Why did we choose that?",
+    answeredToday: "commit messages, badly",
+    addedBy: "decisions",
+    hasAnswerToday: true,
   },
   {
-    path: "design/briefs/positioning.md",
-    desc: "The brief for this very page: the problem, the success criterion, and two anti-goals. Sections nobody could answer are marked, not filled in.",
-    by: "design-brief",
+    question: "What is it, exactly?",
+    answeredToday: "the code itself",
+    addedBy: "specs",
+    hasAnswerToday: true,
   },
   {
-    path: "docs/decisions/",
-    desc: "ADRs explaining why this repo is shaped the way it is, each with the evidence it was drawn from.",
-    by: "decisions-logger",
+    question: "What's reusable?",
+    answeredToday: "the package system",
+    addedBy: "system",
+    hasAnswerToday: true,
   },
   {
-    path: "changelog/",
-    desc: "Every substantive commit documented, with the diff and the reason.",
-    by: "changelog-tracker",
+    question: "What actually shipped?",
+    answeredToday: "git, properly",
+    addedBy: "changelog",
+    hasAnswerToday: true,
   },
   {
-    path: "handoff/",
-    desc: "The briefs that carried this work between Claude.ai and Claude Code.",
-    by: "handoff-generator",
+    question: "What are we trying to build?",
+    answeredToday: "whatever someone remembered",
+    addedBy: "concepts · briefs",
+    hasAnswerToday: false,
+  },
+  {
+    question: "What are we still deciding?",
+    answeredToday: "whatever someone remembered",
+    addedBy: "prds · briefs",
+    hasAnswerToday: false,
+  },
+  {
+    question: "What did we learn?",
+    answeredToday: "nothing, by default",
+    addedBy: "research",
+    hasAnswerToday: false,
+  },
+  {
+    question: "Where did we leave off?",
+    answeredToday: "nothing, by default",
+    addedBy: "handoffs",
+    hasAnswerToday: false,
   },
 ];
 
-/* ===========================================================================
-   Command palette index
-   ---------------------------------------------------------------------------
-   Derived from the constants above — never a second copy of the content. Add
-   a skill or a tier and it appears in the palette with no further work, which
-   is the same rule that stopped the site's copy going stale (see TOTAL_SKILLS).
-   =========================================================================== */
+/* ─────────────────────────────────────────────────────────────────
+   The loop — one skill, end to end.
 
-export interface CommandItem {
-  id: string;
-  /** The skill name. */
-  label: string;
-  /** The question it answers — what tells you whether it's the one you want. */
+   The mechanism this library runs on has never appeared on the site.
+   Step 4 is the one nothing else does: the skill installs a capability
+   AND the standing instruction to use it.
+   ───────────────────────────────────────────────────────────────── */
+
+export interface LoopStep {
+  title: string;
   detail: string;
-  /** Its group, shown as quiet context. */
-  group: string;
-  /** Matched against but not displayed. */
-  keywords: string;
-  /** The whole point: the install command. */
-  copy: string;
 }
 
-/**
- * Skills only, and one action: copy the install command.
- *
- * An earlier version also indexed tiers, page sections and Proof records with
- * three modifier-key actions each. It was more than the job needed — the site
- * is not big enough to warrant navigating by palette, and the nav already
- * does that. See design ADR 0005, which supersedes 0004.
- */
-export function buildCommandIndex(): CommandItem[] {
+export const LOOP_STEPS: LoopStep[] = [
+  {
+    title: "It reads the evidence",
+    detail: "git log, the config that changed, the PR thread. Never recollection.",
+  },
+  {
+    title: "It asks what it can't find",
+    detail:
+      '"why did Tailwind lose?" — and every question offers "I don\'t remember."',
+  },
+  {
+    title: "It writes the record",
+    detail:
+      "docs/decisions/0018-….md — with the option that lost named, or it isn't a decision.",
+  },
+  {
+    title: "It registers the rule",
+    detail:
+      "a block in CLAUDE.md, the file your agent re-reads at the start of every session.",
+  },
+  {
+    title: "Next session, unasked",
+    detail:
+      "it offers to log the next one. You never have to remember the habit.",
+  },
+];
+
+/* ─────────────────────────────────────────────────────────────────
+   Search — restored from the command palette retired in design ADR 0009.
+
+   The palette itself is not coming back; this is its ranker, driving a plain
+   filter box over the catalogue. Two things it learned the hard way, both of
+   which are load-bearing and neither of which is obvious from reading it:
+
+   1. `group.note` MUST stay in the keywords. Dropping it once silently lost
+      the query "figma" — the only occurrence of that word in the entire
+      dataset is the Design work group's note, "a Figma file shows the winner".
+      Recorded in design ADR 0005's Follow-up.
+
+   2. The BAND ORDER is the fix, not the fuzzy gate. "chat" is four characters
+      and single-word, so the subsequence gate does not exclude it; what stops
+      changelog-tracker (c-h-a…t, in order) beating the eleven Chat skills is
+      that the keywords band scores 400 and subsequence scores 300 - length.
+      Reorder these and that regression returns.
+
+   Worth knowing about the data: every skill runs on Code, so a query of
+   "code" matches all fourteen. That is the truth, not a broken filter.
+   ───────────────────────────────────────────────────────────────── */
+
+export interface SearchItem {
+  name: string;
+  /** shown in the row — the question it answers */
+  detail: string;
+  /** matched but never displayed */
+  keywords: string;
+}
+
+export function buildSearchIndex(): SearchItem[] {
   return SKILL_GROUPS.flatMap((group) =>
     group.skills.map((s) => ({
-      id: s.name,
-      label: s.name,
+      name: s.name,
       detail: s.answers ?? s.desc,
-      group: group.title,
-      // desc, surfaces and the group's note are matched but not shown, so
-      // "figma", "append-only" and "chat" all find the right skill. The note
-      // matters more than it looks: "a Figma file shows the winner" lives
-      // there, and dropping it silently lost the query "figma" entirely.
       keywords: `${s.desc} ${s.surfaces.join(" ")} ${group.title} ${group.note}`,
-      copy: s.install,
     })),
   );
 }
 
-/**
- * Ranked match. Deliberately not a fuzzy-search dependency — the index is
- * ~35 items, and the site ships with no runtime deps beyond React.
- *
- * Bands, highest first: exact label · label prefix · word-start in label ·
- * substring in label · substring in detail · substring in keywords ·
- * subsequence in label. Ties break on shorter labels, so "design-brief"
- * outranks "design-decisions" for the query "design-b".
- *
- * Subsequence ranks **last** and is gated to short, single-word queries. It
- * earns its place on "dsn" → design-setup, but ungated it ranked
- * changelog-tracker above every Chat skill for the query "chat" (c-h-a…t
- * appears in order), which is worse than no fuzzy matching at all.
- */
-export function scoreItem(item: CommandItem, q: string): number {
+function escapeRe(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function isSubsequence(needle: string, hay: string): boolean {
+  let i = 0;
+  for (const ch of hay) {
+    if (ch === needle[i]) i += 1;
+    if (i === needle.length) return true;
+  }
+  return needle.length === 0;
+}
+
+export function scoreItem(item: SearchItem, q: string): number {
   if (!q) return 0;
   const query = q.toLowerCase().trim();
-  const label = item.label.toLowerCase();
+  const label = item.name.toLowerCase();
   const detail = item.detail.toLowerCase();
   const keywords = item.keywords.toLowerCase();
 
   if (label === query) return 1000;
   if (label.startsWith(query)) return 900 - label.length;
-
   // word-start: after a space, hyphen or slash
   if (new RegExp(`(^|[\\s\\-/])${escapeRe(query)}`).test(label)) {
     return 800 - label.length;
@@ -473,130 +567,33 @@ export function scoreItem(item: CommandItem, q: string): number {
   return -1;
 }
 
-function escapeRe(s: string) {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+/** The subsequence band. Anything scoring below this matched only fuzzily. */
+const FUZZY_CEILING = 400;
 
-/** "dsn" matches "design-setup" — cheap fuzzy, in order, not necessarily adjacent. */
-function isSubsequence(needle: string, hay: string): boolean {
-  let i = 0;
-  for (const ch of hay) {
-    if (ch === needle[i]) i += 1;
-    if (i === needle.length) return true;
-  }
-  return needle.length === 0;
-}
+/**
+ * Names that match. Empty query → every skill.
+ *
+ * ONE DELIBERATE DIFFERENCE from the palette this ranker came from: fuzzy
+ * matches are a FALLBACK, not a peer. They are dropped whenever anything
+ * matched properly.
+ *
+ * The palette only ever sorted, so a stray subsequence hit sat harmlessly at
+ * the bottom of a list. A filter is binary — it is in or it is out — and the
+ * query "chat" is the case that proves it: changelog-tracker contains
+ * c-h-a-t in order, so it came back as a twelfth result alongside the eleven
+ * skills that actually run on Chat. Ranking hid that bug; filtering exposes it.
+ */
+export function searchSkills(q: string): string[] {
+  const index = buildSearchIndex();
+  if (!q.trim()) return index.map((i) => i.name);
 
-export function searchCommands(
-  index: CommandItem[],
-  q: string,
-): CommandItem[] {
-  // Empty query: every skill, in the order the page lists them.
-  if (!q.trim()) return index;
-  return index
+  const scored = index
     .map((item) => ({ item, score: scoreItem(item, q) }))
-    .filter((r) => r.score >= 0)
+    .filter((r) => r.score >= 0);
+
+  const hasRealMatch = scored.some((r) => r.score >= FUZZY_CEILING);
+  return scored
+    .filter((r) => (hasRealMatch ? r.score >= FUZZY_CEILING : true))
     .sort((a, b) => b.score - a.score)
-    .map((r) => r.item);
+    .map((r) => r.item.name);
 }
-
-// The context stack — the five tiers from CLAUDE.md's routing table.
-export type Trust =
-  | "Hypothesis"
-  | "Proposal"
-  | "Truth"
-  | "Snapshot"
-  | "Evidence"
-  | "History"
-  | "Spec";
-
-export interface Tier {
-  folder: string;
-  question: string;
-  trust: Trust;
-  /** short qualifier shown after the trust label */
-  qualifier?: string;
-}
-
-export const CONTEXT_STACK: Tier[] = [
-  {
-    folder: "docs/concepts/",
-    question: "What are we even trying to build?",
-    trust: "Hypothesis",
-    qualifier: "future tense, disposable",
-  },
-  {
-    folder: "docs/prds/",
-    question: "What are we still deciding?",
-    trust: "Proposal",
-    qualifier: "a concept worth building",
-  },
-  {
-    folder: "docs/decisions/",
-    question: "Why did we choose that?",
-    trust: "Truth",
-    qualifier: "past tense, append-only",
-  },
-  {
-    folder: "handoff/",
-    question: "Where did we leave off?",
-    trust: "Snapshot",
-    qualifier: "the latest one wins",
-  },
-  {
-    folder: "changelog/",
-    question: "What actually shipped?",
-    trust: "Truth",
-    qualifier: "generated from git",
-  },
-];
-
-// The design stack — the seven tiers from CLAUDE.md's design routing table.
-// Code has git log; design has nothing. These are the tiers that fix that.
-export const DESIGN_STACK: Tier[] = [
-  {
-    folder: "design/briefs/",
-    question: "What problem are we solving?",
-    trust: "Proposal",
-    qualifier: "the design PRD",
-  },
-  {
-    folder: "design/research/",
-    question: "What did we learn?",
-    trust: "Evidence",
-    qualifier: "observation ≠ interpretation",
-  },
-  {
-    // Adopted, not canonical: the drafts already lived here and the design
-    // stack is additive-only, so it never moved them. Must match the
-    // Explorations row of CLAUDE.md's skill:design-setup routing table.
-    folder: "docs/concepts/website/",
-    question: "What did we try?",
-    trust: "History",
-    qualifier: "includes what was killed",
-  },
-  {
-    folder: "design/decisions/",
-    question: "Why did we choose this?",
-    trust: "Truth",
-    qualifier: "past tense, append-only",
-  },
-  {
-    folder: "design/specs/",
-    question: "What is it, exactly?",
-    trust: "Spec",
-    qualifier: "pinned to a source version",
-  },
-  {
-    folder: "design/system/",
-    question: "What's reusable?",
-    trust: "Truth",
-    qualifier: "the system of record",
-  },
-  {
-    folder: "changelog/",
-    question: "What actually shipped?",
-    trust: "Truth",
-    qualifier: "generated from git",
-  },
-];

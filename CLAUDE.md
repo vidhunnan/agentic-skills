@@ -28,7 +28,7 @@ When adding or editing a skill, keep this split explicit — the same skill prod
 
 ## Skill protocols — the CLAUDE.md registration pattern
 
-Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`, `repo-setup`, `decisions-logger`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
+Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`, `repo-setup`, `decisions-logger`, `design-setup`, `design-decisions`, `skill-scaffold` — nine at last count, verified with `grep -l "BEGIN skill:" skills/*/SKILL.md`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
 
 The shared mechanism, embedded as a Step in each such skill:
 
@@ -61,6 +61,11 @@ Branches follow: `<type>/<slug>` (kebab-case; `type` ∈ `feat`/`fix`/`chore`/`d
 ### Model strategy
 Model assignments for AI work in this project live in `docs/MODEL-STRATEGY.md`. Follow its assignment rules and the mandatory review rule when choosing a Claude model. Keep model IDs current (confirm against the live lineup, e.g. via the `claude-api` skill) rather than hardcoding stale ones. Update via `/model-strategy` when the lineup or task mix changes.
 <!-- END skill:model-strategy -->
+
+<!-- BEGIN skill:handoff-generator -->
+### Handoff protocol
+When work moves between Claude.ai chat and Claude Code (or to a teammate/another session), generate a handoff brief with `/handoff-generator`. Briefs live in `handoff/handoff-{from}-to-{to}-{date}-{slug}.md`. When resuming, check `handoff/` for the latest relevant brief first.
+<!-- END skill:handoff-generator -->
 
 <!-- BEGIN skill:repo-setup -->
 ### Context stack

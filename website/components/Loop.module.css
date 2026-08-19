@@ -1,0 +1,98 @@
+.sec {
+  padding: var(--sp-8) 0;
+}
+
+.head {
+  max-width: var(--measure);
+  margin-bottom: var(--sp-6);
+}
+.sub {
+  margin: var(--sp-3) 0 0;
+  max-width: 56ch;
+  font-size: var(--t-lede);
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-3);
+  border-bottom: 1px solid var(--rule-soft);
+  border-left: 2px solid transparent;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease;
+}
+/* Reader-caused: it tracks scroll position, it does not animate on its own. */
+.on {
+  background: var(--paper);
+  border-left-color: var(--blue);
+}
+.n {
+  color: var(--mute);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.35s ease;
+}
+.on .n {
+  color: var(--blue);
+}
+.t b {
+  display: block;
+  color: var(--ink);
+}
+.d {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink-soft);
+  font-size: var(--t-sm);
+}
+
+.callout {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  padding: var(--sp-4);
+}
+/*
+  --mute, not --red. The artifact had this kicker in redline, which spends the
+  honest-gap signal on a label. design/system/palette.md: --red means hypothesis,
+  failure, the unrecorded reason — never decorative, never emphasis.
+*/
+.kicker {
+  margin: 0;
+  font-size: var(--t-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.calloutBody {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--t-sm);
+}
+
+.note {
+  margin: var(--sp-4) 0 0;
+  font-size: var(--t-sm);
+  color: var(--mute);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

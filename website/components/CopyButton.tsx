@@ -3,12 +3,21 @@
 import { useState } from "react";
 import styles from "./CopyButton.module.css";
 
+/**
+ * `variant="primary"` is the hero's call to action: the command is the button.
+ * Round 3 wrapped it in a three-row ```sh fence, which read as a sketch of a
+ * terminal rather than as something to press, and gave the fold no visible CTA.
+ *
+ * The aria-label stays `Copy: <text>` in both variants — two specs select on it.
+ */
 export default function CopyButton({
   text,
   label = "Copy",
+  variant = "chip",
 }: {
   text: string;
   label?: string;
+  variant?: "chip" | "primary";
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -25,11 +34,24 @@ export default function CopyButton({
   return (
     <button
       type="button"
-      className={`${styles.btn} ${copied ? styles.copied : ""}`}
+      className={`${styles.btn} ${variant === "primary" ? styles.primary : ""} ${
+        copied ? styles.copied : ""
+      }`}
       onClick={copy}
       aria-label={copied ? "Copied to clipboard" : `Copy: ${text}`}
     >
-      {copied ? "Copied" : label}
+      {variant === "primary" ? (
+        <>
+          <code className={styles.cmd}>{text}</code>
+          <span className={styles.action} aria-hidden="true">
+            {copied ? "copied" : "copy"}
+          </span>
+        </>
+      ) : copied ? (
+        "Copied"
+      ) : (
+        label
+      )}
     </button>
   );
 }

@@ -1,0 +1,16 @@
+{
+  "generatedFrom": "skills/",
+  "skills": {
+    "repo-setup": "e2b8c9feb2b7600d3e7d30586a79609395f7454e478c7f500b26d955ed0427d4",
+    "decisions-logger": "cf0365031bc32f5df6cf571e4fb32a060514706d4f77c7565541bbcd47dcab4f",
+    "handoff-generator": "0d0ee42003caae3d937eb6d01e2fc211d62403744b97d43f8163c3a8b72d1aa4",
+    "design-setup": "43f87b68ceba6448686880b56eb8df935efd5bc12fec507414e1dc8cd5e3b722",
+    "design-brief": "2fca40933924b56d265fab36bb5095acecd5e0cabecfa91d9fbd76b727378777",
+    "design-language": "a9e1a04c0815fa85b25e7313fd1b8bedd3076a8d6004cee8c894952fc73eced6",
+    "design-explore": "250006cc5081ce9ce8ce203d56ff8c7e8f609b01b519958251c0b9eb57b35da6",
+    "exploration-log": "bcff5e6164781cd0432cc63f9526584b61ab265be881ada58879449ab36e06fb",
+    "design-critique": "2e13d3815b024c33b16210e99b0645f80bdcc939a20bea23ab7ff11bae222833",
+    "design-decisions": "9ccaf719ab7521073a2cfd4212c768b3dc3fdb36cf5266bbf5221a1f77ec5e7b",
+    "skill-scaffold": "57e2c6d23f82a5b07c7000d6296174637da1a141f712c850106a22a61bb255da"
+  }
+}

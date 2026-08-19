@@ -1,148 +1,214 @@
-.section {
-  padding: 88px 0;
-  border-bottom: 1px solid var(--rule-soft);
+.sec {
+  padding: var(--sp-8) 0;
 }
 
-.title {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(26px, 3.4vw, 40px);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-  margin: 0 0 18px;
+.head {
+  max-width: var(--measure);
+  margin-bottom: var(--sp-6);
+}
+.sub {
+  margin: var(--sp-3) 0 0;
+  max-width: 56ch;
+  font-size: var(--t-lede);
+  line-height: 1.6;
 }
 
-.intro {
-  color: var(--ink-soft);
-  max-width: 60ch;
-  font-size: 16px;
-  margin: 0 0 12px;
-}
-
-.group {
-  margin-top: 52px;
-}
-
-.groupHead {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--rule);
-  flex-wrap: wrap;
-}
-.groupTitle {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink);
-  margin: 0;
-}
-.groupNote {
-  font-size: 13.5px;
-  color: var(--mute);
-  margin: 0;
-}
-
+/*
+  A list, not a table. No outer box, no column rules — one hairline between
+  entries and nothing else. The first pass boxed it and ruled it into columns,
+  and it read as a spreadsheet of the library rather than a list of things you
+  might install.
+*/
 .list {
   list-style: none;
   margin: 0;
   padding: 0;
+  border-top: 1px solid var(--rule-soft);
 }
-
-.row {
-  display: grid;
-  grid-template-columns: 34px 1fr;
-  gap: 20px;
-  padding: 26px 4px;
+.list > li {
   border-bottom: 1px solid var(--rule-soft);
 }
-.row:last-child {
-  border-bottom: none;
+
+.summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--sp-5);
+  padding: var(--sp-5) var(--sp-2);
+  cursor: pointer;
+  list-style: none;
+}
+.summary::-webkit-details-marker {
+  display: none;
+}
+.summary::marker {
+  content: "";
+}
+.summary:hover .nm {
+  color: var(--blue);
+}
+.summary:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: -2px;
 }
 
-.num {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--mute);
-  padding-top: 3px;
-}
-
-.main {
+.text {
+  display: block;
   min-width: 0;
 }
-.nameLine {
+.top {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
 }
-.name {
-  font-family: var(--mono);
-  font-size: 16px;
+.nm {
+  color: var(--ink);
   font-weight: 600;
-  color: var(--ink);
+  font-size: var(--t-lede);
+  transition: color 0.15s ease;
 }
-.surfaces {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--blue);
-  white-space: nowrap;
+.tags {
+  display: inline-flex;
+  gap: 6px;
 }
-
-/* The question this skill answers, in the reader's own voice. This was already
-   in the data on all eleven skills and rendered nowhere — the type comment
-   described a column that was never built. It is the fastest way to tell
-   whether a skill is for you, so it leads. */
-.answers {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 17px;
-  line-height: 1.3;
-  color: var(--ink);
-  margin: 0 0 7px;
+.tag {
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 1px 7px;
+  color: var(--mute);
+  font-size: var(--t-meta);
 }
 
 .desc {
-  font-size: 15px;
-  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  margin-top: var(--sp-2);
+  max-width: 82ch;
+  font-size: var(--t-sm);
   color: var(--ink-soft);
-  margin: 0 0 16px;
-  max-width: 68ch;
+}
+.row[open] .desc {
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  overflow: visible;
 }
 
-.install {
-  display: inline-flex;
+/* Plus becomes minus. No glyph font, no image. */
+.plus {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  margin-top: 5px;
+  flex: 0 0 auto;
+}
+.plus::before,
+.plus::after {
+  content: "";
+  position: absolute;
+  background: var(--mute);
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+.plus::before {
+  top: 6px;
+  left: 0;
+  width: 13px;
+  height: 1px;
+}
+.plus::after {
+  top: 0;
+  left: 6px;
+  width: 1px;
+  height: 13px;
+}
+.row[open] .plus::after {
+  transform: scaleY(0);
+}
+.row[open] .plus::before {
+  background: var(--blue);
+}
+
+/* One line between the description and the command. That is the whole divider. */
+.body {
+  padding: 0 var(--sp-2) var(--sp-5);
+}
+.cmdRow {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  background: var(--paper-2);
-  border: 1px solid var(--rule-soft);
-  border-radius: 3px;
-  padding: 7px 10px;
-  max-width: 100%;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
 }
-.install code {
-  font-family: var(--mono);
-  font-size: 12.5px;
+.cmd {
   color: var(--ink);
-  white-space: nowrap;
-  overflow-x: auto;
+  font-size: var(--t-sm);
+  overflow-wrap: anywhere;
 }
 
-@media (max-width: 720px) {
-  .section {
-    padding: 60px 0;
+@media (max-width: 700px) {
+  .summary {
+    gap: var(--sp-4);
+    padding: var(--sp-4) var(--sp-1);
   }
-  .row {
-    grid-template-columns: 26px 1fr;
-    gap: 12px;
+  .body {
+    padding: 0 var(--sp-1) var(--sp-4);
   }
-  .nameLine {
-    flex-direction: column;
-    gap: 2px;
-  }
+}
+
+/* ── filter ────────────────────────────────────────────────────── */
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.search {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 38ch;
+  padding: 10px 13px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: var(--t-sm);
+}
+.search::placeholder {
+  color: var(--mute);
+}
+.search:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+.hits {
+  color: var(--mute);
+  font-size: var(--t-meta);
+  white-space: nowrap;
+}
+
+/* ── download ──────────────────────────────────────────────────── */
+.download {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 5px 11px;
+  color: var(--ink-soft);
+  font-size: var(--t-meta);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.download:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  text-decoration: none;
+}
+.hint {
+  margin: var(--sp-3) 0 0;
+  max-width: 68ch;
+  color: var(--mute);
+  font-size: var(--t-meta);
+  line-height: 1.7;
 }

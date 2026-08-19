@@ -1,6 +1,6 @@
 # 0002. The site uses a three-family type system: Newsreader, Archivo, IBM Plex Mono
 
-- **Status:** **Accepted**
+- **Status:** Superseded by [0008](./0008-geist-mono-alone.md)
 - **Date:** 2026-07-19 *(approx. — dated from `git:e4a1f2e`, the commit that shipped the site)*
 - **Supersedes:** —
 
@@ -66,6 +66,11 @@ that**, and it is not this record's job to supply the reasoning after the fact.
 ## Follow-up
 
 *Append-only. Everything above this heading is **frozen**.*
+
+- **2026-08-19** — **Superseded by [0008](./0008-geist-mono-alone.md)**, which
+  replaced all three families with Geist Mono alone. The trio never had a recorded
+  rationale to argue against — this record's own `*(reason not stated)*` is what let
+  the replacement be decided on evidence rather than against a stated position.
 
 - **2026-08-16** — Logged retrospectively, ~4 weeks after the decision was made.
   The alternatives above were **recovered from the exploration drafts**, not from

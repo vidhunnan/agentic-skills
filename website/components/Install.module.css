@@ -1,80 +1,175 @@
-.section {
-  padding: 88px 0;
-  border-bottom: 1px solid var(--rule-soft);
+.sec {
+  padding: var(--sp-8) 0;
 }
 
-.title {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(26px, 3.4vw, 40px);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-  margin: 0 0 18px;
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 4vw, 56px);
+  align-items: start;
 }
 
-.intro {
-  color: var(--ink-soft);
-  max-width: 58ch;
-  font-size: 16px;
-  margin: 0 0 36px;
+.sub {
+  margin: var(--sp-3) 0 0;
+  max-width: 52ch;
+  font-size: var(--t-lede);
+  line-height: 1.6;
 }
-
-.block {
-  background: var(--paper-2);
-  border: 1px solid var(--rule-soft);
-  border-radius: 4px;
-  padding: 24px 26px;
-  max-width: 620px;
-}
-
-.lineRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 4px 0;
-}
-.line {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow-x: auto;
-}
-.prompt {
-  color: var(--blue);
-}
-.rem {
-  font-family: var(--mono);
-  font-size: 13px;
+.body {
+  margin: var(--sp-4) 0 0;
+  max-width: 62ch;
+  font-size: var(--t-sm);
   color: var(--mute);
-  padding: 12px 0 4px;
-}
-
-.alt {
-  margin-top: 22px;
-  padding-top: 20px;
-  border-top: 1px solid var(--rule-soft);
-  font-size: 14.5px;
-  color: var(--ink-soft);
-}
-.alt strong {
-  color: var(--ink);
-  font-weight: 600;
 }
 .chat {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--blue);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0 5px;
+  color: var(--ink);
+  font-size: var(--t-meta);
 }
 
-@media (max-width: 720px) {
-  .section {
-    padding: 60px 0;
-  }
-  .block {
-    padding: 20px 18px;
+.panel {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  overflow: hidden;
+}
+
+/* The one-time step. Never in the cycle — people stepped past it. */
+.once {
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+
+.cycle {
+  padding: var(--sp-4);
+}
+
+.comment {
+  margin: 0 0 var(--sp-3);
+  color: var(--mute);
+  font-size: var(--t-sm);
+}
+
+/* Before mount, every skill is stacked and readable. */
+.slide + .slide {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--rule-soft);
+}
+
+/*
+  After mount they share one grid cell, so the panel holds the height of the
+  tallest slide and the controls never move as you cycle.
+*/
+.stepped .slides {
+  display: grid;
+}
+.stepped .slides > .slide {
+  grid-area: 1 / 1;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+  visibility: hidden;
+}
+.stepped .slides > .current {
+  visibility: visible;
+}
+
+.slideTop {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.nm {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: var(--t-lede);
+}
+.answers {
+  margin: var(--sp-2) 0 0;
+  color: var(--ink-soft);
+  font-size: var(--t-sm);
+}
+
+.cmdRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+  padding: 10px 12px;
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+}
+.once .cmdRow {
+  background: var(--paper);
+}
+.cmd {
+  color: var(--ink);
+  font-size: var(--t-sm);
+  overflow-wrap: anywhere;
+}
+.download {
+  margin-left: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  color: var(--ink-soft);
+  font-size: var(--t-meta);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.download:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--rule-soft);
+}
+.nav {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: var(--t-meta);
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.nav:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+.count {
+  margin-left: auto;
+  color: var(--mute);
+  font-size: var(--t-meta);
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+  border-top: 1px solid var(--rule-soft);
+  color: var(--mute);
+  font-size: var(--t-meta);
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

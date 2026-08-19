@@ -1,6 +1,6 @@
 # 0016. Site content is data-driven from one source, sourced from the repo
 
-- **Status:** Accepted
+- **Status:** Superseded by [0023](./0023-site-content-is-split-by-kind-data-vs-prose.md)
 - **Date:** 2026-07-19
 
 ## Context
@@ -30,7 +30,12 @@ We defined all site content once in `website/components/lib/skills.ts` — the s
 
 *Append-only. Everything above this heading is **frozen**. Entries below are dated and additive — evidence that the world moved, not a revision of what was decided.*
 
-*(none yet)*
+- **2026-08-19** — **Superseded by [0023](./0023-site-content-is-split-by-kind-data-vs-prose.md).**
+  This decision was not reversed on principle; it was found to be **false as written**. The
+  rebuild in `git:fcea6dd` established that around fifty user-facing strings — every headline
+  and every section intro — had always lived as literals in the components, while only the
+  repeated, countable content (the skills, the matrix rows, the specimens) was ever data.
+  0023 records the split that was actually in force rather than the one this ADR claimed.
 
 ---
 

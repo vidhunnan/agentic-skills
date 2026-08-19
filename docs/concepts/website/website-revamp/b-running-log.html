@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B — Running Log · agentic-skills exploration</title>
+<style>
+:root{
+  --paper:#f3f2ed; --paper-2:#ecebe4; --ink:#16160f; --ink-soft:#4e4e45;
+  --mute:#6b6b60; --blue:#2743c8; --red:#bf3018;
+  --rule:rgba(22,22,15,.22); --rule-soft:rgba(22,22,15,.12);
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#14140f; --paper-2:#1c1c16; --ink:#edece4; --ink-soft:#b3b2a6;
+  --mute:#85857a; --blue:#8fa2ff; --red:#ff8a6d;
+  --rule:rgba(237,236,228,.26); --rule-soft:rgba(237,236,228,.14);
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:400 17px/1.7 var(--serif);padding-bottom:90px}
+.bar{border-bottom:1px solid var(--rule);padding:12px 0;margin-bottom:0;font:400 12px/1 var(--mono)}
+.bar .in{max-width:900px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;color:var(--mute)}
+.bar b{color:var(--ink);font-weight:600}
+/* LAYOUT STRUCTURE AXIS: not sections. A dated, numbered sequence of entries. */
+.log{max-width:900px;margin:0 auto;padding:0 24px}
+.entry{display:grid;grid-template-columns:96px 1fr;gap:28px;
+  border-bottom:1px solid var(--rule-soft);padding:34px 0}
+.entry:first-of-type{padding-top:44px}
+.gutter{font:400 11.5px/1.6 var(--mono);color:var(--mute);text-align:right;
+  padding-top:6px;letter-spacing:.04em}
+.gutter .no{display:block;color:var(--ink);font-weight:600;font-size:13px}
+.gutter .st{display:block;color:var(--red);margin-top:6px}
+.body{max-width:64ch}
+h1{font:400 30px/1.35 var(--serif);letter-spacing:-.01em;margin-bottom:14px}
+h1 em{font-style:italic;color:var(--ink-soft)}
+.lede{color:var(--ink-soft);margin-bottom:20px}
+.lede .mark{color:var(--red);font-style:italic}
+h2{font:400 21px/1.4 var(--serif);margin-bottom:12px}
+p{margin-bottom:12px;color:var(--ink-soft)}
+.cmd{font:400 13px/1.6 var(--mono);background:var(--paper-2);
+  border-left:2px solid var(--blue);padding:10px 14px;color:var(--ink);display:inline-block}
+/* a record, shown as source, inside an entry */
+.rec{font:400 13px/1.85 var(--mono);background:var(--paper-2);padding:14px 16px;
+  white-space:pre-wrap;color:var(--ink-soft);margin:6px 0 8px}
+.rec .gap{color:var(--red)}
+.src{font:400 11.5px/1.5 var(--mono);color:var(--mute);margin-bottom:14px}
+.src a{color:var(--blue);text-decoration:none}
+/* the matrix, as one entry */
+dl{border-top:1px solid var(--rule-soft)}
+dl>div{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:9px 0;
+  border-bottom:1px solid var(--rule-soft)}
+dt{font:400 15px/1.5 var(--serif);color:var(--ink)}
+dd{font:400 12.5px/1.5 var(--mono);color:var(--red)}
+dd.has{color:var(--ink-soft)}
+dd b{display:block;color:var(--blue);font-weight:400;margin-top:2px}
+.struck{text-decoration:line-through;color:var(--mute)}
+.skill{display:flex;justify-content:space-between;align-items:baseline;
+  padding:11px 0;border-bottom:1px solid var(--rule-soft)}
+.skill .n{font:400 14px/1.4 var(--mono);color:var(--ink)}
+.skill .q{font-style:italic;color:var(--ink-soft);font-size:16px}
+</style></head><body>
+
+<div class="bar"><div class="in"><span><b>B</b> · Running Log</span><span>axis: layout structure</span></div></div>
+
+<div class="log">
+
+  <div class="entry">
+    <div class="gutter"><span class="no">01</span>2026-08-19</div>
+    <div class="body">
+      <h1>An agent needs context to do good work. <em>Most of it was never written down.</em></h1>
+      <p class="lede">What shipped, why you chose it, what you tried and killed — from git, your
+      files and your answers. And where nobody remembers why, <span class="mark">they say so</span>.</p>
+      <div class="cmd">/plugin marketplace add vidhunnan/agentic-skills</div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="gutter"><span class="no">02</span>2026-07-19<span class="st">unrecorded</span></div>
+    <div class="body">
+      <h2>A record that admits it doesn't know</h2>
+<div class="rec">## What we gave up
+
+<span class="gap">*(none identified)*</span> — the trade was never articulated.
+
+**Rationale:**
+<span class="gap">*(reason not stated)*</span> — no reason was ever recorded.</div>
+      <div class="src">design/decisions/0002-a-three-family-type-system-for-the-site.md · <a href="#">read it →</a></div>
+      <p>A real decision in this repo. Nobody remembered why — so it says so, instead of
+      inventing a reason.</p>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="gutter"><span class="no">03</span>what gets<br>written</div>
+    <div class="body">
+      <h2>Nine questions, and what answers them today</h2>
+      <dl>
+        <div><dt>What did we try?</dt><dd class="has">git history, badly<b>+ explorations</b></dd></div>
+        <div><dt>Why did we choose that?</dt><dd class="has">commit messages, badly<b>+ decisions</b></dd></div>
+        <div><dt>What is it, exactly?</dt><dd class="has">the code itself<b>+ specs</b></dd></div>
+        <div><dt>What's reusable?</dt><dd class="has">the package system<b>+ system</b></dd></div>
+        <div><dt>What actually shipped?</dt><dd class="has">git, properly<b>+ changelog</b></dd></div>
+        <div><dt>What are we trying to build?</dt><dd>whatever someone remembered<b>+ concepts · briefs</b></dd></div>
+        <div><dt>What are we still deciding?</dt><dd>whatever someone remembered<b>+ prds · briefs</b></dd></div>
+        <div><dt>What did we learn?</dt><dd>nothing, by default<b>+ research</b></dd></div>
+        <div><dt>Where did we leave off?</dt><dd>nothing, by default<b>+ handoffs</b></dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="gutter"><span class="no">04</span>superseded</div>
+    <div class="body">
+      <h2 class="struck">Two stacks, side by side</h2>
+      <p><span class="struck">The code stack and the design stack, rendered as two parallel
+      sections.</span> — struck, not deleted. It rendered two rows twice. The entry stays
+      because a killed direction is the point of this tier.</p>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="gutter"><span class="no">05</span>the skills</div>
+    <div class="body">
+      <div class="skill"><span class="n">decisions-logger</span><span class="q">Why did we choose that?</span></div>
+      <div class="skill"><span class="n">exploration-log</span><span class="q">Did we already try that?</span></div>
+      <div class="skill"><span class="n">changelog-tracker</span><span class="q">What actually shipped?</span></div>
+    </div>
+  </div>
+
+</div>
+</body></html>

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Round 2 — terminal-rendered markdown · full content</title>
+<style>
+:root{
+  --paper:#f3f2ed; --paper-2:#ecebe4; --ink:#16160f; --ink-soft:#4e4e45;
+  --mute:#6b6b60; --blue:#2743c8; --red:#bf3018;
+  --rule:rgba(22,22,15,.22); --rule-soft:rgba(22,22,15,.12);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#14140f; --paper-2:#1c1c16; --ink:#edece4; --ink-soft:#b3b2a6;
+  --mute:#85857a; --blue:#8fa2ff; --red:#ff8a6d;
+  --rule:rgba(237,236,228,.26); --rule-soft:rgba(237,236,228,.14);
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink-soft);
+  font:400 13.5px/1.7 var(--mono);-webkit-font-smoothing:antialiased}
+.wrap{max-width:78ch;margin:0 auto;padding:0 26px}
+
+/* ── the syntax layer: present, recessive ───────────────────────── */
+.s{color:var(--mute);font-weight:400}          /* markdown markers   */
+.dim{color:var(--mute)}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:var(--ink);font-weight:600}
+.gap{color:var(--red)}
+
+/* ── file bar ───────────────────────────────────────────────────── */
+.filebar{position:sticky;top:0;z-index:9;background:var(--paper);
+  border-bottom:1px solid var(--rule);font-size:12px}
+.filebar .wrap{display:flex;justify-content:space-between;gap:20px;
+  align-items:center;padding-top:9px;padding-bottom:9px;max-width:78ch}
+.filebar .path{color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.filebar .path b{color:var(--ink);font-weight:600}
+.filebar nav{display:flex;gap:14px;white-space:nowrap}
+.filebar nav a{color:var(--ink-soft)}
+.filebar nav a:hover{color:var(--blue);text-decoration:none}
+@media (max-width:640px){.filebar nav a:nth-child(-n+2){display:none}}
+
+/* ── document rhythm ────────────────────────────────────────────── */
+main{padding:52px 0 0}
+section{padding-bottom:46px}
+h1,h2,h3{font-weight:600;color:var(--ink);font-size:inherit;line-height:1.5}
+h1{font-size:19px;line-height:1.45;letter-spacing:-.01em;margin:6px 0 18px;max-width:46ch}
+h1 .cont{color:var(--ink-soft);font-weight:400;display:block}
+h2{font-size:15px;margin-bottom:4px}
+h3{font-size:13.5px}
+p{margin-bottom:14px;max-width:70ch}
+.lede{font-size:14px;margin-bottom:22px}
+.rule{color:var(--rule);user-select:none;overflow:hidden;white-space:nowrap;
+  margin:0 0 20px;font-size:13px;letter-spacing:-.5px}
+.eyebrow{color:var(--mute);font-size:12.5px;margin-bottom:2px}
+
+/* ── fenced blocks ──────────────────────────────────────────────── */
+.fence{margin:0 0 18px}
+.fence .tick{color:var(--mute);font-size:12.5px}
+pre{background:var(--paper-2);padding:13px 15px;overflow-x:auto;
+  font:400 13px/1.8 var(--mono);color:var(--ink-soft);white-space:pre}
+pre .cmd{color:var(--ink)}
+.srcline{font-size:12px;color:var(--mute);margin:6px 0 0}
+.srcline a{color:var(--blue)}
+
+/* ── pipe tables ────────────────────────────────────────────────── */
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin-bottom:14px}
+td,th{padding:4px 0;vertical-align:top;text-align:left;font-weight:400}
+th{color:var(--mute);border-bottom:none;padding-bottom:2px}
+.pipe{color:var(--rule);padding:0 9px;user-select:none;width:1px}
+.sep td{color:var(--rule);padding:0 0 4px;user-select:none;letter-spacing:-.5px;overflow:hidden}
+td.q{color:var(--ink)}
+td.today{color:var(--red)}
+td.today.has{color:var(--ink-soft)}
+td.adds{color:var(--blue)}
+
+/* ── ordered loop ───────────────────────────────────────────────── */
+ol{list-style:none;margin:0 0 16px}
+ol li{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:5px 0;align-items:start}
+ol li .n{color:var(--mute)}
+ol li .t b{color:var(--ink)}
+ol li .t .w{color:var(--mute);display:block;font-size:12.5px}
+
+/* ── skills ─────────────────────────────────────────────────────── */
+.skill{padding:16px 0;border-top:1px solid var(--rule-soft)}
+.skill:first-of-type{border-top:none;padding-top:4px}
+.skill .top{display:flex;justify-content:space-between;gap:16px;align-items:baseline;flex-wrap:wrap}
+.skill .nm{color:var(--ink);font-weight:600;font-size:14px}
+.skill .ans{color:var(--mute);font-size:12.5px}
+.skill p{font-size:12.5px;margin:7px 0 9px;max-width:68ch}
+.surf{font-size:11.5px;white-space:nowrap}
+.surf .on{color:var(--blue)}
+.surf .off{color:var(--mute)}
+.idx{margin-top:6px}
+.idx .r{display:grid;grid-template-columns:1fr auto auto;gap:14px;padding:6px 0;
+  border-top:1px solid var(--rule-soft);align-items:baseline;font-size:12.5px}
+.idx .r .nm{color:var(--ink)}
+.idx .r .ans{color:var(--mute)}
+.note{font-size:12.5px;color:var(--mute);max-width:70ch}
+footer{border-top:1px solid var(--rule);padding:22px 0 60px;font-size:12px;color:var(--mute)}
+</style></head><body>
+
+<div class="filebar"><div class="wrap">
+  <span class="path"><b>vidhunnan/agentic-skills</b> <span class="s">/</span> README.md</span>
+  <nav>
+    <a href="#written">what gets written</a>
+    <a href="#how">how it works</a>
+    <a href="#skills">skills</a>
+    <a href="#install">install</a>
+    <a href="#src">source&nbsp;↗</a>
+  </nav>
+</div></div>
+
+<main class="wrap">
+
+<!-- ── hero ─────────────────────────────────────────────────────── -->
+<section>
+  <p class="eyebrow"><span class="s">&lt;!--</span> agent skills for claude code <span class="s">--&gt;</span></p>
+  <h1><span class="s"># </span>An agent needs context to do good work.
+      <span class="cont">Most of it was never written down.</span></h1>
+  <p class="lede">What shipped, why you chose it, what you tried and killed — from git,
+  your files and your answers. And where nobody remembers why, <span class="gap">they say so</span>.</p>
+
+  <div class="fence">
+    <div class="tick">```sh</div>
+<pre><span class="cmd">/plugin marketplace add vidhunnan/agentic-skills</span></pre>
+    <div class="tick">```</div>
+  </div>
+</section>
+
+<!-- ── specimen ─────────────────────────────────────────────────── -->
+<section>
+  <div class="rule">────────────────────────────────────────────────────────────────────────────────</div>
+  <h2><span class="s">## </span>A record that admits it doesn't know</h2>
+  <p class="lede dim">Not an example. A real file in this repo.</p>
+
+  <div class="fence">
+    <div class="tick">```md</div>
+<pre><span class="s">## </span>What we gave up
+
+<span class="gap">*(none identified)*</span> — the trade was never articulated.
+
+<span class="s">**</span>Rationale:<span class="s">**</span>
+<span class="gap">*(reason not stated)*</span> — no reason was ever recorded.</pre>
+    <div class="tick">```</div>
+    <p class="srcline"><span class="s">— </span>design/decisions/0002-a-three-family-type-system-for-the-site.md
+      <span class="s">·</span> <a href="#">[read the whole thing]</a></p>
+  </div>
+
+  <p>Three typefaces shipped on this site. Four weeks later nobody could reconstruct
+  why. The skill that logged it <b>asked</b>, got "I don't remember", and wrote that
+  down instead of composing a paragraph about serifs.</p>
+</section>
+
+<!-- ── matrix ───────────────────────────────────────────────────── -->
+<section id="written">
+  <div class="rule">────────────────────────────────────────────────────────────────────────────────</div>
+  <h2><span class="s">## </span>What gets written</h2>
+  <p class="lede dim">Nine questions a project has to answer. Most of them already have
+  an answer — it's just nowhere you can read it.</p>
+
+  <table>
+    <tr><th>Question</th><td class="pipe">│</td><th>What answers it today</th><td class="pipe">│</td><th>This adds</th></tr>
+    <tr class="sep"><td>─────────────────────────</td><td>┼</td><td>────────────────────────</td><td>┼</td><td>──────────────</td></tr>
+    <tr><td class="q">What did we try?</td><td class="pipe">│</td><td class="today has">git history, badly</td><td class="pipe">│</td><td class="adds">explorations</td></tr>
+    <tr><td class="q">Why did we choose that?</td><td class="pipe">│</td><td class="today has">commit messages, badly</td><td class="pipe">│</td><td class="adds">decisions</td></tr>
+    <tr><td class="q">What is it, exactly?</td><td class="pipe">│</td><td class="today has">the code itself</td><td class="pipe">│</td><td class="adds">specs</td></tr>
+    <tr><td class="q">What's reusable?</td><td class="pipe">│</td><td class="today has">the package system</td><td class="pipe">│</td><td class="adds">system</td></tr>
+    <tr><td class="q">What actually shipped?</td><td class="pipe">│</td><td class="today has">git, properly</td><td class="pipe">│</td><td class="adds">changelog</td></tr>
+    <tr><td class="q">What are we trying to build?</td><td class="pipe">│</td><td class="today">whatever someone remembered</td><td class="pipe">│</td><td class="adds">concepts · briefs</td></tr>
+    <tr><td class="q">What are we still deciding?</td><td class="pipe">│</td><td class="today">whatever someone remembered</td><td class="pipe">│</td><td class="adds">prds · briefs</td></tr>
+    <tr><td class="q">What did we learn?</td><td class="pipe">│</td><td class="today">nothing, by default</td><td class="pipe">│</td><td class="adds">research</td></tr>
+    <tr><td class="q">Where did we leave off?</td><td class="pipe">│</td><td class="today">nothing, by default</td><td class="pipe">│</td><td class="adds">handoffs</td></tr>
+  </table>
+  <p class="note"><span class="s">&gt; </span><span class="gap">Red</span> is not styling. It marks
+  the rows where nothing answers the question today — the same signal the records use
+  for a reason nobody recorded.</p>
+</section>
+
+<!-- ── the loop ─────────────────────────────────────────────────── -->
+<section id="how">
+  <div class="rule">────────────────────────────────────────────────────────────────────────────────</div>
+  <h2><span class="s">## </span>How one skill works</h2>
+  <p class="lede dim">Take <b>decisions-logger</b>. You've just decided something —
+  "plain CSS Modules, not Tailwind."</p>
+
+  <ol>
+    <li><span class="n">1.</span><span class="t"><b>It reads the evidence</b>
+      <span class="w">git log, the config that changed, the PR thread. Not your memory.</span></span></li>
+    <li><span class="n">2.</span><span class="t"><b>It asks what it can't find</b>
+      <span class="w">"why did Tailwind lose?" — and every question offers "I don't remember."</span></span></li>
+    <li><span class="n">3.</span><span class="t"><b>It writes the record</b>
+      <span class="w">docs/decisions/0018-…md — with the option that lost named, or it isn't a decision.</span></span></li>
+    <li><span class="n">4.</span><span class="t"><b>It registers the rule</b>
+      <span class="w">a block in CLAUDE.md, the file your agent re-reads every session.</span></span></li>
+    <li><span class="n">5.</span><span class="t"><b>Next session, unasked</b>
+      <span class="w">it offers to log the next one. You never have to remember the habit.</span></span></li>
+  </ol>
+
+  <p><b>Step 4 is the one nothing else does.</b> A skill that stopped at step 3 would
+  be forgotten by tomorrow — you'd have one good document and no second one. The rule
+  is what makes it happen again.</p>
+  <p class="note"><span class="s">&gt; </span>Seven rules live in this repo's CLAUDE.md.
+  They have produced <b>23 decisions</b>, <b>6 design decisions</b>, <b>31 documented
+  commits</b> and <b>3 handoffs</b> — <a href="#">[all of it readable]</a>.</p>
+</section>
+
+<!-- ── skills ───────────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="rule">────────────────────────────────────────────────────────────────────────────────</div>
+  <h2><span class="s">## </span>The skills</h2>
+  <p class="lede dim">Fourteen, each a separate plugin. Three worth reading properly;
+  the rest are one line each.</p>
+
+  <div class="skill">
+    <div class="top"><span class="nm">decisions-logger</span>
+      <span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span></div>
+    <div class="ans">Why did we choose that?</div>
+    <p>Mines the project for decisions that were really made and writes each as a
+    numbered ADR with its evidence. Where the reasoning was never written down it
+    <b>asks</b> — and if nobody remembers, writes <span class="gap">*(reason not stated)*</span>
+    rather than a plausible sentence.</p>
+    <div class="fence"><div class="tick">```sh</div><pre><span class="cmd">/plugin install decisions-logger</span></pre><div class="tick">```</div></div>
+  </div>
+
+  <div class="skill">
+    <div class="top"><span class="nm">exploration-log</span>
+      <span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span></div>
+    <div class="ans">Did we already try that?</div>
+    <p>Logs a round of iteration — what it tested, what changed, what you learned, and
+    whether it was kept, <b>killed</b> or parked, with the reason. Append-only, so a
+    direction you abandoned is still readable a year later. Answers the question back, too.</p>
+    <div class="fence"><div class="tick">```sh</div><pre><span class="cmd">/plugin install exploration-log</span></pre><div class="tick">```</div></div>
+  </div>
+
+  <div class="skill">
+    <div class="top"><span class="nm">changelog-tracker</span>
+      <span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="off">Chat</span></span></div>
+    <div class="ans">What actually shipped?</div>
+    <p>Documents every substantive commit into a per-commit file plus a rolling index.
+    Every fact comes from <span class="s">`</span>git log<span class="s">`</span> — faithful,
+    not generative. <span class="dim">Needs git, so Claude Code only.</span></p>
+    <div class="fence"><div class="tick">```sh</div><pre><span class="cmd">/plugin install changelog-tracker</span></pre><div class="tick">```</div></div>
+  </div>
+
+  <div class="idx">
+    <div class="r"><span class="nm">repo-setup</span><span class="ans">Where does this doc go?</span><span class="surf"><span class="on">Code·Chat</span></span></div>
+    <div class="r"><span class="nm">handoff-generator</span><span class="ans">Where did we leave off?</span><span class="surf"><span class="on">Code·Chat</span></span></div>
+    <div class="r"><span class="nm">branch-naming</span><span class="ans">What do I call this branch?</span><span class="surf"><span class="on">Code</span></span></div>
+    <div class="r"><span class="nm">model-strategy</span><span class="ans">Which model for this work?</span><span class="surf"><span class="on">Code</span></span></div>
+    <div class="r"><span class="nm">design-setup</span><span class="ans">Where does this design doc go?</span><span class="surf"><span class="on">Code·Chat</span></span></div>
+    <div class="r"><span class="nm">design-brief</span><span class="ans">What are we actually solving?</span><span class="surf"><span class="on">Code·Chat</span></span></div>
+    <div class="r"><span class="nm">design-language</span><span class="ans">What should it look like?</span><span class="surf"><span class="on">Code·Chat</span></span></div>
+    <div class="r"><span class="nm">design-explore</span><span class="ans">What are the options?</span><span class="surf"><span class="on">Code·Chat</span></span></div>
+    <div class="r"><span class="nm">design-critique</span><span class="ans">Does this match what we said?</span><span class="surf"><span class="on">Code·Chat</span></span></div>
+    <div class="r"><span class="nm">design-decisions</span><span class="ans">Why is it like this?</span><span class="surf"><span class="on">Code·Chat</span></span></div>
+    <div class="r"><span class="nm">skill-scaffold</span><span class="ans">How do I add another one?</span><span class="surf"><span class="on">Code·Chat</span></span></div>
+  </div>
+</section>
+
+<!-- ── install ──────────────────────────────────────────────────── -->
+<section id="install">
+  <div class="rule">────────────────────────────────────────────────────────────────────────────────</div>
+  <h2><span class="s">## </span>Install</h2>
+  <p class="lede dim">Read a couple of the records above before you trust it with your
+  repo — including the one that says it doesn't know.</p>
+
+  <div class="fence">
+    <div class="tick">```sh</div>
+<pre><span class="s"># once</span>
+<span class="cmd">/plugin marketplace add vidhunnan/agentic-skills</span>
+
+<span class="s"># start here — it builds the folders the rest fill</span>
+<span class="cmd">/plugin install repo-setup</span>
+<span class="cmd">/repo-setup</span>
+
+<span class="s"># then add the rest as you hit the need for them</span></pre>
+    <div class="tick">```</div>
+  </div>
+
+  <p><b>Claude Code gives you the system. Claude.ai gives you the artifact.</b>
+  On Claude.ai a skill interviews you and hands back a document — no folder to write
+  into, and no rule registered, so nothing happens next session unless you paste the
+  block yourself. Skills marked <span class="dim">Chat</span> above have that path;
+  the rest need git.</p>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <span class="s">&lt;!-- </span>Built by <a href="#">Vidhunnan Murugan</a> ·
+  MIT · authored in Markdown, no code ·
+  <a href="#" id="src">[github]</a><span class="s"> --&gt;</span>
+</footer>
+</body></html>

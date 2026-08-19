@@ -1,0 +1,12 @@
+.tags {
+  display: inline-flex;
+  gap: 6px;
+}
+.tag {
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 1px 7px;
+  color: var(--mute);
+  font-size: var(--t-meta);
+  white-space: nowrap;
+}

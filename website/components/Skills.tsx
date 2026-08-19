@@ -1,67 +1,19 @@
-import { SKILL_GROUPS, TOTAL_SKILLS } from "./lib/skills";
-import CopyButton from "./CopyButton";
-import Reveal from "./Reveal";
+import SkillList from "./SkillList";
+import { SKILLS_COPY } from "./lib/content";
 import styles from "./Skills.module.css";
 
-function pad(n: number) {
-  return String(n).padStart(2, "0");
-}
-
+/**
+ * The catalogue. One shape for all fourteen — it scales by rows, and at the
+ * thirty-two on the roadmap it is thirty-two rows rather than eleven screens.
+ */
 export default function Skills() {
-  let counter = 0;
   return (
-    <section id="skills" className={styles.section}>
-      <div className="wrap">
-        <p className="eyebrow">Install one, or all {TOTAL_SKILLS}</p>
-        <h2 className={styles.title}>The skills.</h2>
-        <p className={styles.intro}>
-          Each is a separate plugin. <strong>None of them invents anything</strong>{" "}
-          — the code skills read it from your repo (git, CLAUDE.md, the files
-          themselves); the design skills ask you, and mark what you couldn&rsquo;t
-          answer rather than filling it in.
-        </p>
-
-        {SKILL_GROUPS.map((group) => (
-          <div key={group.title} className={styles.group}>
-            <div className={styles.groupHead}>
-              <h3 className={styles.groupTitle}>{group.title}</h3>
-              <p className={styles.groupNote}>{group.note}</p>
-            </div>
-
-            <ul className={styles.list}>
-              {group.skills.map((skill, i) => {
-                counter += 1;
-                return (
-                  <Reveal
-                    as="li"
-                    key={skill.name}
-                    className={styles.row}
-                    index={i}
-                  >
-                    <span className={styles.num}>{pad(counter)}</span>
-                    <div className={styles.main}>
-                      <div className={styles.nameLine}>
-                        <span className={styles.name}>{skill.name}</span>
-                        <span className={styles.surfaces}>
-                          {skill.surfaces.join(" · ")}
-                        </span>
-                      </div>
-                      {skill.answers ? (
-                        <p className={styles.answers}>{skill.answers}</p>
-                      ) : null}
-                      <p className={styles.desc}>{skill.desc}</p>
-                      <div className={styles.install}>
-                        <code>{skill.install}</code>
-                        <CopyButton text={skill.install} />
-                      </div>
-                    </div>
-                  </Reveal>
-                );
-              })}
-            </ul>
-          </div>
-        ))}
+    <section id="skills" className={`shell ${styles.sec}`}>
+      <div className={styles.head}>
+        <h2>{SKILLS_COPY.heading}</h2>
+        <p className={styles.sub}>{SKILLS_COPY.sub}</p>
       </div>
+      <SkillList />
     </section>
   );
 }

@@ -1,144 +1,83 @@
-.progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
-  background: var(--blue);
-  z-index: 30;
-  transition: width 0.05s linear;
-}
-
-.nav {
+.bar {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 40;
+  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
   background: var(--scrim);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid transparent;
-  transition: background 0.25s ease, border-color 0.25s ease;
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--rule-soft);
 }
-.isScrolled {
-  background: var(--scrim-solid);
-  border-bottom-color: var(--rule-soft);
+
+/* Out of the way on the way down; back on the way up. */
+.away {
+  transform: translateY(-100%);
 }
 
 .inner {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: var(--sp-4);
   height: 58px;
 }
 
-.logo {
-  font-family: var(--mono);
+.mark {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ink);
   font-weight: 600;
-  font-size: 14px;
-  color: var(--ink);
-  letter-spacing: 0.02em;
-  margin-right: auto;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
-.logo:hover {
+.mark:hover {
   text-decoration: none;
 }
-.logo span {
+.glyph {
   color: var(--blue);
+  font-weight: 700;
 }
-
-.links {
-  display: flex;
-  gap: 24px;
-}
-.anchor {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
+.dim {
   color: var(--mute);
-  padding: 4px 1px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
-}
-.anchor:hover {
-  color: var(--ink);
-  text-decoration: none;
-}
-.isActive {
-  color: var(--blue);
-  border-bottom-color: var(--blue);
+  font-weight: 400;
 }
 
-.tail {
+.nav {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  gap: var(--sp-4);
+  margin-left: auto;
+  font-size: var(--t-sm);
 }
-
-/* The palette's discoverable affordance. ⌘K alone is invisible to anyone who
-   doesn't already know the convention, which is most first-time visitors. */
-.search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--mute);
-  background: none;
-  border: 1px solid var(--rule-soft);
-  padding: 5px 9px 5px 11px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
-.search:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-}
-.kbd {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--mute);
-  border: 1px solid var(--rule-soft);
-  border-radius: 2px;
-  padding: 1px 4px;
-}
-
-.github {
-  font-family: var(--mono);
-  font-size: 12px;
+.nav a {
   color: var(--ink-soft);
-  border: 1px solid var(--rule);
-  padding: 5px 11px;
-  border-radius: 3px;
-  transition: border-color 0.15s ease, color 0.15s ease;
 }
-.github:hover {
+.nav a:hover {
+  color: var(--blue);
+  text-decoration: none;
+}
+.on {
+  color: var(--ink);
+}
+
+.cta {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  padding: 7px 15px;
+  color: var(--ink);
+  font-size: var(--t-sm);
+  white-space: nowrap;
+}
+.cta:hover {
   border-color: var(--blue);
   color: var(--blue);
   text-decoration: none;
 }
 
-/* Was `display: none` — on a phone there was no way to reach any section.
-   The links stay; they become a scrollable rail. See design/specs/motion.md
-   for why the scrollbar is hidden but the affordance isn't. */
-@media (max-width: 720px) {
-  .links {
-    gap: 14px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    -webkit-overflow-scrolling: touch;
-    mask-image: linear-gradient(to right, #000 88%, transparent);
-  }
-  .links::-webkit-scrollbar {
+@media (max-width: 860px) {
+  .nav {
     display: none;
   }
-  .anchor {
-    white-space: nowrap;
-  }
-  /* Search survives on mobile; the GitHub link doesn't — it's in the footer. */
-  .github {
-    display: none;
-  }
-  .search {
-    padding: 5px 9px;
+  .cta {
+    margin-left: auto;
   }
 }

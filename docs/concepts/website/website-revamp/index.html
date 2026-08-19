@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exploration — website revamp · contact sheet</title>
+<style>
+:root{--paper:#f3f2ed;--paper-2:#ecebe4;--ink:#16160f;--ink-soft:#4e4e45;--mute:#6b6b60;
+ --blue:#2743c8;--red:#bf3018;--rule:rgba(22,22,15,.22);--rule-soft:rgba(22,22,15,.12);
+ --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--paper:#14140f;--paper-2:#1c1c16;--ink:#edece4;
+ --ink-soft:#b3b2a6;--mute:#85857a;--blue:#8fa2ff;--red:#ff8a6d;
+ --rule:rgba(237,236,228,.26);--rule-soft:rgba(237,236,228,.14)}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:400 14px/1.6 var(--mono);padding:48px 0 80px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+h1{font-size:19px;font-weight:600;margin-bottom:8px}
+.meta{color:var(--mute);font-size:12.5px;margin-bottom:20px}
+blockquote{border-left:2px solid var(--red);padding:10px 0 10px 14px;color:var(--ink-soft);
+ font-size:13px;margin-bottom:34px;max-width:70ch}
+h2{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);
+ border-bottom:1px solid var(--rule);padding-bottom:9px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:40px}
+a.card{display:block;border:1px solid var(--rule);padding:16px;text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--blue)}
+a.card .l{font-size:12px;color:var(--blue);letter-spacing:.1em;text-transform:uppercase}
+a.card .n{font-size:16px;font-weight:600;margin:6px 0 8px}
+a.card .x{font-size:12px;color:var(--mute);line-height:1.6}
+a.card .x b{color:var(--ink-soft);font-weight:400}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:36px}
+th,td{text-align:left;padding:9px 12px 9px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+th{color:var(--mute);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:400}
+td:first-child{color:var(--mute);width:96px}
+td.base{color:var(--mute)}
+.note{color:var(--ink-soft);font-size:13px;max-width:72ch;margin-bottom:12px}
+.note b{color:var(--ink);font-weight:600}
+code{color:var(--blue)}
+</style></head><body><div class="wrap">
+
+<h1>Exploration — the website revamp</h1>
+<div class="meta">2026-08-19 · generated against <code>design/system/language-website.md</code></div>
+
+<blockquote><b>Candidates, not a record.</b> Nothing here is evidence that anything was
+decided or shipped. <code>/exploration-log</code> records the verdict;
+<code>/design-decisions</code> records why.</blockquote>
+
+<h2>The directions</h2>
+<div class="grid">
+  <a class="card" href="a-marked-output.html">
+    <div class="l">A · type contrast</div><div class="n">Marked Output</div>
+    <div class="x"><b>Believes:</b> the page is machine output, and the only human thing on it is the mark.<br><br>
+    One face, three sizes. Hierarchy from case, weight and colour — never from scale.</div>
+  </a>
+  <a class="card" href="b-running-log.html">
+    <div class="l">B · layout structure</div><div class="n">Running Log</div>
+    <div class="x"><b>Believes:</b> a record is a sequence of dated entries, not a set of titled sections.<br><br>
+    Numbered gutter, append-only made visible — superseded things struck, not removed.</div>
+  </a>
+  <a class="card" href="c-accession.html">
+    <div class="l">C · density</div><div class="n">Accession</div>
+    <div class="x"><b>Believes:</b> every claim should carry where it came from, at the point you read it.<br><br>
+    A provenance rail on every object. "Provenance unknown" is a first-class label.</div>
+  </a>
+</div>
+
+<h2>Compare</h2>
+<table>
+<tr><th></th><th>Baseline (shipped)</th><th>A — Marked Output</th><th>B — Running Log</th><th>C — Accession</th></tr>
+<tr><td>Axis</td><td class="base">—</td><td>type contrast</td><td>layout structure</td><td>density</td></tr>
+<tr><td>Bet</td><td class="base">restraint reads as rigour</td><td>the mark carries everything, so nothing else has to</td><td>the form argues append-only before a word is read</td><td>verifiability at the point of reading</td></tr>
+<tr><td>Gives up</td><td class="base">a signature (ADR 0017 concedes it)</td><td>warmth; typographic range</td><td>scannability — you read down, not across</td><td>calm; it is busy by design</td></tr>
+<tr><td>Risk</td><td class="base">indistinguishable from a portfolio</td><td>reads as a developer docs site</td><td>reads as a blog, or as skeuomorphism</td><td>too dense to enter; the rail becomes noise</td></tr>
+<tr><td>Gap shown as</td><td class="base">a red left bar, once</td><td>red source text in place</td><td>a gutter status on the entry</td><td>"provenance unknown" in the rail</td></tr>
+</table>
+
+<h2>Merging</h2>
+<p class="note"><b>B's gutter with A's type.</b> The dated, numbered sequence is the strongest
+structural idea here, and it does not depend on B's serif. A's single-face discipline would
+make it far less blog-like.</p>
+<p class="note"><b>C's provenance rail, applied only to specimens.</b> The rail is
+convincing on a record and heavy everywhere else. Scoped to the artifacts, it defends the
+"records read as a gimmick" failure better than any of the three do whole.</p>
+<p class="note"><b>A's matrix in any of them.</b> The three-column table reads well in all
+three and is nearly identical across them — which suggests it is settled, not that it is
+undifferentiated.</p>
+
+<h2>Constraints honoured</h2>
+<table>
+<tr><td>Records verbatim</td><td colspan="4">Yes — <code>##</code>, <code>**</code> and <code>*(…)*</code> render as literal source in all three. No badge, pill or icon stands in for a mark.</td></tr>
+<tr><td>Path carried</td><td colspan="4">Yes — the specimen names its file in all three.</td></tr>
+<tr><td>Nothing types itself</td><td colspan="4">Yes — zero JS, zero animation, zero transitions in all three.</td></tr>
+<tr><td>Redline's meaning</td><td colspan="4">Yes — <code>--red</code> appears only on unrecorded reasons, unanswered questions and superseded entries. Never for emphasis.</td></tr>
+<tr><td>Palette</td><td colspan="4">Yes — all 11 tokens copied verbatim from <code>globals.css</code>, both modes. Nothing re-derived.</td></tr>
+<tr><td>Reads with JS off</td><td colspan="4">Yes — no scripts at all.</td></tr>
+<tr><td>No unsourceable claim</td><td colspan="4">Yes — counts and paths are real. <b>One caveat:</b> local system fonts only, because the constraint forbids CDN dependencies. Type here indicates <i>register</i>, not the final faces.</td></tr>
+</table>
+
+</div></body></html>

@@ -1,61 +1,82 @@
-/* ============================================================
-   agentic-skills — Swiss whitepaper
-   Field Report palette, pared down. Light, airy, minimal ink.
-   ============================================================ */
+/* ─────────────────────────────────────────────────────────────────
+   Tokens. The only file where a colour or a scale step is defined.
+   Palette is the system of record — design/system/palette.md.
+   Do not add a colour without computing both contrast ratios.
+   ───────────────────────────────────────────────────────────────── */
 
 :root {
   color-scheme: light dark;
 
-  /* palette — from the talk deck's Field Report system.
-     Every value below clears WCAG AA (4.5:1) against --paper. Two did not:
-     --mute was #8b8b7e (3.08:1) on ~10 small-text elements including every
-     nav link, and --red was #d0361b (4.43:1). Both were darkened; the
-     visual character is unchanged. See design/system/palette.md. */
+  /* colour — 11 tokens, both modes AA-verified. See palette.md. */
   --paper: #f3f2ed;
   --paper-2: #ecebe4;
-  --ink: #16160f; /* 16.21:1 */
-  --ink-soft: #4e4e45; /* 7.49:1 */
-  --mute: #6b6b60; /* 4.81:1 — was #8b8b7e, 3.08:1 */
-  --blue: #2743c8; /* 6.88:1 — drafting cobalt: structure, truth, links */
-  --red: #bf3018; /* 5.13:1 — redline: hypothesis, failure. was #d0361b */
+  --ink: #16160f;          /* 16.21:1 */
+  --ink-soft: #4e4e45;     /* 7.49:1  */
+  --mute: #6b6b60;         /* 4.81:1 — also the recessive-syntax colour */
+  --blue: #2743c8;         /* 6.88:1 — drafting cobalt: structure, truth, links */
+  --red: #bf3018;          /* 5.13:1 — redline: hypothesis, failure, the honest gap */
 
-  /* one hairline system */
   --rule: rgba(22, 22, 15, 0.22);
   --rule-soft: rgba(22, 22, 15, 0.12);
 
-  /* nav scrim — derived, not a literal. Nav.module.css hardcoded --paper as
-     rgba twice, so the nav desynced from any palette change. */
   --scrim: rgba(243, 242, 237, 0.72);
   --scrim-solid: rgba(243, 242, 237, 0.95);
 
-  /* type — set by next/font, referenced here */
-  --serif: var(--font-newsreader), Georgia, serif;
-  --sans: var(--font-archivo), system-ui, sans-serif;
-  --mono: var(--font-plex-mono), ui-monospace, monospace;
+  /* type — one family, variable. Fallback stays monospace so a font
+     failure degrades to the right register, never to a serif. */
+  --mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, "SF Mono",
+    Menlo, Consolas, "Liberation Mono", monospace;
 
-  --maxw: 960px;
-  --pad: 28px;
+  /* type scale — seven steps. Round 3 added display type at the top and --t-lede
+     in the middle; the latter exists because 14px and 13px were typed directly
+     into Hero, Matrix, Loop, Skills and Install, off-scale, in the round that
+     introduced the scale. A step that is missing gets invented locally. */
+  --t-meta: 11px;
+  --t-sm: 12.5px;
+  --t-body: 13.5px;
+  --t-lede: 15.5px;
+  --t-h3: 17px;
+  --t-h2: clamp(22px, 2.8vw, 33px);
+  --t-display: clamp(36px, 6.2vw, 68px);
 
-  /* one breakpoint, named. There were two (720/640) with no shared token, so
-     the layout shifted twice for no design reason. */
-  --bp: 720px;
+  /* spacing scale — seven steps. Replaced 33 ad-hoc values. */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 14px;
+  --sp-4: 22px;
+  --sp-5: 34px;
+  --sp-6: 52px;
+  --sp-7: 80px;
+  --sp-8: 116px;
+
+  /* layout — the frame is wide, the prose inside it is not. --measure is the
+     reading width; --shell is the page. */
+  --shell: 1320px;
+  --measure: 68ch;
+  --maxw: 78ch;
+  --pad: 26px;
+
+  /*
+    surface — a corner radius and nothing else. Round 3 added a shadow pair and a
+    dark-mode inset highlight; they were removed the same day. Depth was doing no
+    work that the border and the --paper/--paper-2 step were not already doing,
+    and least of all in light mode.
+
+    If a region stops reading as contained, strengthen its border to --rule.
+    Do not reintroduce a shadow.
+  */
+  --radius: 5px;
 }
 
-/* ---- dark ----------------------------------------------------------------
-   Not an inversion. The paper stays the ground and the ink stays the figure;
-   the light source moves. Cobalt and redline are lifted, because both lose
-   contrast fast on a dark ground. Logged as a design decision — see
-   design/decisions/0003 — because a second palette is a design choice, not a
-   media query. */
 @media (prefers-color-scheme: dark) {
   :root {
     --paper: #14140f;
     --paper-2: #1c1c16;
-    --ink: #edece4; /* 15.29:1 */
-    --ink-soft: #b3b2a6; /* 8.44:1 */
-    --mute: #85857a; /* 4.53:1 */
-    --blue: #8fa2ff; /* 7.72:1 — lifted; #2743c8 is 1.9:1 here */
-    --red: #ff8a6d; /* 7.53:1 — lifted; #bf3018 is 2.9:1 here */
+    --ink: #edece4;        /* 15.29:1 */
+    --ink-soft: #b3b2a6;   /* 8.44:1  */
+    --mute: #85857a;       /* 4.53:1  */
+    --blue: #8fa2ff;       /* 7.72:1 — lifted; #2743c8 is 1.9:1 here */
+    --red: #ff8a6d;        /* 7.53:1 — lifted; #bf3018 is 2.9:1 here */
 
     --rule: rgba(237, 236, 228, 0.26);
     --rule-soft: rgba(237, 236, 228, 0.14);
@@ -64,6 +85,8 @@
     --scrim-solid: rgba(20, 20, 15, 0.95);
   }
 }
+
+/* ── reset ──────────────────────────────────────────────────────── */
 
 *,
 *::before,
@@ -79,10 +102,10 @@ html {
 body {
   margin: 0;
   background: var(--paper);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 16.5px;
-  line-height: 1.6;
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: var(--t-body);
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -116,51 +139,82 @@ h1,
 h2,
 h3 {
   margin: 0;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
 }
 
-/* ---------- shared layout helpers ---------- */
+h1 {
+  font-size: var(--t-display);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  max-width: 26ch;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: var(--t-h2);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+strong,
+b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ── utilities ──────────────────────────────────────────────────── */
+
 .wrap {
   max-width: var(--maxw);
   margin: 0 auto;
   padding: 0 var(--pad);
 }
 
-.eyebrow {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+/* Round 3's frame. .wrap is the narrow document measure; .shell is the page. */
+.shell {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 44px);
+}
+
+/*
+  Full bleed without leaving the flow: the background spreads to both viewport
+  edges while the element stays exactly where the flow put it. A 100vw margin
+  would need the gutter recomputed at every breakpoint.
+*/
+.band {
+  background: var(--paper-2);
+  box-shadow: 0 0 0 100vmax var(--paper-2);
+  clip-path: inset(0 -100vmax);
+}
+
+/*
+  The syntax layer, for RECORD CONTENT ONLY.
+
+  Markdown markers — ## ** *(…)* — are rendered rather than hidden inside a quoted
+  record, because showing the source markers IS "records shown verbatim, never
+  restyled" (design/system/language-website.md). Rendering them into styled
+  components would not be.
+
+  The page's own headings do not carry them. `## The skills` is not a record; it is
+  a website heading wearing a costume, and the constraint above never applied to it
+  — note that the footer's own h3s never carried `###` either. Design ADR 0007's
+  verbatim argument cites `##` and `*(reason not stated)*`, both of which are lines
+  in the hero specimen, not page chrome.
+*/
+.s {
   color: var(--mute);
-  margin: 0 0 16px;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-.eyebrow::before {
-  content: "";
-  width: 14px;
-  height: 1px;
-  background: var(--blue);
-  display: inline-block;
+  font-weight: 400;
 }
 
-/* accents used sparingly */
-.acc {
-  color: var(--blue);
-}
-.warn {
-  color: var(--red);
-}
+/* ── motion ─────────────────────────────────────────────────────────
+   One exception, and only one: the reveal, once per element.
+   The specimen rotation was retired — see design/specs/motion.md.
+   Nothing else on this page moves that the reader did not cause.
+   ───────────────────────────────────────────────────────────────── */
 
-/* ---------- reveal-on-scroll ----------------------------------------------
-   Content is visible by default and only hidden once JS has proved it can
-   show it again. Previously `.reveal { opacity: 0 }` shipped in the static
-   HTML and was cleared only by client JS, so with JS off every stack tier
-   and all eleven skill rows rendered blank — on an otherwise fully static
-   export. The `js-reveal` class is set on <html> by Reveal.tsx on mount.
-
-   Stagger is driven by --reveal-i (row index), set inline. See
-   design/specs/motion.md. */
 .reveal {
   transition:
     opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
@@ -168,6 +222,9 @@ h3 {
   transition-delay: calc(var(--reveal-i, 0) * 45ms);
 }
 
+/* Hiding lives behind a class set on mount, so the static export ships
+   visible. `.reveal { opacity: 0 }` in prerendered markup once blanked
+   every row on the page. */
 .js-reveal .reveal:not(.is-in) {
   opacity: 0;
   transform: translateY(8px);
@@ -177,8 +234,6 @@ h3 {
   html {
     scroll-behavior: auto;
   }
-  /* Covers the reveal, every hover transition, and the nav progress bar —
-     previously only the reveal was neutralised. */
   *,
   *::before,
   *::after {

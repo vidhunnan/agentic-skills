@@ -50,7 +50,13 @@ export default function Reveal({
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) {
+          // `isIntersecting` alone loses rows that were scrolled *past* faster
+          // than the observer samples — a hard flick of the wheel, an anchor
+          // jump, or a programmatic scroll. Those never intersect, so they
+          // would sit at opacity 0 until the reader happened to scroll back up.
+          // Anything now above the viewport has been arrived at; show it.
+          const scrolledPast = e.boundingClientRect.bottom < 0;
+          if (e.isIntersecting || scrolledPast) {
             setInView(true);
             io.unobserve(e.target);
           }
