@@ -1,4 +1,4 @@
-import FileBar from "@/components/FileBar";
+import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Matrix from "@/components/Matrix";
 import Loop from "@/components/Loop";
@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
-      <FileBar />
+      <Nav />
       <main>
         <Hero />
         <Matrix />

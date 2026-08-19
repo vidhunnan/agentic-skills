@@ -204,6 +204,18 @@ export const TOTAL_SKILLS_WORD = spellCount(TOTAL_SKILLS);
  */
 export type SpecimenLineKind = "heading" | "gap" | "body" | "blank";
 
+/**
+ * A line may carry inline parts. Needed because a real record wraps: the marker
+ * `*(none identified)*` opens a paragraph and the sentence continues on the same
+ * line. Painting the whole line --red would spend the honest-gap signal on
+ * ordinary prose, which design/system/palette.md forbids.
+ */
+export interface SpecimenPart {
+  text: string;
+  /** true → painted --red. Only ever a real gap marker. */
+  gap?: boolean;
+}
+
 export interface Specimen {
   /** Display path, elided if long — the card head is narrow. */
   source: string;
@@ -211,7 +223,7 @@ export interface Specimen {
   href: string;
   /** The skill that wrote it. Shown in the card head, so it names a plugin. */
   by: string;
-  lines: { text: string; kind: SpecimenLineKind }[];
+  lines: { text: string; kind: SpecimenLineKind; parts?: SpecimenPart[] }[];
   caption: string;
 }
 
@@ -234,12 +246,31 @@ export const SPECIMENS: Specimen[] = [
     by: "design-decisions",
     lines: [
       { text: "## What we gave up", kind: "heading" },
-      { text: "*(none identified)*", kind: "gap" },
-      { text: "— the trade was never articulated.", kind: "body" },
       { text: "", kind: "blank" },
-      { text: "**Rationale:**", kind: "heading" },
-      { text: "*(reason not stated)*", kind: "gap" },
-      { text: "— no reason was ever recorded.", kind: "body" },
+      {
+        text: "*(none identified)* — the trade was never articulated. Mechanically, a third",
+        kind: "body",
+        parts: [
+          { text: "*(none identified)*", gap: true },
+          { text: " — the trade was never articulated. Mechanically, a third" },
+        ],
+      },
+      {
+        text: "family is a third webfont on a page whose stated virtue is restraint, and the",
+        kind: "body",
+      },
+      {
+        text: "two-family drafts demonstrably worked without it; but **no one recorded weighing",
+        kind: "body",
+      },
+      {
+        text: "that**, and it is not this record's job to supply the reasoning after the fact.",
+        kind: "body",
+      },
+      { text: "", kind: "blank" },
+      { text: "## What would make us revisit", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "*(not stated)*", kind: "gap" },
     ],
     caption:
       "A real decision in this repo. Nobody remembered why — so it says so, instead of inventing a reason.",

@@ -1,50 +1,55 @@
-import { LOOP_STEPS } from "./lib/skills";
-import Reveal from "./Reveal";
+import { LOOP_COPY } from "./lib/content";
+import { COUNTS } from "./lib/counts";
+import LoopSteps from "./LoopSteps";
 import styles from "./Loop.module.css";
 
 /**
- * The mechanism, shown once and concretely. The site has never had this — it
- * showed outputs and descriptions, and never the loop that produces them.
+ * The mechanism, shown once and concretely, as the page's single full-bleed
+ * band. The site never had this — it showed outputs and descriptions, never the
+ * loop that produces them.
  *
- * Counts here are the only hardcoded numbers on the page. They describe this
- * repo's own record, not the library, so they can't be derived from skills.ts.
+ * The counts come from COUNTS, which reads the repo at build time. They used to
+ * be typed here and drifted three times in one day.
  */
 export default function Loop() {
   return (
-    <section id="how" className={`wrap ${styles.sec}`}>
-      <div className={styles.rule} aria-hidden="true" />
-      <h2 className={styles.h2}>
-        <span className="s">## </span>How one skill works
-      </h2>
-      <p className={styles.sub}>
-        Take <b>decisions-logger</b>. You&rsquo;ve just decided something —
-        &ldquo;plain CSS Modules, not Tailwind.&rdquo;
-      </p>
+    <section id="how" className={`${styles.sec} band`}>
+      <div className="shell">
+        <div className={styles.head}>
+          <h2>
+            <span className="s">## </span>
+            {LOOP_COPY.heading}
+          </h2>
+          <p className={styles.sub}>
+            {LOOP_COPY.subLead}
+            <b>{LOOP_COPY.subSkill}</b>
+            {LOOP_COPY.subRest}
+          </p>
+        </div>
 
-      <ol className={styles.steps}>
-        {LOOP_STEPS.map((s, i) => (
-          <Reveal as="li" key={s.title} index={i} className={styles.step}>
-            <span className={styles.n}>{i + 1}.</span>
-            <span className={styles.t}>
-              <b>{s.title}</b>
-              <span className={styles.d}>{s.detail}</span>
-            </span>
-          </Reveal>
-        ))}
-      </ol>
+        <div className={styles.grid}>
+          <LoopSteps />
 
-      <p className={styles.body}>
-        <b>Step 4 is the one nothing else does.</b> A skill that stopped at step
-        3 would be forgotten by tomorrow — you&rsquo;d have one good document
-        and no second one. The rule is what makes it happen again.
-      </p>
-
-      <p className={styles.note}>
-        <span className="s">&gt; </span>Seven rules live in this repo&rsquo;s
-        CLAUDE.md. They have produced <b>23 decisions</b>, <b>7 design
-        decisions</b>, <b>32 documented commits</b> and <b>3 handoffs</b> — all
-        of it readable in the repo.
-      </p>
+          <aside>
+            <div className={styles.callout}>
+              <p className={styles.kicker}>{LOOP_COPY.calloutKicker}</p>
+              <p className={styles.calloutBody}>
+                <b>{LOOP_COPY.calloutLead}</b>
+                {LOOP_COPY.calloutBody}
+              </p>
+            </div>
+            <p className={styles.note}>
+              <span className="s">&gt; </span>
+              {COUNTS.rules} rules live in this repo&rsquo;s CLAUDE.md. They have
+              produced <b>{COUNTS.decisions} decisions</b>,{" "}
+              <b>{COUNTS.designDecisions} design decisions</b>,{" "}
+              <b>{COUNTS.commits} documented commits</b> and{" "}
+              <b>{COUNTS.handoffs} handoffs</b>
+              {LOOP_COPY.noteTail}
+            </p>
+          </aside>
+        </div>
+      </div>
     </section>
   );
 }

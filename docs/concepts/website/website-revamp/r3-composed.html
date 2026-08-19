@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>agentic-skills — round 3 (composed)</title>
+<!--
+  Round 3 of the website revamp. Direction is unchanged and settled
+  (design ADR 0007 — terminal-rendered markdown, syntax recessive).
+  What changes here is craft, per the round 3 spec:
+
+    scale        h1 19px -> display type. mono does not mean small.
+    chrome       a real nav with a mark and a CTA; a real multi-column footer.
+    composition  two-column hero, matrix as a bordered panel, catalogue as a
+                 grid, one full-bleed band. Not five identical section shapes.
+    surface      the specimen as a file card with a title bar; contained
+                 regions with borders and background steps.
+    motion       scroll-linked highlight on the loop steps. Reader-caused,
+                 so it clears ADR 0006's bar. NOTHING TYPES ITSELF.
+
+  Unchanged and not up for negotiation here:
+    - the palette, entire — 11 tokens, both modes, contrast-verified
+    - Geist Mono alone
+    - markdown markers rendered in --mute, present but recessive
+    - --red only ever marks an honest gap, never decoration
+    - readable with JS off — JS may enhance, never reveal
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300..700&display=swap" rel="stylesheet" />
+<style>
+/* ── tokens ───────────────────────────────────────────────────────
+   Colour is inherited entire from design/system/palette.md.
+   Type and space are round 3's contribution and the only thing new.
+   ─────────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: light dark;
+
+  --paper: #f3f2ed;
+  --paper-2: #ecebe4;
+  --ink: #16160f;
+  --ink-soft: #4e4e45;
+  --mute: #6b6b60;
+  --blue: #2743c8;
+  --red: #bf3018;
+  --rule: rgba(22, 22, 15, 0.22);
+  --rule-soft: rgba(22, 22, 15, 0.12);
+  --scrim: rgba(243, 242, 237, 0.82);
+
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+    Consolas, "Liberation Mono", monospace;
+
+  /* type — the round 3 fix. Was five steps topping out at 19px. */
+  --t-display: clamp(36px, 6.2vw, 68px);
+  --t-h2: clamp(22px, 2.8vw, 33px);
+  --t-lede: 15.5px;
+  --t-body: 13.5px;
+  --t-sm: 12.5px;
+  --t-meta: 11px;
+
+  --sp-1: 4px;  --sp-2: 8px;   --sp-3: 14px;  --sp-4: 22px;
+  --sp-5: 34px; --sp-6: 52px;  --sp-7: 80px;  --sp-8: 116px;
+
+  --shell: 1320px;
+  --measure: 68ch;
+
+  /*
+    Surface. Not a palette addition — both values are alpha of --ink, which is
+    exactly what --rule and --rule-soft already are. Applied only to contained
+    regions (cards, fences, the panel), never to a section: the page is flat,
+    the things sitting on it are not.
+  */
+  --radius: 5px;
+  --shadow: 0 1px 2px rgba(22, 22, 15, 0.06), 0 12px 26px -12px rgba(22, 22, 15, 0.26);
+  --shadow-lift: 0 2px 4px rgba(22, 22, 15, 0.07), 0 22px 40px -16px rgba(22, 22, 15, 0.34);
+  --inset: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #14140f;
+    --paper-2: #1c1c16;
+    --ink: #edece4;
+    --ink-soft: #b3b2a6;
+    --mute: #85857a;
+    --blue: #8fa2ff;
+    --red: #ff8a6d;
+    --rule: rgba(237, 236, 228, 0.26);
+    --rule-soft: rgba(237, 236, 228, 0.14);
+    --scrim: rgba(20, 20, 15, 0.82);
+
+    /* A shadow barely reads on #14140f. Depth here comes from a 1px top
+       highlight — the light source, rather than the shadow it casts. */
+    --shadow: 0 12px 30px -14px rgba(0, 0, 0, 0.85);
+    --shadow-lift: 0 24px 46px -16px rgba(0, 0, 0, 0.95);
+    --inset: inset 0 1px 0 rgba(237, 236, 228, 0.09);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: var(--t-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { margin: 0; color: var(--ink); font-weight: 600; }
+strong, b { color: var(--ink); font-weight: 600; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+code, pre { font-family: inherit; }
+::selection { background: var(--blue); color: var(--paper); }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+button { font: inherit; appearance: none; }
+
+/* the syntax layer — markers rendered, not hidden */
+.s { color: var(--mute); font-weight: 400; }
+
+.shell { max-width: var(--shell); margin: 0 auto; padding: 0 clamp(20px, 4vw, 44px); }
+
+/*
+  One column. A sticky 01–04 rail was built here and cut: it read as documentation
+  furniture, which is the exact association this page is trying to avoid, and the
+  width it took is what the headline needed. The nav carries wayfinding alone.
+*/
+.doc { display: block; }
+
+/*
+  Full-bleed without leaving the flow. Spreading the background with a shadow and
+  un-clipping it paints to both viewport edges while the element itself stays exactly
+  where the flow put it — no 100vw margin to drift out of alignment.
+*/
+.band {
+  background: var(--paper-2);
+  box-shadow: 0 0 0 100vmax var(--paper-2);
+  clip-path: inset(0 -100vmax);
+}
+
+/* ── nav ──────────────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--scrim);
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.nav-in { display: flex; align-items: center; gap: var(--sp-4); height: 58px; }
+.mark { display: flex; align-items: center; gap: 9px; color: var(--ink); font-weight: 600; letter-spacing: -0.01em; }
+.mark:hover { text-decoration: none; }
+.glyph { color: var(--blue); font-weight: 700; }
+.mark .dim { color: var(--mute); font-weight: 400; }
+.nav-links { display: flex; gap: var(--sp-4); margin-left: auto; font-size: var(--t-sm); }
+.nav-links a { color: var(--ink-soft); }
+.nav-links a:hover { color: var(--blue); text-decoration: none; }
+.cta {
+  border: 1px solid var(--rule); padding: 7px 15px;
+  color: var(--ink); font-size: var(--t-sm); white-space: nowrap;
+  border-radius: var(--radius); background: var(--paper);
+  box-shadow: var(--shadow), var(--inset);
+}
+.nav-links a.is-active { color: var(--ink); }
+.cta:hover { border-color: var(--blue); color: var(--blue); text-decoration: none; }
+@media (max-width: 860px) { .nav-links { display: none; } .cta { margin-left: auto; } }
+
+/* ── hero ─────────────────────────────────────────────────────── */
+.hero { padding: clamp(56px, 7.5vw, 104px) 0 var(--sp-8); }
+/*
+  The claim takes the whole width, then the support splits under it. Boxing the
+  headline into half the width put it on six lines and it stopped reading as a
+  headline at all — round 2's failure arrived at from the opposite direction.
+*/
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 3.4vw, 56px);
+  align-items: start;
+}
+.hero-say { grid-column: 1 / -1; margin-bottom: var(--sp-6); }
+h1 { max-width: 26ch; }
+.hero-cmd .cmd { font-size: var(--t-sm); }
+.eyebrow { font-size: var(--t-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: var(--sp-4); }
+h1 {
+  font-size: var(--t-display);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+h1 .s { font-weight: 300; letter-spacing: -0.02em; }
+h1 .cont { display: block; color: var(--ink-soft); font-weight: 400; }
+.lede { max-width: 46ch; margin-top: var(--sp-4); font-size: var(--t-lede); line-height: 1.6; }
+.gap { color: var(--red); }
+.hero-cmd { margin-top: var(--sp-5); }
+.hero-meta { margin-top: var(--sp-4); font-size: var(--t-sm); color: var(--mute); }
+@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+/* ── fences and commands ──────────────────────────────────────── */
+.fence {
+  border: 1px solid var(--rule); background: var(--paper-2);
+  border-radius: var(--radius); box-shadow: var(--shadow), var(--inset);
+  overflow: hidden;
+}
+.tick { padding: 6px 14px; font-size: var(--t-meta); color: var(--mute); }
+.tick + .cmd-row, .block { border-top: 1px solid var(--rule-soft); }
+.cmd-row { display: flex; align-items: center; gap: var(--sp-3); padding: 12px 14px; border-block: 1px solid var(--rule-soft); }
+.cmd { color: var(--ink); font-size: var(--t-body); overflow-wrap: anywhere; }
+.copy {
+  margin-left: auto; border: 1px solid var(--rule); background: var(--paper);
+  color: var(--mute); font-size: var(--t-meta); padding: 4px 10px; cursor: pointer;
+  border-radius: var(--radius);
+}
+.copy:hover { color: var(--blue); border-color: var(--blue); }
+
+/* ── the file card — the specimen gets a real surface ─────────── */
+.card {
+  border: 1px solid var(--rule); background: var(--paper-2);
+  border-radius: var(--radius); box-shadow: var(--shadow-lift), var(--inset);
+  overflow: hidden;
+}
+.card-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-bottom: 1px solid var(--rule-soft);
+  font-size: var(--t-meta); color: var(--mute);
+}
+.chip { border: 1px solid var(--rule); padding: 1px 6px; color: var(--ink-soft); border-radius: 2px; }
+.card-bar .by { margin-left: auto; }
+.card-body { padding: var(--sp-4) var(--sp-4) var(--sp-3); }
+.card-body pre { margin: 0; font-size: var(--t-sm); line-height: 1.9; white-space: pre-wrap; }
+.card-foot { border-top: 1px solid var(--rule-soft); padding: 11px 14px; font-size: var(--t-meta); display: flex; flex-wrap: wrap; gap: 8px; }
+.caption { margin-top: var(--sp-3); font-size: var(--t-sm); color: var(--mute); max-width: 52ch; }
+
+/* ── section furniture ────────────────────────────────────────── */
+section { scroll-margin-top: 70px; }
+.sec { padding: var(--sp-8) 0; }
+.sec-head { max-width: var(--measure); margin-bottom: var(--sp-6); }
+h2 { font-size: var(--t-h2); line-height: 1.2; letter-spacing: -0.02em; }
+h2 .s { font-weight: 300; }
+.sub { margin-top: var(--sp-3); font-size: var(--t-lede); line-height: 1.6; max-width: 56ch; }
+.note { margin-top: var(--sp-4); font-size: var(--t-sm); color: var(--mute); max-width: 62ch; }
+
+/* ── matrix panel ─────────────────────────────────────────────── */
+.panel {
+  border: 1px solid var(--rule); background: var(--paper); max-width: 1080px;
+  border-radius: var(--radius); box-shadow: var(--shadow), var(--inset);
+  overflow: hidden;
+}
+.mrow { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 0.85fr); }
+.mrow + .mrow { border-top: 1px solid var(--rule-soft); }
+.card-bar, .skill-top { border-bottom-color: var(--rule); }
+.mrow > * { padding: 13px var(--sp-4); }
+.mhead {
+  background: var(--paper-2);
+  font-size: var(--t-meta); text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute);
+  border-bottom: 1px solid var(--rule);
+}
+.mrow .q { color: var(--ink); }
+.mrow .today { color: var(--ink-soft); }
+.mrow .adds { color: var(--blue); }
+.mrow .no { color: var(--red); }
+.mlabel { display: none; color: var(--mute); }
+.mrow:hover:not(.mhead) { background: var(--paper-2); }
+/*
+  The mobile fix, by construction. The old table set the trust qualifier to
+  display:none below 720px, which deleted the one thing the row exists to say.
+  Rows stack and every value survives; only the column heads go.
+*/
+@media (max-width: 760px) {
+  .mrow { grid-template-columns: 1fr; gap: 2px; }
+  .mrow > * { padding: 4px var(--sp-3); }
+  .mrow > *:first-child { padding-top: var(--sp-3); }
+  .mrow > *:last-child { padding-bottom: var(--sp-3); }
+  .mhead { display: none; }
+  .mlabel { display: inline; }
+}
+
+/* ── the loop, as the one full-bleed band ─────────────────────── */
+.loop-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+.steps { border-top: 1px solid var(--rule-soft); }
+.step {
+  display: grid; grid-template-columns: 42px 1fr; gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-3);
+  border-bottom: 1px solid var(--rule-soft);
+  border-left: 2px solid transparent;
+  transition: background 0.35s ease, border-color 0.35s ease;
+}
+.step .n { color: var(--mute); font-variant-numeric: tabular-nums; transition: color 0.35s ease; }
+.step .t b { display: block; }
+.step .d { display: block; color: var(--ink-soft); font-size: var(--t-sm); margin-top: 3px; }
+/* Scroll-linked, therefore reader-caused. Nothing here animates on its own. */
+.step.is-active { background: var(--paper); border-left-color: var(--blue); }
+.step.is-active .n { color: var(--blue); }
+.callout {
+  border: 1px solid var(--rule); background: var(--paper); padding: var(--sp-4);
+  border-radius: var(--radius); box-shadow: var(--shadow), var(--inset);
+}
+/* --mute, not --red: redline means an honest gap, never a label. */
+.callout .kicker { font-size: var(--t-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+.callout p { margin-top: var(--sp-2); font-size: var(--t-sm); }
+@media (max-width: 900px) { .loop-grid { grid-template-columns: 1fr; } }
+
+/* ── skills ───────────────────────────────────────────────────── */
+/*
+  Asymmetric on purpose. Three equal thirds is the docs-template shape; one
+  lead card beside two stacked ones says which skill to read first — and
+  decisions-logger is the one the whole argument rests on.
+*/
+.feat { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: var(--sp-4); }
+.skill {
+  border: 1px solid var(--rule); background: var(--paper-2);
+  display: flex; flex-direction: column;
+  border-radius: var(--radius); box-shadow: var(--shadow), var(--inset);
+  overflow: hidden;
+}
+.skill.lead { grid-row: span 2; }
+.skill.lead .skill-top { padding: var(--sp-4); }
+.skill.lead .nm { font-size: var(--t-lede); }
+.skill.lead .ans { font-size: var(--t-lede); line-height: 1.5; }
+.skill.lead .desc { font-size: var(--t-body); margin-top: var(--sp-3); }
+.lead-tag { font-size: var(--t-meta); color: var(--mute); letter-spacing: 0.08em; text-transform: uppercase; }
+.lead-out { margin-top: var(--sp-4); font-size: var(--t-sm); color: var(--ink-soft); }
+@media (max-width: 900px) {
+  .feat { grid-template-columns: minmax(0, 1fr); }
+  .skill.lead { grid-row: auto; }
+}
+.skill-top { display: flex; align-items: center; gap: var(--sp-3); padding: 12px var(--sp-4); border-bottom: 1px solid var(--rule-soft); }
+.nm { color: var(--ink); font-weight: 600; }
+.surf { font-size: var(--t-meta); }
+.skill-top .surf { margin-left: auto; }
+.on { color: var(--ink-soft); }
+.off { color: var(--mute); text-decoration: line-through; }
+.skill-body { padding: var(--sp-4); flex: 1; }
+.ans { color: var(--blue); font-size: var(--t-sm); }
+.desc { margin-top: var(--sp-2); font-size: var(--t-sm); }
+.skill .cmd-row { border-bottom: 0; background: var(--paper); }
+
+.idx {
+  margin-top: var(--sp-4); border: 1px solid var(--rule); display: grid;
+  grid-template-columns: 1fr 1fr; background: var(--paper);
+  border-radius: var(--radius); box-shadow: var(--shadow), var(--inset);
+  overflow: hidden;
+}
+.irow { display: grid; grid-template-columns: 152px minmax(0, 1fr) auto auto; align-items: center; gap: var(--sp-3); padding: 11px var(--sp-4); border-top: 1px solid var(--rule-soft); font-size: var(--t-sm); }
+.idx > .irow:nth-child(-n + 2) { border-top: 0; }
+.idx > .irow:nth-child(odd) { border-right: 1px solid var(--rule); }
+.irow:hover { background: var(--paper-2); }
+.irow .ansi { color: var(--mute); }
+@media (max-width: 1040px) {
+  .idx { grid-template-columns: minmax(0, 1fr); }
+  .idx > .irow:nth-child(odd) { border-right: 0; }
+  .idx > .irow:nth-child(2) { border-top: 1px solid var(--rule-soft); }
+}
+@media (max-width: 820px) {
+  .irow { grid-template-columns: minmax(0, 1fr) auto auto; gap: var(--sp-2) var(--sp-3); row-gap: 2px; }
+  .irow .ansi { grid-column: 1 / -1; order: 3; }
+}
+
+/* ── install ──────────────────────────────────────────────────── */
+.install-grid { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: clamp(32px, 4vw, 56px); align-items: start; }
+.comment { padding: 12px 14px 0; color: var(--mute); font-size: var(--t-sm); }
+.chat-tag { color: var(--ink); border: 1px solid var(--rule); padding: 0 5px; font-size: var(--t-meta); }
+@media (max-width: 900px) { .install-grid { grid-template-columns: 1fr; } }
+
+/* ── footer ───────────────────────────────────────────────────── */
+.foot { border-top: 1px solid var(--rule); padding: var(--sp-8) 0 var(--sp-5); }
+.foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: var(--sp-5); }
+.foot h3 { font-size: var(--t-meta); text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); font-weight: 400; margin-bottom: var(--sp-3); }
+.foot li { font-size: var(--t-sm); line-height: 2.1; }
+.foot .blurb { font-size: var(--t-sm); color: var(--ink-soft); max-width: 34ch; margin-top: var(--sp-3); }
+.foot-bar { margin-top: var(--sp-6); padding-top: var(--sp-3); border-top: 1px solid var(--rule-soft); font-size: var(--t-meta); color: var(--mute); }
+@media (max-width: 820px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="shell nav-in">
+    <a class="mark" href="#top">
+      <span class="glyph">▮</span>
+      <span>agentic-skills</span>
+      <span class="dim">/ README.md</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#written">what gets written</a>
+      <a href="#how">how one skill works</a>
+      <a href="#skills">the skills</a>
+      <a href="https://github.com/vidhunnan/agentic-skills">source ↗</a>
+    </nav>
+    <a class="cta" href="#install">[ install ]</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="shell doc">
+
+  <div class="flow">
+
+  <!-- ── hero: two columns. The claim on the left, the evidence on the right. ── -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-say">
+        <p class="eyebrow"><span class="s">&lt;!--</span> agent skills for claude code <span class="s">--&gt;</span></p>
+        <h1>
+          <span class="s"># </span>An agent needs context to do good work.
+          <span class="cont">Most of it was never written down.</span>
+        </h1>
+      </div>
+
+      <div>
+        <p class="lede">
+          What shipped, why you chose it, what you tried and killed — from git,
+          your files and your answers. And where nobody remembers why,
+          <span class="gap">they say so</span>.
+        </p>
+
+        <div class="fence hero-cmd">
+          <div class="tick">```sh</div>
+          <div class="cmd-row">
+            <code class="cmd">/plugin marketplace add vidhunnan/agentic-skills</code>
+            <button class="copy" data-copy="/plugin marketplace add vidhunnan/agentic-skills">copy</button>
+          </div>
+          <div class="tick">```</div>
+        </div>
+
+        <p class="hero-meta">
+          14 skills <span class="s">·</span> every output is Markdown
+          <span class="s">·</span> <a href="#skills">read the catalogue ↓</a>
+        </p>
+      </div>
+
+      <!-- the specimen, now a file card rather than loose text on the page -->
+      <div>
+        <div class="card">
+          <div class="card-bar">
+            <span class="chip">md</span>
+            <span>design/decisions/0002</span>
+            <span class="by">— design-decisions</span>
+          </div>
+          <div class="card-body">
+<pre><span class="s">## </span><b>What we gave up</b>
+
+<span class="gap">*(none identified)*</span> — the trade was never articulated. Mechanically, a third family is a third webfont on a page whose stated virtue is restraint, and the two-family drafts demonstrably worked without it; but <span class="s">**</span><b>no one recorded weighing that</b><span class="s">**</span>, and it is not this record's job to supply the reasoning after the fact.
+
+<span class="s">## </span><b>What would make us revisit</b>
+
+<span class="gap">*(not stated)*</span></pre>
+          </div>
+          <div class="card-foot">
+            <span class="s">— </span>a real file in this repo
+            <span class="s">·</span>
+            <a href="https://github.com/vidhunnan/agentic-skills/blob/prod-stable/design/decisions/0002-a-three-family-type-system-for-the-site.md">[read the whole thing]</a>
+          </div>
+        </div>
+        <p class="caption">
+          A real decision in this repo. Nobody remembered why — so it says so,
+          instead of inventing a reason.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── matrix: one bordered panel, nine rows ── -->
+  <section id="written" class="sec">
+    <div class="sec-head">
+      <h2><span class="s">## </span>What gets written</h2>
+      <p class="sub">
+        Nine questions a project has to answer. Most of them already have an
+        answer — it’s just nowhere you can read it.
+      </p>
+    </div>
+
+    <div class="panel">
+      <div class="mrow mhead" aria-hidden="true">
+        <span>Question</span><span>What answers it today</span><span>This adds</span>
+      </div>
+      <div class="mrow"><span class="q">What did we try?</span><span class="today"><span class="mlabel">today: </span>git history, badly</span><span class="adds"><span class="mlabel">adds: </span>explorations</span></div>
+      <div class="mrow"><span class="q">Why did we choose that?</span><span class="today"><span class="mlabel">today: </span>commit messages, badly</span><span class="adds"><span class="mlabel">adds: </span>decisions</span></div>
+      <div class="mrow"><span class="q">What is it, exactly?</span><span class="today"><span class="mlabel">today: </span>the code itself</span><span class="adds"><span class="mlabel">adds: </span>specs</span></div>
+      <div class="mrow"><span class="q">What’s reusable?</span><span class="today"><span class="mlabel">today: </span>the package system</span><span class="adds"><span class="mlabel">adds: </span>system</span></div>
+      <div class="mrow"><span class="q">What actually shipped?</span><span class="today"><span class="mlabel">today: </span>git, properly</span><span class="adds"><span class="mlabel">adds: </span>changelog</span></div>
+      <div class="mrow"><span class="q">What are we trying to build?</span><span class="today no"><span class="mlabel">today: </span>whatever someone remembered</span><span class="adds"><span class="mlabel">adds: </span>concepts · briefs</span></div>
+      <div class="mrow"><span class="q">What are we still deciding?</span><span class="today no"><span class="mlabel">today: </span>whatever someone remembered</span><span class="adds"><span class="mlabel">adds: </span>prds · briefs</span></div>
+      <div class="mrow"><span class="q">What did we learn?</span><span class="today no"><span class="mlabel">today: </span>nothing, by default</span><span class="adds"><span class="mlabel">adds: </span>research</span></div>
+      <div class="mrow"><span class="q">Where did we leave off?</span><span class="today no"><span class="mlabel">today: </span>nothing, by default</span><span class="adds"><span class="mlabel">adds: </span>handoffs</span></div>
+    </div>
+
+    <p class="note">
+      <span class="s">&gt; </span><span class="gap">Red</span> is not styling. It marks the rows where
+      nothing answers the question today — the same signal the records use for a
+      reason nobody recorded.
+    </p>
+  </section>
+
+  <!-- ── the loop: the one full-bleed band on the page ── -->
+  <section id="how" class="sec band">
+      <div class="sec-head">
+        <h2><span class="s">## </span>How one skill works</h2>
+        <p class="sub">
+          Take <b>decisions-logger</b>. You’ve just decided something —
+          “plain CSS Modules, not Tailwind.”
+        </p>
+      </div>
+
+      <div class="loop-grid">
+        <ol class="steps">
+          <li class="step"><span class="n">01</span><span class="t"><b>It reads the evidence</b><span class="d">git log, the config that changed, the PR thread. Never recollection.</span></span></li>
+          <li class="step"><span class="n">02</span><span class="t"><b>It asks what it can’t find</b><span class="d">“why did Tailwind lose?” — and every question offers “I don’t remember.”</span></span></li>
+          <li class="step"><span class="n">03</span><span class="t"><b>It writes the record</b><span class="d">docs/decisions/0018-….md — with the option that lost named, or it isn’t a decision.</span></span></li>
+          <li class="step"><span class="n">04</span><span class="t"><b>It registers the rule</b><span class="d">a block in CLAUDE.md, the file your agent re-reads at the start of every session.</span></span></li>
+          <li class="step"><span class="n">05</span><span class="t"><b>Next session, unasked</b><span class="d">it offers to log the next one. You never have to remember the habit.</span></span></li>
+        </ol>
+
+        <aside>
+          <div class="callout">
+            <p class="kicker">step 4</p>
+            <p><b>This is the one nothing else does.</b> A skill that stopped at
+            step 3 would be forgotten by tomorrow — you’d have one good document
+            and no second one. The rule is what makes it happen again.</p>
+          </div>
+          <p class="note">
+            <span class="s">&gt; </span>Eight rules live in this repo’s CLAUDE.md.
+            They have produced <b>23 decisions</b>, <b>11 design decisions</b>,
+            <b>39 documented commits</b> and <b>3 handoffs</b> — all of it
+            readable in the repo.
+            <!--
+              DERIVED AT BUILD, NOT TYPED. These five numbers have now drifted three
+              times: the shipped site said seven rules and 32 commits, this artifact
+              said 7 design decisions and 37 commits, and both were stale within the
+              session that wrote them. On port, read them from the filesystem:
+                rules   grep -c 'BEGIN skill:[a-z]' CLAUDE.md
+                repo    ls docs/decisions/[0-9]*.md | grep -v 0000 | wc -l
+                design  ls design/decisions/[0-9]*.md | wc -l
+                commits ls changelog/commits/[0-9]*.md | wc -l
+                handoff ls handoff/handoff-*.md | wc -l
+              The language doc's hard constraint is "no claim the page cannot source".
+              A typed count is a claim the page cannot source.
+            -->
+          </p>
+        </aside>
+      </div>
+  </section>
+
+  <!-- ── skills: one lead card, two beside it, eleven as a two-column index ── -->
+  <section id="skills" class="sec">
+    <div class="sec-head">
+      <h2><span class="s">## </span>The skills</h2>
+      <p class="sub">
+        Fourteen, each a separate plugin. Three worth reading properly; the rest
+        are one line each.
+      </p>
+    </div>
+
+    <div class="feat">
+      <article class="skill lead">
+        <div class="skill-top">
+          <span class="nm">decisions-logger</span>
+          <span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span>
+        </div>
+        <div class="skill-body">
+          <p class="lead-tag">start with this one</p>
+          <p class="ans">Why did we choose that?</p>
+          <p class="desc">Mines the project for decisions that were really made and writes each as an ADR with its evidence. Where the reasoning was never written down, it asks rather than inventing one.</p>
+          <p class="desc"><span class="s">&gt; </span>It is the skill the specimen at the top of this page came from — including the two lines where the record says nobody recorded a reason.</p>
+          <p class="lead-out"><span class="s">→ writes </span>docs/decisions/0018-<span class="s">….md</span></p>
+        </div>
+        <div class="cmd-row"><code class="cmd">/plugin install decisions-logger</code><button class="copy" data-copy="/plugin install decisions-logger">copy</button></div>
+      </article>
+
+      <article class="skill">
+        <div class="skill-top"><span class="nm">exploration-log</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span></div>
+        <div class="skill-body">
+          <p class="ans">Did we already try that?</p>
+          <p class="desc">Logs a round of iteration: what it tested, what changed, what you learned, and whether it was kept, killed or parked. Append-only, so the directions you abandoned are still readable a year later.</p>
+        </div>
+        <div class="cmd-row"><code class="cmd">/plugin install exploration-log</code><button class="copy" data-copy="/plugin install exploration-log">copy</button></div>
+      </article>
+
+      <article class="skill">
+        <div class="skill-top"><span class="nm">changelog-tracker</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="off">Chat</span></span></div>
+        <div class="skill-body">
+          <p class="ans">What actually shipped?</p>
+          <p class="desc">Documents every substantive commit into a per-commit file plus a rolling index. Every fact comes from git.</p>
+        </div>
+        <div class="cmd-row"><code class="cmd">/plugin install changelog-tracker</code><button class="copy" data-copy="/plugin install changelog-tracker">copy</button></div>
+      </article>
+    </div>
+
+    <div class="idx">
+      <div class="irow"><span class="nm">repo-setup</span><span class="ansi">Where does this doc go?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span><button class="copy" data-copy="/plugin install repo-setup">copy</button></div>
+      <div class="irow"><span class="nm">handoff-generator</span><span class="ansi">Where did we leave off?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span><button class="copy" data-copy="/plugin install handoff-generator">copy</button></div>
+      <div class="irow"><span class="nm">branch-naming</span><span class="ansi">What do I call this branch?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="off">Chat</span></span><button class="copy" data-copy="/plugin install branch-naming">copy</button></div>
+      <div class="irow"><span class="nm">model-strategy</span><span class="ansi">Which model for this work?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="off">Chat</span></span><button class="copy" data-copy="/plugin install model-strategy">copy</button></div>
+      <div class="irow"><span class="nm">design-setup</span><span class="ansi">Where does this design doc go?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span><button class="copy" data-copy="/plugin install design-setup">copy</button></div>
+      <div class="irow"><span class="nm">design-brief</span><span class="ansi">What are we actually solving?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span><button class="copy" data-copy="/plugin install design-brief">copy</button></div>
+      <div class="irow"><span class="nm">design-language</span><span class="ansi">What should it look like?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span><button class="copy" data-copy="/plugin install design-language">copy</button></div>
+      <div class="irow"><span class="nm">design-explore</span><span class="ansi">What are the options?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span><button class="copy" data-copy="/plugin install design-explore">copy</button></div>
+      <div class="irow"><span class="nm">design-critique</span><span class="ansi">Does this match what we said?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span><button class="copy" data-copy="/plugin install design-critique">copy</button></div>
+      <div class="irow"><span class="nm">design-decisions</span><span class="ansi">Why is it like this?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span><button class="copy" data-copy="/plugin install design-decisions">copy</button></div>
+      <div class="irow"><span class="nm">skill-scaffold</span><span class="ansi">How do I add another one?</span><span class="surf"><span class="on">Code</span> <span class="s">·</span> <span class="on">Chat</span></span><button class="copy" data-copy="/plugin install skill-scaffold">copy</button></div>
+    </div>
+  </section>
+
+  <!-- ── install ── -->
+  <section id="install" class="sec band">
+      <div class="install-grid">
+        <div>
+          <h2><span class="s">## </span>Install</h2>
+          <p class="sub">
+            Read a couple of the records above before you trust it with your
+            repo — including the one that says it doesn’t know.
+          </p>
+          <p class="note">
+            <b>Claude Code gives you the system. Claude.ai gives you the artifact.</b>
+            On Claude.ai a skill interviews you and hands back a document — there
+            is no folder to write into and no rule registered, so nothing happens
+            next session unless you paste the block in yourself. Skills marked
+            <span class="chat-tag">Chat</span> above have that path; the rest need git.
+          </p>
+        </div>
+
+        <div class="fence">
+          <div class="tick">```sh</div>
+          <div class="block">
+            <p class="comment"># once</p>
+            <div class="cmd-row" style="border-top:0">
+              <code class="cmd">/plugin marketplace add vidhunnan/agentic-skills</code>
+              <button class="copy" data-copy="/plugin marketplace add vidhunnan/agentic-skills">copy</button>
+            </div>
+            <p class="comment"># start here — it builds the folders the rest fill</p>
+            <div class="cmd-row" style="border-top:0">
+              <code class="cmd">/plugin install repo-setup</code>
+              <button class="copy" data-copy="/plugin install repo-setup">copy</button>
+            </div>
+            <p class="comment" style="padding-bottom:12px"># then add the rest as you hit the need for them</p>
+          </div>
+          <div class="tick">```</div>
+        </div>
+      </div>
+  </section>
+
+  </div><!-- /.flow -->
+  </div><!-- /.doc -->
+</main>
+
+<footer class="foot">
+  <div class="shell">
+    <div class="foot-grid">
+      <div>
+        <a class="mark" href="#top"><span class="glyph">▮</span><span>agentic-skills</span></a>
+        <p class="blurb">
+          Fourteen skills for Claude Code that write your project’s context.
+          Authored in Markdown, no code.
+        </p>
+      </div>
+      <div>
+        <h3>The page</h3>
+        <ul>
+          <li><a href="#written">What gets written</a></li>
+          <li><a href="#how">How one skill works</a></li>
+          <li><a href="#skills">The skills</a></li>
+          <li><a href="#install">Install</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>The record</h3>
+        <ul>
+          <li><a href="https://github.com/vidhunnan/agentic-skills/tree/prod-stable/changelog">changelog/</a></li>
+          <li><a href="https://github.com/vidhunnan/agentic-skills/tree/prod-stable/docs/decisions">decisions/</a></li>
+          <li><a href="https://github.com/vidhunnan/agentic-skills/tree/prod-stable/design/decisions">design/decisions/</a></li>
+          <li><a href="https://github.com/vidhunnan/agentic-skills/tree/prod-stable/handoff">handoff/</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Elsewhere</h3>
+        <ul>
+          <li><a href="https://github.com/vidhunnan/agentic-skills">github ↗</a></li>
+          <li><a href="https://vidhunnan.design">vidhunnan.design ↗</a></li>
+          <li><a href="https://github.com/vidhunnan/agentic-skills/blob/prod-stable/README.md">README.md</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-bar">
+      <span class="s">&lt;!-- </span>Built by Vidhunnan Murugan · MIT licensed ·
+      authored in Markdown, no code<span class="s"> --&gt;</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+/*
+  Two enhancements, both reader-caused, neither revealing content:
+   1. copy buttons
+   2. a scroll-linked highlight on the loop steps
+  With JS off the page is complete — every step is readable, nothing is hidden.
+*/
+document.querySelectorAll('.copy').forEach(function (b) {
+  b.addEventListener('click', function () {
+    navigator.clipboard.writeText(b.dataset.copy).then(function () {
+      var was = b.textContent; b.textContent = 'copied';
+      setTimeout(function () { b.textContent = was; }, 1400);
+    });
+  });
+});
+
+/* Position in the document — the nav marks the section you are in. */
+var sections = document.querySelectorAll('main section[id]');
+var marks = document.querySelectorAll('.nav-links a[href^="#"]');
+if (sections.length && 'IntersectionObserver' in window) {
+  var seen = {};
+  var so = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
+    var current = null;
+    sections.forEach(function (s) { if (!current && seen[s.id]) current = s.id; });
+    marks.forEach(function (a) {
+      a.classList.toggle('is-active', !!current && a.getAttribute('href') === '#' + current);
+    });
+  }, { rootMargin: '-88px 0px -62% 0px' });
+  sections.forEach(function (s) { so.observe(s); });
+}
+
+var steps = document.querySelectorAll('.step');
+if (steps.length && 'IntersectionObserver' in window &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      e.target.classList.toggle('is-active', e.isIntersecting);
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  steps.forEach(function (s) { io.observe(s); });
+}
+</script>
+</body>
+</html>

@@ -27,12 +27,17 @@
   --mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, "SF Mono",
     Menlo, Consolas, "Liberation Mono", monospace;
 
-  /* type scale — five steps. Replaced 15 ad-hoc values between 10 and 17px. */
+  /* type scale — seven steps. Round 3 added display type at the top and --t-lede
+     in the middle; the latter exists because 14px and 13px were typed directly
+     into Hero, Matrix, Loop, Skills and Install, off-scale, in the round that
+     introduced the scale. A step that is missing gets invented locally. */
   --t-meta: 11px;
   --t-sm: 12.5px;
   --t-body: 13.5px;
-  --t-h2: 15px;
-  --t-h1: 19px;
+  --t-lede: 15.5px;
+  --t-h3: 17px;
+  --t-h2: clamp(22px, 2.8vw, 33px);
+  --t-display: clamp(36px, 6.2vw, 68px);
 
   /* spacing scale — seven steps. Replaced 33 ad-hoc values. */
   --sp-1: 4px;
@@ -42,10 +47,21 @@
   --sp-5: 34px;
   --sp-6: 52px;
   --sp-7: 80px;
+  --sp-8: 116px;
 
-  /* layout — the measure is deliberate. A document is narrow. */
+  /* layout — the frame is wide, the prose inside it is not. --measure is the
+     reading width; --shell is the page. */
+  --shell: 1320px;
+  --measure: 68ch;
   --maxw: 78ch;
   --pad: 26px;
+
+  /* surface — alpha of --ink, which is what --rule already is, so this adds no
+     colour to the palette. Contained regions only: the page never floats. */
+  --radius: 5px;
+  --shadow: 0 1px 2px rgba(22, 22, 15, 0.06), 0 12px 26px -12px rgba(22, 22, 15, 0.26);
+  --shadow-lift: 0 2px 4px rgba(22, 22, 15, 0.07), 0 22px 40px -16px rgba(22, 22, 15, 0.34);
+  --inset: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -63,6 +79,10 @@
 
     --scrim: rgba(20, 20, 15, 0.72);
     --scrim-solid: rgba(20, 20, 15, 0.95);
+
+    --shadow: 0 12px 30px -14px rgba(0, 0, 0, 0.85);
+    --shadow-lift: 0 24px 46px -16px rgba(0, 0, 0, 0.95);
+    --inset: inset 0 1px 0 rgba(237, 236, 228, 0.09);
   }
 }
 
@@ -124,6 +144,20 @@ h3 {
   line-height: 1.5;
 }
 
+h1 {
+  font-size: var(--t-display);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  max-width: 26ch;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: var(--t-h2);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
 strong,
 b {
   color: var(--ink);
@@ -136,6 +170,24 @@ b {
   max-width: var(--maxw);
   margin: 0 auto;
   padding: 0 var(--pad);
+}
+
+/* Round 3's frame. .wrap is the narrow document measure; .shell is the page. */
+.shell {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 44px);
+}
+
+/*
+  Full bleed without leaving the flow: the background spreads to both viewport
+  edges while the element stays exactly where the flow put it. A 100vw margin
+  would need the gutter recomputed at every breakpoint.
+*/
+.band {
+  background: var(--paper-2);
+  box-shadow: 0 0 0 100vmax var(--paper-2);
+  clip-path: inset(0 -100vmax);
 }
 
 /*

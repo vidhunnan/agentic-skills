@@ -1,24 +1,28 @@
 .hero {
-  padding-top: var(--sp-6);
+  padding: clamp(56px, 7.5vw, 104px) 0 var(--sp-8);
 }
 
-/*
-  Not a flex container. The old global .eyebrow was display:flex, which split
-  React's text nodes into flex items and rendered "14 skills" as "14skills".
-*/
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 3.4vw, 56px);
+  align-items: start;
+}
+
+/* The headline spans both columns; the support splits beneath it. */
+.say {
+  grid-column: 1 / -1;
+  margin-bottom: var(--sp-6);
+}
+
 .eyebrow {
-  color: var(--mute);
-  font-size: var(--t-sm);
-  margin: 0 0 var(--sp-1);
+  margin: 0 0 var(--sp-4);
+  font-size: var(--t-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
-.h1 {
-  font-size: var(--t-h1);
-  line-height: 1.45;
-  letter-spacing: -0.01em;
-  margin: var(--sp-1) 0 var(--sp-3);
-  max-width: 46ch;
-}
 .cont {
   display: block;
   color: var(--ink-soft);
@@ -26,74 +30,106 @@
 }
 
 .lede {
-  font-size: 14px;
-  margin: 0 0 var(--sp-4);
-  max-width: 70ch;
+  margin: 0;
+  max-width: 46ch;
+  font-size: var(--t-lede);
+  line-height: 1.6;
 }
 
+/* --red means the honest gap. Here it is the phrase that names one. */
 .gap {
   color: var(--red);
 }
 
 .fence {
-  margin: 0 0 var(--sp-3);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  box-shadow: var(--shadow), var(--inset);
+  overflow: hidden;
+}
+.cmdFence {
+  margin-top: var(--sp-5);
 }
 .tick {
+  padding: 6px 14px;
+  font-size: var(--t-meta);
   color: var(--mute);
-  font-size: var(--t-sm);
 }
 .cmdRow {
-  background: var(--paper-2);
-  padding: var(--sp-3) var(--sp-3);
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: var(--sp-3);
-  flex-wrap: wrap;
+  padding: 12px 14px;
+  border-block: 1px solid var(--rule-soft);
 }
 .cmd {
   color: var(--ink);
-  font-size: 13px;
-}
-.pre {
-  background: var(--paper-2);
-  padding: var(--sp-3);
-  margin: 0;
-  overflow-x: auto;
-  font-size: 13px;
-  line-height: 1.8;
-  white-space: pre;
-  color: var(--ink-soft);
+  font-size: var(--t-sm);
+  overflow-wrap: anywhere;
 }
 
-.specimen {
-  margin-top: var(--sp-6);
-}
-.h2 {
-  font-size: var(--t-h2);
-  margin-bottom: var(--sp-1);
-}
-.sub {
-  color: var(--mute);
-  margin: 0 0 var(--sp-3);
-  font-size: 14px;
-}
-.src {
+.meta {
+  margin: var(--sp-4) 0 0;
   font-size: var(--t-sm);
   color: var(--mute);
-  margin: var(--sp-2) 0 var(--sp-3);
-  word-break: break-word;
-}
-.caption {
-  margin: 0;
-  max-width: 70ch;
 }
 
-@media (max-width: 720px) {
-  .hero {
-    padding-top: var(--sp-5);
+/* ── the specimen, as a file card ──────────────────────────────── */
+.card {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  box-shadow: var(--shadow-lift), var(--inset);
+  overflow: hidden;
+}
+.cardBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--t-meta);
+  color: var(--mute);
+}
+.chip {
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 1px 6px;
+  color: var(--ink-soft);
+}
+.by {
+  margin-left: auto;
+}
+.cardBody {
+  padding: var(--sp-4) var(--sp-4) var(--sp-3);
+}
+.pre {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.9;
+  white-space: pre-wrap;
+}
+.cardFoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 11px 14px;
+  border-top: 1px solid var(--rule-soft);
+  font-size: var(--t-meta);
+}
+.caption {
+  margin: var(--sp-3) 0 0;
+  max-width: 52ch;
+  font-size: var(--t-sm);
+  color: var(--mute);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
   }
-  .pre {
-    font-size: 12px;
+  .say {
+    margin-bottom: var(--sp-5);
   }
 }

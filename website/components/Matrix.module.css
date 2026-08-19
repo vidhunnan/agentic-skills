@@ -1,100 +1,110 @@
 .sec {
-  padding-bottom: var(--sp-6);
-}
-
-.rule {
-  border-top: 1px solid var(--rule);
-  margin-bottom: var(--sp-4);
-}
-
-.h2 {
-  font-size: var(--t-h2);
-  margin-bottom: var(--sp-1);
-}
-
-.sub {
-  color: var(--mute);
-  font-size: 14px;
-  margin: 0 0 var(--sp-4);
-  max-width: 70ch;
-}
-
-.head,
-.row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) auto minmax(0, 1.15fr) auto minmax(0, 0.8fr);
-  align-items: baseline;
-  font-size: var(--t-sm);
+  padding: var(--sp-8) 0;
 }
 
 .head {
-  color: var(--mute);
-  padding-bottom: var(--sp-1);
+  max-width: var(--measure);
+  margin-bottom: var(--sp-6);
+}
+.sub {
+  margin: var(--sp-3) 0 0;
+  max-width: 56ch;
+  font-size: var(--t-lede);
+  line-height: 1.6;
 }
 
+.panel {
+  max-width: 1080px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: var(--shadow), var(--inset);
+  overflow: hidden;
+}
+
+.colHead,
 .row {
-  padding: var(--sp-1) 0;
-  border-bottom: 1px solid var(--rule-soft);
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 0.85fr);
+}
+.colHead > *,
+.row > * {
+  padding: 13px var(--sp-4);
 }
 
-.pipe {
-  color: var(--rule);
-  padding: 0 var(--sp-2);
-  user-select: none;
+.colHead {
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--t-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--t-sm);
+}
+.row + .row {
+  border-top: 1px solid var(--rule-soft);
+}
+.row:hover {
+  background: var(--paper-2);
 }
 
 .q {
   color: var(--ink);
 }
+/* --red by default; .has lifts a row that something already answers. */
 .today {
   color: var(--red);
 }
-.today.has {
+.has {
   color: var(--ink-soft);
 }
 .adds {
   color: var(--blue);
 }
+.red {
+  color: var(--red);
+}
 
-/* Column labels, shown only once the grid collapses. */
 .mLabel {
   display: none;
   color: var(--mute);
 }
 
 .note {
-  color: var(--mute);
+  margin: var(--sp-4) 0 0;
+  max-width: 62ch;
   font-size: var(--t-sm);
-  margin: var(--sp-3) 0 0;
-  max-width: 70ch;
-}
-.red {
-  color: var(--red);
+  color: var(--mute);
 }
 
 /*
-  Small screens stack the row and LOSE NOTHING. The old stack section set the
-  trust qualifier to display:none below 720px, which deleted the one thing the
-  table exists to say. Labels appear here because the column heads are gone.
+  REGRESSION SURFACE — do not add display:none to a value cell here.
+  Rows stack and every value survives; only the column heads go. The old stack
+  section hid the trust qualifier below 720px, which deleted the one thing the
+  section existed to say. tests/matrix-mobile.spec.ts fails if this regresses.
 */
-@media (max-width: 720px) {
-  .head {
+@media (max-width: 760px) {
+  .colHead {
     display: none;
   }
   .row {
-    display: block;
-    padding: var(--sp-2) 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
   }
-  .pipe {
-    display: none;
+  .row > * {
+    padding: 4px var(--sp-3);
   }
-  .q {
-    display: block;
-    margin-bottom: 2px;
+  .row > *:first-child {
+    padding-top: var(--sp-3);
   }
-  .today,
-  .adds {
-    display: block;
+  .row > *:last-child {
+    padding-bottom: var(--sp-3);
   }
   .mLabel {
     display: inline;

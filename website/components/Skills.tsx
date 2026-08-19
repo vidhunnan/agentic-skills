@@ -1,66 +1,98 @@
 import CopyButton from "./CopyButton";
 import Reveal from "./Reveal";
-import { SKILL_GROUPS, TOTAL_SKILLS_WORD, type Skill } from "./lib/skills";
+import { SKILLS_COPY } from "./lib/content";
+import { SKILL_GROUPS, type Skill } from "./lib/skills";
 import styles from "./Skills.module.css";
 
 /**
- * Three shown properly, the rest as a one-line index. Fourteen full rows was
- * ~2,400px and would be ~5,400px at the thirty-two on the roadmap; the index
- * scales by rows instead of by screens.
+ * One lead card, two beside it, eleven as a two-column index.
  *
- * The three are chosen to cover the three evidence sources — from git, from
- * you, and from the record itself — not to be the "best" three.
+ * Equal thirds is the docs-template shape; an asymmetric grid says which skill
+ * to read first. decisions-logger leads because it is the one the page's own
+ * argument rests on — the hero specimen is its output.
+ *
+ * The three are chosen to cover the three evidence sources — from git, from you,
+ * and from the record itself — not to be the "best" three.
  */
-const FEATURED = ["decisions-logger", "exploration-log", "changelog-tracker"];
+const LEAD = "decisions-logger";
+const BESIDE = ["exploration-log", "changelog-tracker"];
 
 const ALL: Skill[] = SKILL_GROUPS.flatMap((g) => g.skills);
-const featured = FEATURED.map((n) => ALL.find((s) => s.name === n)).filter(
-  (s): s is Skill => Boolean(s),
-);
-const rest = ALL.filter((s) => !FEATURED.includes(s.name));
+const byName = (n: string) => ALL.find((s) => s.name === n);
+
+const lead = byName(LEAD);
+const beside = BESIDE.map(byName).filter((s): s is Skill => Boolean(s));
+const rest = ALL.filter((s) => s.name !== LEAD && !BESIDE.includes(s.name));
 
 function Surfaces({ skill }: { skill: Skill }) {
   const chat = skill.surfaces.includes("Chat");
   return (
     <span className={styles.surf}>
-      <span className={styles.on}>Code</span>{" "}
-      <span className="s">·</span>{" "}
+      <span className={styles.on}>Code</span> <span className="s">·</span>{" "}
       <span className={chat ? styles.on : styles.off}>Chat</span>
     </span>
   );
 }
 
+function Command({ skill }: { skill: Skill }) {
+  return (
+    <div className={styles.cmdRow}>
+      <code className={styles.cmd}>{skill.install}</code>
+      <CopyButton text={skill.install} />
+    </div>
+  );
+}
+
 export default function Skills() {
   return (
-    <section id="skills" className={`wrap ${styles.sec}`}>
-      <div className={styles.rule} aria-hidden="true" />
-      <h2 className={styles.h2}>
-        <span className="s">## </span>The skills
-      </h2>
-      <p className={styles.sub}>
-        {TOTAL_SKILLS_WORD.charAt(0).toUpperCase() + TOTAL_SKILLS_WORD.slice(1)},
-        each a separate plugin. Three worth reading properly; the rest are one
-        line each.
-      </p>
+    <section id="skills" className={`shell ${styles.sec}`}>
+      <div className={styles.head}>
+        <h2>
+          <span className="s">## </span>
+          {SKILLS_COPY.heading}
+        </h2>
+        <p className={styles.sub}>{SKILLS_COPY.sub}</p>
+      </div>
 
-      {featured.map((s, i) => (
-        <Reveal key={s.name} index={i} className={styles.skill}>
-          <div className={styles.top}>
-            <span className={styles.nm}>{s.name}</span>
-            <Surfaces skill={s} />
-          </div>
-          {s.answers && <div className={styles.ans}>{s.answers}</div>}
-          <p className={styles.desc}>{s.desc}</p>
-          <div className={styles.fence}>
-            <div className={styles.tick}>```sh</div>
-            <div className={styles.cmdRow}>
-              <code className={styles.cmd}>{s.install}</code>
-              <CopyButton text={s.install} />
+      <div className={styles.feat}>
+        {lead && (
+          <article className={`${styles.skill} ${styles.lead}`}>
+            <div className={styles.top}>
+              <span className={styles.nm}>{lead.name}</span>
+              <Surfaces skill={lead} />
             </div>
-            <div className={styles.tick}>```</div>
-          </div>
-        </Reveal>
-      ))}
+            <div className={styles.body}>
+              <p className={styles.leadTag}>{SKILLS_COPY.leadTag}</p>
+              {lead.answers && <p className={styles.ans}>{lead.answers}</p>}
+              <p className={styles.desc}>{lead.desc}</p>
+              <p className={styles.desc}>
+                <span className="s">&gt; </span>
+                {SKILLS_COPY.leadNote}
+              </p>
+              <p className={styles.out}>
+                <span className="s">{SKILLS_COPY.leadOutputPrefix}</span>
+                {SKILLS_COPY.leadOutput}
+                <span className="s">{SKILLS_COPY.leadOutputSuffix}</span>
+              </p>
+            </div>
+            <Command skill={lead} />
+          </article>
+        )}
+
+        {beside.map((s) => (
+          <article key={s.name} className={styles.skill}>
+            <div className={styles.top}>
+              <span className={styles.nm}>{s.name}</span>
+              <Surfaces skill={s} />
+            </div>
+            <div className={styles.body}>
+              {s.answers && <p className={styles.ans}>{s.answers}</p>}
+              <p className={styles.desc}>{s.desc}</p>
+            </div>
+            <Command skill={s} />
+          </article>
+        ))}
+      </div>
 
       <ul className={styles.idx}>
         {rest.map((s, i) => (
