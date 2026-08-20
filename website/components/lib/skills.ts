@@ -199,8 +199,16 @@ export const TOTAL_SKILLS_WORD = spellCount(TOTAL_SKILLS);
  * than no specimen, because the whole page rests on this being checkable.
  * Every line here was verified with `grep -F` against its source.
  *
- * ORDER MATTERS: [0] ships in the static HTML and is the one a JS-off or
- * reduced-motion visitor sees. It stays the ADR that says it doesn't know.
+ * ORDER MATTERS: [0] ships in the static HTML and is the one a JS-off visitor
+ * sees.
+ *
+ * [0] was the ADR that says it doesn't know — the gap markers in redline, and the
+ * caption "nobody remembered why". It is now the decision that produced this page,
+ * with its reason attached. The gap is still the library's sharpest claim, but a
+ * record of an ABSENCE is a strange thing to lead with when the point is that these
+ * skills write decisions down. The honest gap still appears on the page, in the
+ * hero lede and in four rows of the matrix; it is no longer the first artifact a
+ * reader meets. The old specimen is kept below.
  */
 export type SpecimenLineKind = "heading" | "gap" | "body" | "blank";
 
@@ -238,6 +246,27 @@ const blob = (path: string) => `${REPO_URL}/blob/prod-stable/${path}`;
  * destroy the signal that makes the first one mean anything.
  */
 export const SPECIMENS: Specimen[] = [
+  {
+    source: "design/decisions/0007",
+    href: blob("design/decisions/0007-the-site-is-terminal-rendered-markdown.md"),
+    by: "design-decisions",
+    lines: [
+      { text: "## Decision", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "We chose **terminal-rendered markdown**: monospace throughout, box-drawing characters", kind: "body" },
+      { text: "for rules and tables, **markdown syntax present but recessive** rather than hidden,", kind: "body" },
+      { text: "colour used only as signal, and hierarchy from case, weight and colour rather than", kind: "body" },
+      { text: "from size. The palette is inherited entire from the existing system, both modes,", kind: "body" },
+      { text: "unchanged.", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "The reason, in the owner's words on 2026-08-19 and deliberately not paraphrased:", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "> *\"this direction feels more skill styles and markdown styles and which represent all", kind: "body" },
+      { text: "> the context or how all files stores also\"*", kind: "body" },
+    ],
+    caption:
+      "The decision that produced this page \u2014 including the reason, quoted as it was said rather than tidied up afterwards.",
+  },
   {
     source: "design/decisions/0002",
     href: blob(

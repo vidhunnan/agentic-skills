@@ -17,7 +17,15 @@ import { SPECIMENS } from "../components/lib/skills";
   newline is not a line break. Words and markers must match; where the lines
   break must not.
 */
-const norm = (t: string) => t.replace(/\s+/g, " ").trim();
+// Whitespace collapses, and so do blockquote markers. A ">" repeats on every
+// line of a quote in the source as the BLOCK's marker; the card renders the
+// block once, so the counts legitimately differ. Every other marker — ##, **,
+// *(…)* — is inline and is compared as-is. What must match is the words.
+const norm = (t: string) =>
+  t
+    .replace(/>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
 test("the hero specimen matches its source file word for word", async ({
   page,

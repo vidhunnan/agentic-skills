@@ -54,7 +54,16 @@ function blocks(lines: Specimen["lines"]): Block[] {
       continue;
     }
     // body or gap: continue the paragraph, joined by a space
-    if (para) para.push({ text: " " }, ...parts(line));
+    if (para) {
+      const p = parts(line);
+      // A blockquote repeats "> " on every line. That marker belongs to the
+      // block, not to the words — joining lines without stripping it puts a
+      // stray ">" in the middle of the sentence.
+      const cont = p.length
+        ? [{ ...p[0], text: p[0].text.replace(/^>\s?/, "") }, ...p.slice(1)]
+        : p;
+      para.push({ text: " " }, ...cont);
+    }
     else {
       para = [...parts(line)];
       out.push(para);
