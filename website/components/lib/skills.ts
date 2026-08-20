@@ -199,10 +199,34 @@ export const TOTAL_SKILLS_WORD = spellCount(TOTAL_SKILLS);
  * than no specimen, because the whole page rests on this being checkable.
  * Every line here was verified with `grep -F` against its source.
  *
- * ORDER MATTERS: [0] ships in the static HTML and is the one a JS-off or
- * reduced-motion visitor sees. It stays the ADR that says it doesn't know.
+ * ALL TEN ARE GENERATED, NOT TRANSCRIBED. Each entry is extracted from its file
+ * by line range and pasted in whole. Five of the six hand-written specimens that
+ * preceded this set turned out not to be verbatim — the worst stitched fragments
+ * from two non-adjacent rows of a Markdown table into what read as one continuous
+ * passage. They were never rendered, so nothing false reached a reader, but the
+ * lesson is the obvious one: do not retype a record by hand. Re-extract it.
+ *
+ * tests/specimen.spec.ts asserts every entry is still present in its source file
+ * and reports all drifts at once.
+ *
+ * ORDER MATTERS: [0] ships in the static HTML and is the one a JS-off visitor
+ * sees.
+ *
+ * [0] was the ADR that says it doesn't know — the gap markers in redline, and the
+ * caption "nobody remembered why". It is now the decision that produced this page,
+ * with its reason attached. The gap is still the library's sharpest claim, but a
+ * record of an ABSENCE is a strange thing to lead with when the point is that these
+ * skills write decisions down. The honest gap still appears on the page, in the
+ * hero lede and in four rows of the matrix; it is no longer the first artifact a
+ * reader meets. The old specimen is kept below.
  */
-export type SpecimenLineKind = "heading" | "gap" | "body" | "blank";
+/** `pre` never reflows: its whitespace is structural (diffstat columns, table pipes). */
+export type SpecimenLineKind =
+  | "heading"
+  | "gap"
+  | "body"
+  | "blank"
+  | "pre";
 
 /**
  * A line may carry inline parts. Needed because a real record wraps: the marker
@@ -239,138 +263,193 @@ const blob = (path: string) => `${REPO_URL}/blob/prod-stable/${path}`;
  */
 export const SPECIMENS: Specimen[] = [
   {
+    source: "design/decisions/0007",
+    href: blob("design/decisions/0007-the-site-is-terminal-rendered-markdown.md"),
+    by: "design-decisions",
+    lines: [
+      { text: "## Decision", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "We chose **terminal-rendered markdown**: monospace throughout, box-drawing characters", kind: "body" },
+      { text: "for rules and tables, **markdown syntax present but recessive** rather than hidden,", kind: "body" },
+      { text: "colour used only as signal, and hierarchy from case, weight and colour rather than", kind: "body" },
+      { text: "from size. The palette is inherited entire from the existing system, both modes,", kind: "body" },
+      { text: "unchanged.", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "The reason, in the owner's words on 2026-08-19 and deliberately not paraphrased:", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "> *\"this direction feels more skill styles and markdown styles and which represent all", kind: "body" },
+      { text: "> the context or how all files stores also\"*", kind: "body" },
+    ],
+    caption:
+      "The decision that produced this page \u2014 including the reason, quoted as it was said rather than tidied up afterwards.",
+  },
+  {
     source: "design/decisions/0002",
-    href: blob(
-      "design/decisions/0002-a-three-family-type-system-for-the-site.md",
-    ),
+    href: blob("design/decisions/0002-a-three-family-type-system-for-the-site.md"),
     by: "design-decisions",
     lines: [
       { text: "## What we gave up", kind: "heading" },
       { text: "", kind: "blank" },
       {
-        text: "*(none identified)* — the trade was never articulated. Mechanically, a third",
+        text: "*(none identified)* \u2014 the trade was never articulated. Mechanically, a third",
         kind: "body",
-        parts: [
-          { text: "*(none identified)*", gap: true },
-          { text: " — the trade was never articulated. Mechanically, a third" },
-        ],
+        parts: [{ text: "*(none identified)*", gap: true }, { text: " \u2014 the trade was never articulated. Mechanically, a third" }],
       },
-      {
-        text: "family is a third webfont on a page whose stated virtue is restraint, and the",
-        kind: "body",
-      },
-      {
-        text: "two-family drafts demonstrably worked without it; but **no one recorded weighing",
-        kind: "body",
-      },
-      {
-        text: "that**, and it is not this record's job to supply the reasoning after the fact.",
-        kind: "body",
-      },
+      { text: "family is a third webfont on a page whose stated virtue is restraint, and the", kind: "body" },
+      { text: "two-family drafts demonstrably worked without it; but **no one recorded weighing", kind: "body" },
+      { text: "that**, and it is not this record's job to supply the reasoning after the fact.", kind: "body" },
       { text: "", kind: "blank" },
       { text: "## What would make us revisit", kind: "heading" },
       { text: "", kind: "blank" },
       { text: "*(not stated)*", kind: "gap" },
     ],
     caption:
-      "A real decision in this repo. Nobody remembered why — so it says so, instead of inventing a reason.",
+      "The same skill, on a decision nobody could explain. It says so rather than inventing a reason.",
+  },
+  {
+    source: "docs/decisions/0023",
+    href: blob("docs/decisions/0023-site-content-is-split-by-kind-data-vs-prose.md"),
+    by: "decisions-logger",
+    lines: [
+      { text: "## Decision", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "We split site content **by kind**, and say so. `website/components/lib/skills.ts`", kind: "body" },
+      { text: "holds everything repeated or counted: the skill catalogue and its groups, every", kind: "body" },
+      { text: "install command, the nine matrix rows, the hero specimens, the loop steps and the", kind: "body" },
+      { text: "repo URLs. **Every count is derived from that data, never written** \u2014 `TOTAL_SKILLS`,", kind: "body" },
+      { text: "`spellCount()` and `TOTAL_SKILLS_WORD` exist so that no sentence on the page, and no", kind: "body" },
+      { text: "line of metadata, states a number a human typed. Section prose \u2014 headings, ledes and", kind: "body" },
+      { text: "body paragraphs \u2014 lives in the component that renders it.", kind: "body" },
+    ],
+    caption:
+      "The rule that forbids this page stating a number a human typed. Every count you can see is derived from data.",
   },
   {
     source: "docs/decisions/0000-not-logged",
     href: blob("docs/decisions/0000-not-logged.md"),
     by: "decisions-logger",
     lines: [
-      { text: "## Below the bar", kind: "heading" },
-      { text: "**Fork Test.**", kind: "heading" },
-      { text: 'The loser would be "commit `.DS_Store`".', kind: "body" },
+      { text: "# 0000. Not logged", kind: "heading" },
       { text: "", kind: "blank" },
-      { text: "**Policy, not instance.**", kind: "heading" },
-      {
-        text: "A record of *complying* with a rule is not a decision — the rule is.",
-        kind: "body",
-      },
+      { text: "Candidates the decision log deliberately does **not** contain \u2014 so a re-run doesn't propose them again, forever.", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "**This is a ledger, not a decision.** Unlike its numbered siblings it is *hand-editable*: delete a row to make a candidate eligible again, or run `/decisions-logger reconsider` to re-open everything here for one run.", kind: "body" },
     ],
     caption:
-      "A ledger of the decisions the log deliberately does not contain, and why — so a re-run never proposes them again.",
+      "A ledger of what the log deliberately does not contain, so a re-run never proposes the same candidates again.",
   },
   {
-    source: "design/briefs/positioning",
-    href: blob("design/briefs/positioning.md"),
-    by: "design-brief",
+    source: "changelog/commits/037",
+    href: blob("changelog/commits/037-rebuild-in-terminal-rendered-markdown.md"),
+    by: "changelog-tracker",
     lines: [
-      { text: "## Anti-goals", kind: "heading" },
-      {
-        text: "*What would count as failure even if it tested well:*",
-        kind: "body",
-      },
-      { text: "- **Engineers bounce.**", kind: "heading" },
+      { text: " website/components/Specimens.module.css      | 203 ------------------", kind: "pre" },
+      { text: " website/components/Specimens.tsx             | 222 -------------------", kind: "pre" },
+      { text: " website/components/lib/skills.ts             | 305 ++++++++-------------------", kind: "pre" },
+      { text: " website/package.json                         |   4 +-", kind: "pre" },
+      { text: " 29 files changed, 915 insertions(+), 2291 deletions(-)", kind: "pre" },
+      { text: "```", kind: "pre" },
       { text: "", kind: "blank" },
-      { text: "## Constraints", kind: "heading" },
-      { text: "| Time | *(not stated)* |", kind: "gap" },
+      { text: "---", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "_Generated by `/changelog-tracker` from `git log -1` and `git show --stat`. Every", kind: "body" },
+      { text: "fact here comes from git: **faithful, not generative.**_", kind: "body" },
     ],
     caption:
-      "The brief for this page. It asks what failure looks like — and leaves the constraint nobody answered blank.",
+      "Raw git output, and the line underneath it naming where every fact came from.",
   },
   {
-    source: "handoff/…-skills-library-as-a-system",
-    href: blob(
-      "handoff/handoff-code-to-chat-2026-07-13-skills-library-as-a-system.md",
-    ),
+    source: "changelog/commits/042",
+    href: blob("changelog/commits/042-round-3-chrome-scale-composition-and-no-more-typed-counts.md"),
+    by: "changelog-tracker",
+    lines: [
+      { text: "## Corrections to the commit message", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "Four sentences in the message above do not survive a check against the diff. The", kind: "body" },
+      { text: "message is in the git log permanently and cannot be edited, so the corrections are", kind: "body" },
+      { text: "recorded here instead. Everything else in it was verified and holds.", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "**1. \"Both shadow values are alpha of `--ink`\" \u2014 true in light mode, false in dark.**", kind: "heading" },
+    ],
+    caption:
+      "The record catching its own author being wrong \u2014 in the one place a permanent git log can still be corrected.",
+  },
+  {
+    source: "handoff/\u2026-context-stack",
+    href: blob("handoff/handoff-code-to-chat-2026-07-13-skill-library-context-stack.md"),
     by: "handoff-generator",
     lines: [
       { text: "## Open Questions", kind: "heading" },
-      {
-        text: "- **The changelog protocol has a hole, and it will recur.**",
-        kind: "heading",
-      },
-      { text: "Fixing entry 007 does not fix the mechanism.", kind: "body" },
-      { text: "", kind: "blank" },
-      { text: "- **`docs/concepts/` is empty.**", kind: "heading" },
-      { text: "The tier exists with a README and template;", kind: "body" },
-      { text: "nothing has been filed in it.", kind: "body" },
+      { text: "Reconciled against the 2026-07-12 brief:", kind: "body" },
+      { text: "- **[CLOSED] Slug-in-filename bug** \u2014 fixed in `8b02a1b` (\"Fix: include slug in handoff filename\"); Step 6A now uses `...-{date}-{slug}.md`.", kind: "body" },
+      { text: "- **[CLOSED] Commit `bf31614` (README intro)** \u2014 merged to the default branch via PR #2.", kind: "body" },
+      { text: "- **[STILL OPEN] Repo is private** \u2014 must be flipped public before anyone else can `/plugin marketplace add vidhunnan/agentic-skills`.", kind: "body" },
+      { text: "- **[STILL OPEN] GitHub About description + topics** \u2014 drafted in the prior brief, not yet applied.", kind: "body" },
+      { text: "- **[STILL OPEN] v2 ideas parked in the PRD** \u2014 auto-fire on chat wind-down, Cursor `.mdc` counterpart, multi-file handoffs, chaining across multiple prior handoffs.", kind: "body" },
     ],
     caption:
-      "The brief that carried this work between Claude.ai and Claude Code — including the hole it found in its own protocol.",
-  },
-  {
-    source: "changelog/commits/022-…",
-    href: blob(
-      "changelog/commits/022-run-design-brief-and-design-decisions-for-real.md",
-    ),
-    by: "changelog-tracker",
-    lines: [
-      { text: "design/decisions/0002 -- THE TEST.", kind: "heading" },
-      {
-        text: "ADR 0017 states the site's typefaces and never justifies them;",
-        kind: "body",
-      },
-      { text: "the owner did not remember why when asked.", kind: "body" },
-      { text: "", kind: "blank" },
-      { text: "No rationale was invented.", kind: "heading" },
-      { text: "Zero hits on the tripwire phrases;", kind: "body" },
-      { text: "every named loser traces to a file on disk.", kind: "body" },
-    ],
-    caption:
-      "Every substantive commit documented from git. This one records a deliberate test: would the skill invent a reason if it had none?",
+      "Where the last session stopped, reconciled against the session before it.",
   },
   {
     source: "docs/concepts/website/type-system",
     href: blob("docs/concepts/website/type-system.md"),
     by: "exploration-log",
     lines: [
-      { text: "### Verdict", kind: "heading" },
-      {
-        text: "**Killed** — superseded by round 3's three-family system.",
-        kind: "body",
-      },
-      { text: "*(reason not stated)*", kind: "gap" },
+      { text: "### What we learned", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "The direction read as *\"more decorative and interactive than the minimal, airy", kind: "body" },
+      { text: "look the owner asked for\"* \u2014 recorded in", kind: "body" },
+      { text: "[ADR 0017](../../decisions/0017-the-website-design-direction-is-swiss-whitepaper.md).", kind: "body" },
       { text: "", kind: "blank" },
       { text: "### Verdict", kind: "heading" },
-      { text: "**Kept** — shipped, and still live.", kind: "body" },
-      { text: "*(reason not stated)*", kind: "gap" },
+      { text: "", kind: "blank" },
+      { text: "**Killed** \u2014 with the Blueprint direction. Whether the typeface pairing was", kind: "body" },
+      { text: "*independently* rejected, or simply went down with the direction it belonged to,", kind: "body" },
+      {
+        text: "is *(not recorded)*.",
+        kind: "body",
+        parts: [{ text: "is " }, { text: "*(not recorded)*", gap: true }, { text: "." }],
+      },
     ],
     caption:
-      "The rounds that lost, kept on disk rather than deleted — the only reason the decision above could name its alternatives at all.",
+      "A direction that was killed, kept on disk \u2014 and a record that declines to over-claim why it died.",
+  },
+  {
+    source: "design/briefs/website-revamp",
+    href: blob("design/briefs/website-revamp.md"),
+    by: "design-brief",
+    lines: [
+      { text: "## Anti-goals", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "*What would count as failure even if it tested well:*", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "- **The records read as a design gimmick.** If the gaps and the redline look like a", kind: "body" },
+      { text: "  device invented for the layout rather than real artifacts from a real repo, the", kind: "body" },
+      { text: "  argument inverts \u2014 their entire value is that they are not decoration.", kind: "body" },
+      { text: "- **Beautiful, and still can't say what this is.** Someone lands, admires it, leaves,", kind: "body" },
+      { text: "  and could not describe the library to a colleague. This is the current failure and", kind: "body" },
+      { text: "  the criterion above exists to catch it.", kind: "body" },
+    ],
+    caption:
+      "The brief naming, in advance, what would count as failure \u2014 including the failure this very card risks being.",
+  },
+  {
+    source: "design/system/language-website",
+    href: blob("design/system/language-website.md"),
+    by: "design-language",
+    lines: [
+      { text: "## Vocabulary", kind: "heading" },
+      { text: "", kind: "blank" },
+      { text: "**The noun this runs on:** **context.** The UI, the README and the copy all use it and", kind: "body" },
+      { text: "do not drift to synonyms.", kind: "body" },
+      { text: "", kind: "blank" },
+      { text: "**Out of bounds:**", kind: "heading" },
+      { text: "- **\"context engineering\"** \u2014 the discipline label, as opposed to the plain noun. The", kind: "body" },
+      { text: "  closed positioning brief already suspected it loses the reader in the first", kind: "body" },
+      { text: "  sentence; the audience is now anyone building with Claude seriously, not engineers.", kind: "body" },
+    ],
+    caption:
+      "A design doc that legislates words rather than looks. The built HTML is grepped against it.",
   },
 ];
 
@@ -399,13 +478,13 @@ export interface MatrixRow {
 export const MATRIX: MatrixRow[] = [
   {
     question: "What did we try?",
-    answeredToday: "git history, badly",
+    answeredToday: "git history, only changes",
     addedBy: "explorations",
     hasAnswerToday: true,
   },
   {
     question: "Why did we choose that?",
-    answeredToday: "commit messages, badly",
+    answeredToday: "commit messages",
     addedBy: "decisions",
     hasAnswerToday: true,
   },
@@ -429,13 +508,13 @@ export const MATRIX: MatrixRow[] = [
   },
   {
     question: "What are we trying to build?",
-    answeredToday: "whatever someone remembered",
+    answeredToday: "when someone writes it",
     addedBy: "concepts · briefs",
     hasAnswerToday: false,
   },
   {
     question: "What are we still deciding?",
-    answeredToday: "whatever someone remembered",
+    answeredToday: "when someone documents it",
     addedBy: "prds · briefs",
     hasAnswerToday: false,
   },

@@ -1,6 +1,7 @@
 import CopyButton from "./CopyButton";
+import Specimen from "./Specimen";
 import { HERO } from "./lib/content";
-import { MARKETPLACE_CMD, SPECIMENS, TOTAL_SKILLS } from "./lib/skills";
+import { MARKETPLACE_CMD, TOTAL_SKILLS } from "./lib/skills";
 import styles from "./Hero.module.css";
 
 /**
@@ -10,11 +11,10 @@ import styles from "./Hero.module.css";
  * put it at display size but boxed it in half the width, which broke it a
  * second way — six lines, and it stopped reading as a headline at all.
  *
- * SPECIMENS[0] is load-bearing: it is the ADR that says it doesn't know, and it
- * is what a JS-off reader sees. The rotation was retired (design ADR 0010).
+ * The specimen set lives in Specimen.tsx — the reader steps through it.
  */
+
 export default function Hero() {
-  const spec = SPECIMENS[0];
 
   return (
     <section id="top" className={`shell ${styles.hero}`}>
@@ -44,63 +44,7 @@ export default function Hero() {
           </p>
         </div>
 
-        <div>
-          <div className={styles.card}>
-            {/*
-              Window chrome. The controls are decorative and must stay
-              aria-hidden and non-focusable: a close button that closes nothing
-              is a lie to a keyboard user, and this repo already has a rule
-              against shipping controls that do nothing (the deleted Nav only
-              rendered its palette trigger after mount, for that reason).
-            */}
-            <div className={styles.cardBar}>
-              <span className={styles.dots} aria-hidden="true">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span className={styles.title}>{spec.source}</span>
-              <span className={styles.by}>{spec.by}</span>
-            </div>
-            <div className={styles.cardBody}>
-              <pre className={styles.pre}>
-                {spec.lines.map((l, i) => {
-                  const nl = i < spec.lines.length - 1 ? "\n" : "";
-                  if (l.parts) {
-                    return (
-                      <span key={i}>
-                        {l.parts.map((part, j) => (
-                          <span
-                            key={j}
-                            className={part.gap ? styles.gap : undefined}
-                          >
-                            {part.text}
-                          </span>
-                        ))}
-                        {nl}
-                      </span>
-                    );
-                  }
-                  return (
-                    <span
-                      key={i}
-                      className={l.kind === "gap" ? styles.gap : undefined}
-                    >
-                      {l.text}
-                      {nl}
-                    </span>
-                  );
-                })}
-              </pre>
-            </div>
-            <div className={styles.cardFoot}>
-              <span className="s">— </span>
-              {HERO.specimenNote} <span className="s">·</span>{" "}
-              <a href={spec.href}>{HERO.specimenLink}</a>
-            </div>
-          </div>
-          <p className={styles.caption}>{spec.caption}</p>
-        </div>
+        <Specimen />
       </div>
     </section>
   );

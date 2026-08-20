@@ -66,6 +66,7 @@ export const SKILLS_COPY = {
   heading: "The skills",
   sub: "Fourteen, each a separate plugin. Three worth reading properly; the rest are one line each.",
   leadTag: "start with this one",
+  filterPlaceholder: "search for skills, repo, design",
   leadNote:
     "It is the skill the specimen at the top of this page came from — including the two lines where the record says nobody recorded a reason.",
   leadOutputPrefix: "→ writes ",

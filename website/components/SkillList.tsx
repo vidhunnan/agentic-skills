@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import CopyButton from "./CopyButton";
 import { SKILLS_COPY } from "./lib/content";
 import { SKILL_GROUPS, searchSkills, type Skill } from "./lib/skills";
+import Tags from "./Tags";
 import styles from "./Skills.module.css";
 
 /**
@@ -28,20 +29,6 @@ const ORDERED: Skill[] = [
   ...ALL.filter((s) => s.name !== FIRST),
 ];
 
-function Tags({ skill }: { skill: Skill }) {
-  // Only what the skill actually has. A struck-through "Chat" was decoration
-  // pretending to be data — the absence of the tag is the information.
-  return (
-    <span className={styles.tags}>
-      {skill.surfaces.map((s) => (
-        <span key={s} className={styles.tag}>
-          {s}
-        </span>
-      ))}
-    </span>
-  );
-}
-
 export default function SkillList() {
   const [ready, setReady] = useState(false);
   const [q, setQ] = useState("");
@@ -49,27 +36,30 @@ export default function SkillList() {
   useEffect(() => setReady(true), []);
 
   const matches = useMemo(() => new Set(searchSkills(q)), [q]);
-  const hits = ORDERED.filter((s) => matches.has(s.name)).length;
 
   return (
     <>
-      {ready && (
-        <div className={styles.searchRow}>
+      {/*
+        Heading and search share one row — the search is a property of the
+        section, not a control floating above the list. Per the Figma spec
+        (node 2265:2179).
+      */}
+      <div className={styles.headRow}>
+        <div className={styles.head}>
+          <h2>{SKILLS_COPY.heading}</h2>
+          <p className={styles.sub}>{SKILLS_COPY.sub}</p>
+        </div>
+        {ready && (
           <input
             type="search"
             className={styles.search}
-            placeholder="filter — try design, chat, figma"
+            placeholder={SKILLS_COPY.filterPlaceholder}
             value={q}
             onChange={(e) => setQ(e.target.value)}
             aria-label="Filter skills"
           />
-          <span className={styles.hits} aria-live="polite">
-            {q.trim() === ""
-              ? `${ORDERED.length} skills`
-              : `${hits} of ${ORDERED.length}`}
-          </span>
-        </div>
-      )}
+        )}
+      </div>
 
       <ul className={styles.list}>
         {ORDERED.map((s) => {
@@ -77,7 +67,14 @@ export default function SkillList() {
           const chat = s.surfaces.includes("Chat");
           return (
             <li key={s.name} hidden={!hit}>
-              <details className={styles.row}>
+              {/*
+              name= makes this an exclusive accordion: opening one closes the
+              rest, natively. No state, no JS, and it keeps working with JS off —
+              which a controlled open/close would not. Browsers without support
+              (Chrome <120, Safari <17.2, Firefox <130) simply allow several open
+              at once, which is the behaviour that shipped until now.
+            */}
+            <details className={styles.row} name="skill">
                 <summary className={styles.summary}>
                   <span className={styles.text}>
                     <span className={styles.top}>
@@ -90,8 +87,14 @@ export default function SkillList() {
                 </summary>
                 <div className={styles.body}>
                   <div className={styles.cmdRow}>
-                    <code className={styles.cmd}>{s.install}</code>
-                    <CopyButton text={s.install} label="copy" />
+                    {/*
+                      Same control as the hero. The Figma spec for this row draws
+                      the command as one pressable block with a divided COPY —
+                      which is the primary variant, to the pixel: 22/14/13
+                      padding, 13.5px --ink on --paper-2, 0.66px tracking on the
+                      action. Reuse rather than a second implementation.
+                    */}
+                    <CopyButton text={s.install} variant="primary" />
                     {chat && (
                       <a
                         className={styles.download}

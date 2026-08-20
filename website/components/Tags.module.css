@@ -4,8 +4,10 @@
 }
 .tag {
   border: 1px solid var(--rule);
-  border-radius: 3px;
-  padding: 1px 7px;
+  /* Fully round. The Figma file carries 35px on one tag and 9999px on the
+     other; at a 21px tag both are the same pill, so this uses one value. */
+  border-radius: 999px;
+  padding: 1px 12px;
   color: var(--mute);
   font-size: var(--t-meta);
   white-space: nowrap;
