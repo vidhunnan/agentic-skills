@@ -49,27 +49,30 @@ export default function SkillList() {
   useEffect(() => setReady(true), []);
 
   const matches = useMemo(() => new Set(searchSkills(q)), [q]);
-  const hits = ORDERED.filter((s) => matches.has(s.name)).length;
 
   return (
     <>
-      {ready && (
-        <div className={styles.searchRow}>
+      {/*
+        Heading and search share one row — the search is a property of the
+        section, not a control floating above the list. Per the Figma spec
+        (node 2265:2179).
+      */}
+      <div className={styles.headRow}>
+        <div className={styles.head}>
+          <h2>{SKILLS_COPY.heading}</h2>
+          <p className={styles.sub}>{SKILLS_COPY.sub}</p>
+        </div>
+        {ready && (
           <input
             type="search"
             className={styles.search}
-            placeholder="filter — try design, chat, figma"
+            placeholder={SKILLS_COPY.filterPlaceholder}
             value={q}
             onChange={(e) => setQ(e.target.value)}
             aria-label="Filter skills"
           />
-          <span className={styles.hits} aria-live="polite">
-            {q.trim() === ""
-              ? `${ORDERED.length} skills`
-              : `${hits} of ${ORDERED.length}`}
-          </span>
-        </div>
-      )}
+        )}
+      </div>
 
       <ul className={styles.list}>
         {ORDERED.map((s) => {
