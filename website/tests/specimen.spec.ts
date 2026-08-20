@@ -27,25 +27,54 @@ const norm = (t: string) =>
     .replace(/\s+/g, " ")
     .trim();
 
-test("the hero specimen matches its source file word for word", async ({
-  page,
-}) => {
-  const spec = SPECIMENS[0];
+test("every specimen matches its source file word for word", async () => {
+  expect(SPECIMENS.length, "the set is not empty").toBeGreaterThan(0);
 
-  // The display path is elided ("design/decisions/0002"), so resolve the file
-  // from the href, which is the thing a reader would actually click.
-  const path = spec.href.split("/blob/prod-stable/")[1];
-  expect(path, "the specimen links to a repo file").toBeTruthy();
+  // Collect every failure rather than stopping at the first: if several have
+  // drifted you want to see all of them, not fix one and rerun six times.
+  const drifted: string[] = [];
 
-  const source = await readFile(join(process.cwd(), "..", path), "utf8");
-  const quoted = norm(spec.lines.map((l) => l.text).join("\n"));
+  for (const spec of SPECIMENS) {
+    // The display path is elided ("design/decisions/0007"), so resolve the file
+    // from the href — the link a reader would actually click.
+    const path = spec.href.split("/blob/prod-stable/")[1];
+    expect(path, `${spec.source} links to a repo file`).toBeTruthy();
+
+    const source = await readFile(join(process.cwd(), "..", path), "utf8");
+    const quoted = norm(spec.lines.map((l) => l.text).join("\n"));
+
+    if (!norm(source).includes(quoted)) drifted.push(`${spec.source} (${path})`);
+  }
 
   expect(
-    norm(source).includes(quoted),
-    `the quote is no longer present in ${path} — re-quote it or drop the specimen`,
-  ).toBe(true);
+    drifted,
+    `these quotes are no longer present in their source files — re-quote or drop them:\n  ${drifted.join("\n  ")}`,
+  ).toEqual([]);
+});
 
+test("the card renders the record it claims to", async ({ page }) => {
   await page.goto("/");
-  const rendered = norm(await page.locator("#top pre").innerText());
-  expect(rendered, "the card renders exactly what was quoted").toBe(quoted);
+
+  const first = SPECIMENS[0];
+  const rendered = norm(await page.locator("#top pre").first().innerText());
+  expect(rendered, "the visible card is the first record").toBe(
+    norm(first.lines.map((l) => l.text).join("\n")),
+  );
+
+  // Every record ships in the static export, not just the visible one.
+  await expect(page.locator("#top pre")).toHaveCount(SPECIMENS.length);
+});
+
+test("stepping moves to the next record", async ({ page }) => {
+  await page.goto("/");
+  const count = page.locator("#top").getByText(/^\d+ of \d+$/);
+  await expect(count).toHaveText(`1 of ${SPECIMENS.length}`);
+
+  await page.getByRole("button", { name: "Next record" }).click();
+  await expect(count).toHaveText(`2 of ${SPECIMENS.length}`);
+
+  // Wraps rather than dead-ending.
+  await page.getByRole("button", { name: "Previous record" }).click();
+  await page.getByRole("button", { name: "Previous record" }).click();
+  await expect(count).toHaveText(`${SPECIMENS.length} of ${SPECIMENS.length}`);
 });

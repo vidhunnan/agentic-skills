@@ -119,3 +119,100 @@
     margin-bottom: var(--sp-5);
   }
 }
+
+/* ── the specimen stack ────────────────────────────────────────────
+   Every record is in the DOM, all in ONE grid cell, so the card is exactly as
+   tall as the frame regardless of which record is showing — the caption and
+   controls under it never move as you step.
+
+   NOTE the selectors: .stepped sits ON .stack, so these are compound
+   (.stack.stepped), not descendant. Writing them as descendants matched nothing,
+   every slide stayed visible, and ten cards painted on top of each other.
+   ─────────────────────────────────────────────────────────────── */
+.stack {
+  display: grid;
+  height: 426px;
+}
+.stack > .slide {
+  grid-area: 1 / 1;
+  min-height: 0;
+}
+
+/* before mount: the first record, alone, with no controls */
+.stack:not(.stepped) > .slide:not(:first-child) {
+  visibility: hidden;
+}
+
+/* after mount: whichever one the reader stepped to */
+.stack.stepped > .slide {
+  visibility: hidden;
+}
+.stack.stepped > .current {
+  visibility: visible;
+}
+
+/* The frame is fixed; the text inside it changes and scrolls if it must. */
+.slide,
+.slide .card {
+  height: 100%;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+}
+.cardBody {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+@media (max-width: 900px) {
+  .stack {
+    height: 390px;
+  }
+}
+
+.below {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+.below .caption {
+  max-width: 390px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex: 0 0 auto;
+  padding-top: var(--sp-3);
+}
+.step {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: var(--t-meta);
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.step:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+.count {
+  color: var(--mute);
+  font-size: var(--t-meta);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .below {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
