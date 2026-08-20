@@ -49,7 +49,11 @@ function blocks(lines: Record_["lines"]): Block[] {
       out.push([{ text: "" }]);
       continue;
     }
-    if (line.kind === "heading") {
+    // A heading stands alone. So does a preformatted line — its whitespace is
+    // structural (diffstat columns, table pipes), so reflowing it would destroy
+    // the thing it is showing. Joining the diffstat rows turned five aligned
+    // columns into one unreadable line.
+    if (line.kind === "heading" || line.kind === "pre") {
       para = null;
       out.push(parts(line));
       continue;
@@ -60,7 +64,18 @@ function blocks(lines: Record_["lines"]): Block[] {
       // block, not to the words — joining without stripping it puts a stray
       // ">" in the middle of the sentence.
       const cont = p.length
-        ? [{ ...p[0], text: p[0].text.replace(/^>\s?/, "") }, ...p.slice(1)]
+        ? [
+            {
+              ...p[0],
+              // Two markers belong to the BLOCK, not the words, and both have to
+              // go when lines are joined: the "> " a blockquote repeats on every
+              // line, and the indent a list item uses to continue. Leaving the
+              // indent in produced "The   closed positioning brief" — the join
+              // space plus the source's two-space continuation.
+              text: p[0].text.replace(/^>\s?/, "").replace(/^\s+/, ""),
+            },
+            ...p.slice(1),
+          ]
         : p;
       para.push({ text: " " }, ...cont);
     } else {

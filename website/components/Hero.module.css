@@ -174,7 +174,13 @@
 
 .below {
   display: flex;
-  align-items: flex-end;
+  /*
+    Top-aligned, so the arrows sit level with the caption's first line and read
+    as part of this block rather than floating off its bottom edge. It also makes
+    their position independent of caption length — the reserved height below is
+    now about keeping the SECTION stable, not the arrows.
+  */
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--sp-4);
 }

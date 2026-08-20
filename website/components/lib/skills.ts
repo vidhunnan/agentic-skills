@@ -220,7 +220,13 @@ export const TOTAL_SKILLS_WORD = spellCount(TOTAL_SKILLS);
  * hero lede and in four rows of the matrix; it is no longer the first artifact a
  * reader meets. The old specimen is kept below.
  */
-export type SpecimenLineKind = "heading" | "gap" | "body" | "blank";
+/** `pre` never reflows: its whitespace is structural (diffstat columns, table pipes). */
+export type SpecimenLineKind =
+  | "heading"
+  | "gap"
+  | "body"
+  | "blank"
+  | "pre";
 
 /**
  * A line may carry inline parts. Needed because a real record wraps: the marker
@@ -337,12 +343,12 @@ export const SPECIMENS: Specimen[] = [
     href: blob("changelog/commits/037-rebuild-in-terminal-rendered-markdown.md"),
     by: "changelog-tracker",
     lines: [
-      { text: " website/components/Specimens.module.css      | 203 ------------------", kind: "body" },
-      { text: " website/components/Specimens.tsx             | 222 -------------------", kind: "body" },
-      { text: " website/components/lib/skills.ts             | 305 ++++++++-------------------", kind: "body" },
-      { text: " website/package.json                         |   4 +-", kind: "body" },
-      { text: " 29 files changed, 915 insertions(+), 2291 deletions(-)", kind: "body" },
-      { text: "```", kind: "body" },
+      { text: " website/components/Specimens.module.css      | 203 ------------------", kind: "pre" },
+      { text: " website/components/Specimens.tsx             | 222 -------------------", kind: "pre" },
+      { text: " website/components/lib/skills.ts             | 305 ++++++++-------------------", kind: "pre" },
+      { text: " website/package.json                         |   4 +-", kind: "pre" },
+      { text: " 29 files changed, 915 insertions(+), 2291 deletions(-)", kind: "pre" },
+      { text: "```", kind: "pre" },
       { text: "", kind: "blank" },
       { text: "---", kind: "body" },
       { text: "", kind: "blank" },
