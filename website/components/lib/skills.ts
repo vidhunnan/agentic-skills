@@ -399,13 +399,13 @@ export interface MatrixRow {
 export const MATRIX: MatrixRow[] = [
   {
     question: "What did we try?",
-    answeredToday: "git history, badly",
+    answeredToday: "git history, only changes",
     addedBy: "explorations",
     hasAnswerToday: true,
   },
   {
     question: "Why did we choose that?",
-    answeredToday: "commit messages, badly",
+    answeredToday: "commit messages",
     addedBy: "decisions",
     hasAnswerToday: true,
   },
@@ -429,13 +429,13 @@ export const MATRIX: MatrixRow[] = [
   },
   {
     question: "What are we trying to build?",
-    answeredToday: "whatever someone remembered",
+    answeredToday: "when someone writes it",
     addedBy: "concepts · briefs",
     hasAnswerToday: false,
   },
   {
     question: "What are we still deciding?",
-    answeredToday: "whatever someone remembered",
+    answeredToday: "when someone documents it",
     addedBy: "prds · briefs",
     hasAnswerToday: false,
   },
