@@ -80,8 +80,14 @@ export default function SkillList() {
                 </summary>
                 <div className={styles.body}>
                   <div className={styles.cmdRow}>
-                    <code className={styles.cmd}>{s.install}</code>
-                    <CopyButton text={s.install} label="copy" />
+                    {/*
+                      Same control as the hero. The Figma spec for this row draws
+                      the command as one pressable block with a divided COPY —
+                      which is the primary variant, to the pixel: 22/14/13
+                      padding, 13.5px --ink on --paper-2, 0.66px tracking on the
+                      action. Reuse rather than a second implementation.
+                    */}
+                    <CopyButton text={s.install} variant="primary" />
                     {chat && (
                       <a
                         className={styles.download}
