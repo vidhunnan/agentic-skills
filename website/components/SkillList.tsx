@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import CopyButton from "./CopyButton";
 import { SKILLS_COPY } from "./lib/content";
 import { SKILL_GROUPS, searchSkills, type Skill } from "./lib/skills";
+import Tags from "./Tags";
 import styles from "./Skills.module.css";
 
 /**
@@ -27,20 +28,6 @@ const ORDERED: Skill[] = [
   ...ALL.filter((s) => s.name === FIRST),
   ...ALL.filter((s) => s.name !== FIRST),
 ];
-
-function Tags({ skill }: { skill: Skill }) {
-  // Only what the skill actually has. A struck-through "Chat" was decoration
-  // pretending to be data — the absence of the tag is the information.
-  return (
-    <span className={styles.tags}>
-      {skill.surfaces.map((s) => (
-        <span key={s} className={styles.tag}>
-          {s}
-        </span>
-      ))}
-    </span>
-  );
-}
 
 export default function SkillList() {
   const [ready, setReady] = useState(false);
