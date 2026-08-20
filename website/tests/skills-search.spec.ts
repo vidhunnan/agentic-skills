@@ -72,3 +72,30 @@ test.describe("catalogue filter", () => {
     await expect(page.locator("#skills li")).toHaveCount(TOTAL_SKILLS);
   });
 });
+
+/*
+  Exclusive accordion — opening one row closes the others.
+
+  Done with the native `name` attribute on <details> rather than controlled
+  state, so it needs no JS and cannot leave a row stuck open if a script fails.
+  This test exists because that attribute is easy to drop in a refactor and the
+  regression is silent: everything still opens, just all at once.
+*/
+test("opening one row closes the others", async ({ page }) => {
+  await page.goto("/");
+  const rows = page.locator("#skills details");
+
+  await rows.nth(0).locator("summary").click();
+  await expect(rows.nth(0)).toHaveAttribute("open", "");
+
+  await rows.nth(3).locator("summary").click();
+  await expect(rows.nth(3)).toHaveAttribute("open", "");
+  await expect(rows.nth(0), "the first row closed itself").not.toHaveAttribute(
+    "open",
+    "",
+  );
+
+  // Never more than one open, whichever you poke.
+  await rows.nth(7).locator("summary").click();
+  await expect(page.locator("#skills details[open]")).toHaveCount(1);
+});

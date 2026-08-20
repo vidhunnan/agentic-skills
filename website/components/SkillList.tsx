@@ -67,7 +67,14 @@ export default function SkillList() {
           const chat = s.surfaces.includes("Chat");
           return (
             <li key={s.name} hidden={!hit}>
-              <details className={styles.row}>
+              {/*
+              name= makes this an exclusive accordion: opening one closes the
+              rest, natively. No state, no JS, and it keeps working with JS off —
+              which a controlled open/close would not. Browsers without support
+              (Chrome <120, Safari <17.2, Firefox <130) simply allow several open
+              at once, which is the behaviour that shipped until now.
+            */}
+            <details className={styles.row} name="skill">
                 <summary className={styles.summary}>
                   <span className={styles.text}>
                     <span className={styles.top}>
