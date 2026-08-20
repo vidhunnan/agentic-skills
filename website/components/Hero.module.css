@@ -136,6 +136,9 @@
 .stack > .slide {
   grid-area: 1 / 1;
   min-height: 0;
+  position: relative;
+  /* Hard cut, chosen deliberately: no transition on the record itself. The
+     retired rotation crossfaded 0.5s in / 0.22s out; this moves less. */
 }
 
 /* before mount: the first record, alone, with no controls */
@@ -169,6 +172,42 @@
 @media (max-width: 900px) {
   .stack {
     height: 390px;
+  }
+}
+
+/* ── the progress line ─────────────────────────────────────────────
+   A hairline filling across the bottom edge of the card over the dwell. It is
+   the only thing that moves — the record itself hard-cuts — and it is where
+   "paused" becomes visible: the fill stops where it stood.
+
+   Not rendered at all under reduced motion, and animation-play-state carries
+   the pause so the fill holds its position rather than resetting.
+   ─────────────────────────────────────────────────────────────── */
+.progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /* 2px, not 1. At a hairline it sat on the card's own border and was invisible
+     at normal viewing distance, which defeats the only job it has. */
+  height: 2px;
+  width: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: var(--blue);
+  animation-name: fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-play-state: paused;
+}
+.ticking {
+  animation-play-state: running;
+}
+@keyframes fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 

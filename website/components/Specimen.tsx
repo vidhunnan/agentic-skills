@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { HERO } from "./lib/content";
 import { SPECIMENS, type Specimen as Record_ } from "./lib/skills";
 import styles from "./Hero.module.css";
@@ -128,16 +128,99 @@ function Card({ spec }: { spec: Record_ }) {
   );
 }
 
+/**
+ * Reused from the rotation this replaces, not re-picked: long enough to clear
+ * the longest record at an unhurried pace, short enough that the card does not
+ * read as static. Its own spec entry admits it was never tested on a reader,
+ * and that is still true.
+ */
+const DWELL_MS = 6500;
+
 export default function Specimen() {
   const [ready, setReady] = useState(false);
   const [i, setI] = useState(0);
 
+  // Two kinds of not-advancing, deliberately separate.
+  //   held    — transient: pointer over it, focus inside it, tab in the
+  //             background, or the card scrolled out of view. These are the
+  //             ONLY brakes: the explicit pause control was removed at the
+  //             owner's request. A visitor who never touches the card and never
+  //             hovers it gets content that auto-updates indefinitely, which is
+  //             what WCAG 2.2 SC 2.2.2 asks for a mechanism against. Recorded
+  //             here rather than argued: it was raised and decided.
+  //   stopped — the reader pressed an arrow. Sticky, because the timer should
+  //             not take a record away from the one person who asked for it.
+  //             Scoped to the visit: leaving the section clears it.
+  const [held, setHeld] = useState(false);
+  const [stopped, setStopped] = useState(false);
+  const [offscreen, setOffscreen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [reduced, setReduced] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+
   useEffect(() => setReady(true), []);
 
-  const wrap = (n: number) => (n + SPECIMENS.length) % SPECIMENS.length;
+  // Read the preference live, not once at mount, so turning it on with the page
+  // already open stops the timer immediately.
+  useEffect(() => {
+    const q = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduced(q.matches);
+    sync();
+    q.addEventListener("change", sync);
+    return () => q.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    const onVis = () => setHidden(document.visibilityState === "hidden");
+    onVis();
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+
+  // One observer, two jobs: hold the timer while the card is off-screen, and
+  // clear the sticky stop when the reader leaves the section — so coming back
+  // starts it again.
+  useEffect(() => {
+    const el = root.current;
+    if (!el || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        setOffscreen(!e.isIntersecting);
+        if (!e.isIntersecting) setStopped(false);
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const wrap = useCallback(
+    (n: number) => (n + SPECIMENS.length) % SPECIMENS.length,
+    [],
+  );
+
+  const running =
+    ready && !reduced && !stopped && !held && !offscreen && !hidden;
+
+  useEffect(() => {
+    if (!running) return;
+    const t = setTimeout(() => setI((n) => wrap(n + 1)), DWELL_MS);
+    return () => clearTimeout(t);
+  }, [running, i, wrap]);
+
+  const step = (delta: number) => {
+    setStopped(true);
+    setI((n) => wrap(n + delta));
+  };
 
   return (
-    <div>
+    <div
+      ref={root}
+      onPointerEnter={() => setHeld(true)}
+      onPointerLeave={() => setHeld(false)}
+      onFocusCapture={() => setHeld(true)}
+      onBlurCapture={() => setHeld(false)}
+    >
       <div className={`${styles.stack} ${ready ? styles.stepped : ""}`}>
         {SPECIMENS.map((spec, n) => {
           const off = ready && n !== i;
@@ -149,6 +232,16 @@ export default function Specimen() {
               inert={off ? true : undefined}
             >
               <Card spec={spec} />
+              {ready && n === i && !reduced && !stopped && (
+                <span
+                  className={`${styles.progress} ${running ? styles.ticking : ""}`}
+                  style={{ animationDuration: `${DWELL_MS}ms` }}
+                  aria-hidden="true"
+                  // Restarting the animation needs a new element, not a class
+                  // toggle — the key does that.
+                  key={`p-${i}-${running}`}
+                />
+              )}
             </div>
           );
         })}
@@ -161,7 +254,7 @@ export default function Specimen() {
             <button
               type="button"
               className={styles.step}
-              onClick={() => setI(wrap(i - 1))}
+              onClick={() => step(-1)}
               aria-label="Previous record"
             >
               ←
@@ -172,7 +265,7 @@ export default function Specimen() {
             <button
               type="button"
               className={styles.step}
-              onClick={() => setI(wrap(i + 1))}
+              onClick={() => step(1)}
               aria-label="Next record"
             >
               →
