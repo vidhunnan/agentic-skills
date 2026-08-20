@@ -178,8 +178,22 @@
   justify-content: space-between;
   gap: var(--sp-4);
 }
+/*
+  The caption is two or three lines depending on the record, and the row is
+  bottom-aligned — so without a reserved height the arrows jumped 21px every
+  time you stepped onto a shorter caption. Three lines are always reserved, and
+  the clamp means a longer caption can never push them either.
+
+  A clamp can hide text silently, so the suite asserts no caption is clipped.
+*/
 .below .caption {
   max-width: 390px;
+  min-height: calc(1.7em * 3);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
 }
 
 .controls {

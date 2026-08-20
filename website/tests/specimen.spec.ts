@@ -78,3 +78,56 @@ test("stepping moves to the next record", async ({ page }) => {
   await page.getByRole("button", { name: "Previous record" }).click();
   await expect(count).toHaveText(`${SPECIMENS.length} of ${SPECIMENS.length}`);
 });
+
+/*
+  The arrows must not move as you step.
+
+  They sit under a caption that is two or three lines depending on the record, and
+  the row is bottom-aligned — so before this was fixed they jumped 21px whenever
+  you landed on a shorter caption. Measured against the bottom of the card rather
+  than the viewport, because clicking the button scrolls it into view and a
+  viewport-relative reading says the arrows moved when only the page did.
+*/
+test("the controls hold their position across every record", async ({ page }) => {
+  await page.goto("/");
+  // The controls are mount-gated, so they do not exist until React hydrates.
+  // Measuring before that reads null, which on the slower mobile profile is
+  // exactly what happened.
+  await page.getByRole("button", { name: "Next record" }).waitFor();
+
+  const offsets = new Set<number>();
+  const clipped: number[] = [];
+
+  for (let i = 0; i < SPECIMENS.length; i++) {
+    if (i) await page.getByRole("button", { name: "Next record" }).click();
+
+    const state = await page.evaluate(() => {
+      const stack = document
+        .querySelector("#top pre")!
+        .closest("[class*=slide]")!.parentElement!;
+      const controls = document.querySelector("#top [class*=controls]")!;
+      const caption = document.querySelector("#top [class*=below] p")!;
+      return {
+        offset: Math.round(
+          controls.getBoundingClientRect().top -
+            stack.getBoundingClientRect().bottom,
+        ),
+        clip: caption.scrollHeight - caption.clientHeight,
+      };
+    });
+
+    offsets.add(state.offset);
+    if (state.clip > 0) clipped.push(i + 1);
+  }
+
+  expect(
+    [...offsets],
+    "the arrows sit at one fixed distance below the card, whichever record shows",
+  ).toHaveLength(1);
+
+  // The caption is clamped to three lines to reserve that space. A clamp hides
+  // text silently, so a caption that outgrows it has to fail here instead.
+  expect(clipped, `captions ${clipped.join(", ")} are clipped — shorten them`).toEqual(
+    [],
+  );
+});
