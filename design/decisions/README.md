@@ -49,11 +49,17 @@ Copy `_TEMPLATE.md`. Run `/design-decisions` to log one.
 | [0004](./0004-a-command-palette-with-actions-not-a-search-box.md) | A command palette with actions, not a search box | 2026-08-16 | Superseded by [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | A convention people must know; desktop-only actions; ~20KB JS; a second way to reach everything | 2 |
 | [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md) | The palette searches skills and copies one thing | 2026-08-16 | Superseded by [0009](./0009-the-command-palette-is-retired.md) | Discovery of tiers and records; a reason to open it when not installing | 2 |
 | [0006](./0006-the-hero-specimen-rotates-through-six-skills.md) | The hero specimen rotates through six skills, on a timer | 2026-08-16 | Superseded by [0010](./0010-one-hero-specimen-not-six.md) | The motion spec's absolutism; the undivided single specimen; ~2KB JS; a permanently taller hero | 1 |
-| [0007](./0007-the-site-is-terminal-rendered-markdown.md) | The site's visual direction is terminal-rendered markdown | 2026-08-19 | Accepted | The paper metaphor; typographic range; two axes that were never fairly tested | 0 |
+| [0007](./0007-the-site-is-terminal-rendered-markdown.md) | The site's visual direction is terminal-rendered markdown | 2026-08-19 | Accepted | The paper metaphor; typographic range; two axes that were never fairly tested | 1 |
 | [0008](./0008-geist-mono-alone.md) | The site's type is Geist Mono alone | 2026-08-19 | Accepted | Italic entirely; the zero-webfont page; Latin-only coverage |1 |
-| [0009](./0009-the-command-palette-is-retired.md) | The command palette is retired, not rebuilt | 2026-08-19 | Accepted | Search entirely; the evidence 0005 asked for; the keyboard route to the install command |1 |
-| [0010](./0010-one-hero-specimen-not-six.md) | The hero shows one specimen; the rotation is retired | 2026-08-19 | Accepted | Five records off the page; range without a click; 0006's own questions, unanswered |1 |
+| [0009](./0009-the-command-palette-is-retired.md) | The command palette is retired, not rebuilt | 2026-08-19 | Superseded by [0015](./0015-search-returns-as-a-catalogue-filter.md) | Search entirely; the evidence 0005 asked for; the keyboard route to the install command |2 |
+| [0010](./0010-one-hero-specimen-not-six.md) | The hero shows one specimen; the rotation is retired | 2026-08-19 | Superseded by [0017](./0017-ten-records-stepped-by-the-reader-and-advanced-by-a-timer.md) | Five records off the page; range without a click; 0006's own questions, unanswered |2 |
 | [0011](./0011-one-matrix-not-two-parallel-stacks.md) | One nine-question matrix replaces the two parallel stack sections | 2026-08-19 | Accepted | Equal billing as a visible thing; the real folder names; a structure that scaled by stack | 0 |
+| [0012](./0012-markdown-markers-leave-the-chrome.md) | Markdown markers leave the page's chrome and stay in the records | 2026-08-19 | Accepted | The most literal expression of 0007's bet; ground held against the developer-docs template | 0 |
+| [0013](./0013-no-shadows-borders-and-one-tonal-step.md) | Shadows removed; contained regions rest on a border and one tonal step | 2026-08-19 | Accepted | Every depth cue; the dark-mode inset that was never complained about; any evidence it worked | 0 |
+| [0014](./0014-the-catalogue-is-one-flat-list-of-fourteen.md) | The catalogue is one flat list of fourteen collapsed rows | 2026-08-19 | Accepted | The "start with this one" signal; descriptions at a glance; the page's one asymmetric composition | 1 |
+| [0015](./0015-search-returns-as-a-catalogue-filter.md) | Search returns to the site, as a filter over the catalogue | 2026-08-19 | Accepted | The ~30-row bar as a bar; tolerance for a near miss; the catalogue's server rendering | 0 |
+| [0016](./0016-the-installer-reprints-every-command-on-purpose.md) | The installer prints every command the catalogue prints, on purpose | 2026-08-19 | Accepted | The number as a signal; a contract anyone could evaluate by counting | 0 |
+| [0017](./0017-ten-records-stepped-by-the-reader-and-advanced-by-a-timer.md) | The hero shows ten records, stepped by the reader and advanced by a timer | 2026-08-20 | Accepted | The absolute motion rule, on weaker grounds than the first time; 0010's argument, unanswered | 0 |
 
 ### Supersession
 
@@ -77,10 +83,20 @@ graph LR
   0011["0011 · One nine-question matrix"]
   0001 -.->|superseded by| 0011
 
+  0009 -.->|superseded by| 0015["0015 · Search returns, as a filter"]
+  0006 -.->|superseded by| 0010
+  0010["0010 · One specimen"]:::superseded
+  0017["0017 · Ten records, reader-stepped, timed"]
+  0010 -.->|superseded by| 0017
+
   classDef superseded fill:#f4f4f5,stroke:#a1a1aa,color:#71717a,stroke-dasharray:3 3;
 ```
 
-*Only superseded and superseding decisions appear in the graph. 11 decisions logged, 5 superseded, 6 stand — see the table. Four of the five were superseded on the same day, by the rebuild in `git:fcea6dd`: a direction change ([0007](./0007-the-site-is-terminal-rendered-markdown.md)) that reopened every decision made underneath the old one.*
+*Only superseded and superseding decisions appear in the graph. 17 decisions logged, 7 superseded, 10 stand — see the table. Four of the five were superseded on the same day, by the rebuild in `git:fcea6dd`: a direction change ([0007](./0007-the-site-is-terminal-rendered-markdown.md)) that reopened every decision made underneath the old one.*
+
+**Two chains run three deep.** 0004 → 0005 → 0009 → 0015 is the search story end to end: a palette with actions, narrowed to skills-only, retired entirely, then returned as a filter. 0006 → 0010 → 0017 is the specimen story: a timer rotation, retired for one static record, then ten records with a timer again — and [0017](./0017-ten-records-stepped-by-the-reader-and-advanced-by-a-timer.md) is explicit that it does **not** clear the bar 0006 was held to, because the leg about records not fitting any other way stopped being true once arrows reached all ten.
+
+**[0015](./0015-search-returns-as-a-catalogue-filter.md) is superseded in status, partial in substance.** 0009 decided two things — the palette goes, and nothing replaces it. The palette is still gone and 0015 reaffirms that; it is the second half that is now false about the built page. The status line is the only signal the index carries, and leaving 0009 reading *Accepted* beside *"Gave up: Search, entirely"* would be the more misleading of the two errors.
 
 **One supersession crosses tiers and is not in the graph.** [0007](./0007-the-site-is-terminal-rendered-markdown.md) replaces the direction stated in [repo ADR 0017](../../docs/decisions/0017-the-website-design-direction-is-swiss-whitepaper.md), which predates this tier and therefore lives in `docs/decisions/`. The `**Supersedes:**` field points inside this tier only, so the link is carried as a note in 0007 and as a dated Follow-up on 0017.
 

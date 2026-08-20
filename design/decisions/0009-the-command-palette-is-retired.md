@@ -1,6 +1,6 @@
 # 0009. The command palette is retired, not rebuilt
 
-- **Status:** **Accepted**
+- **Status:** Superseded by [0015](./0015-search-returns-as-a-catalogue-filter.md)
 - **Date:** 2026-08-19
 - **Supersedes:** [0005](./0005-the-palette-searches-skills-and-copies-one-thing.md)
 
@@ -100,6 +100,20 @@ removed, and that distinction is the whole reason this record exists.
 ## Follow-up
 
 *Append-only. Everything above is **frozen**. Entries below are dated and additive.*
+
+- **2026-08-19** — **Superseded by [0015](./0015-search-returns-as-a-catalogue-filter.md)**,
+  and the supersession is **partial**. This record decided two things: the palette goes,
+  and nothing replaces it. The first still holds — there is no ⌘K, no dialog, no actions,
+  and 0015 reaffirms that. The second is now false about the built page, which has a
+  filter over the catalogue.
+
+  **Neither revisit condition below fired.** The catalogue is fourteen rows, not the ~30
+  named here, and nobody asked for record contents. It returned because the owner asked
+  for it. Recorded plainly rather than dressed as a threshold that was crossed.
+
+  The status line is the only signal the index carries, and leaving this reading
+  *Accepted* beside its own "Gave up: **Search, entirely**" would mislead a reader worse
+  than the supersession arrow does.
 
 - **2026-08-19** — **The rationale is no longer unstated.** Asked why the palette was
   retired rather than rebuilt, the owner answered on the same day this record was logged.

@@ -1,6 +1,6 @@
 # 0023. Site content is split by kind: repeated and countable content is data, section prose is not
 
-- **Status:** **Accepted**
+- **Status:** Superseded by [0025](./0025-section-prose-moves-into-a-content-module.md)
 - **Date:** 2026-08-19
 - **Supersedes:** [0016](./0016-site-content-is-data-driven-from-one-source.md)
 
@@ -100,6 +100,12 @@ own record, not the library, so they can't be derived from skills.ts."*
 
 *Append-only. Everything above this heading is **frozen**. Entries below are dated and
 additive — evidence that the world moved, not a revision of what was decided.*
+
+- **2026-08-19** — **Superseded by [0025](./0025-section-prose-moves-into-a-content-module.md).**
+  The Follow-up above recorded the owner asking for the split to end and said that when
+  the prose actually moved it would need its own ADR. `git:467dc5b` moved it — every
+  user-facing string into `website/components/lib/content.ts`, and the five counts into
+  `counts.ts`, which reads the repo at build time. 0025 is that record.
 
 - **2026-08-19** — **Asked, and the gap stands.** The owner was asked why prose stayed
   hardcoded in components while repeated content lived in `skills.ts`. No reason for the
