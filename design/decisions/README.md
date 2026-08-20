@@ -67,7 +67,7 @@ Copy `_TEMPLATE.md`. Run `/design-decisions` to log one.
 graph LR
   0004["0004 · Palette with actions"]:::superseded
   0005["0005 · Skills only, one action"]:::superseded
-  0009["0009 · Palette retired"]
+  0009["0009 · Palette retired"]:::superseded
   0004 -.->|superseded by| 0005
   0005 -.->|superseded by| 0009
 
@@ -76,7 +76,7 @@ graph LR
   0002 -.->|superseded by| 0008
 
   0006["0006 · Specimen rotates"]:::superseded
-  0010["0010 · One specimen"]
+  0010["0010 · One specimen"]:::superseded
   0006 -.->|superseded by| 0010
 
   0001["0001 · Two stacks, equal billing"]:::superseded
@@ -84,19 +84,17 @@ graph LR
   0001 -.->|superseded by| 0011
 
   0009 -.->|superseded by| 0015["0015 · Search returns, as a filter"]
-  0006 -.->|superseded by| 0010
-  0010["0010 · One specimen"]:::superseded
   0017["0017 · Ten records, reader-stepped, timed"]
   0010 -.->|superseded by| 0017
 
   classDef superseded fill:#f4f4f5,stroke:#a1a1aa,color:#71717a,stroke-dasharray:3 3;
 ```
 
-*Only superseded and superseding decisions appear in the graph. 17 decisions logged, 7 superseded, 10 stand — see the table. Four of the five were superseded on the same day, by the rebuild in `git:fcea6dd`: a direction change ([0007](./0007-the-site-is-terminal-rendered-markdown.md)) that reopened every decision made underneath the old one.*
+*Only superseded and superseding decisions appear in the graph. 17 decisions logged, 7 superseded, 10 stand — see the table. Five of the seven were superseded within two days, by two direction changes: the rebuild in `git:fcea6dd` ([0007](./0007-the-site-is-terminal-rendered-markdown.md)), and rounds 4–5, which reopened much of what the rebuild had just settled.*
 
 **Two chains run three deep.** 0004 → 0005 → 0009 → 0015 is the search story end to end: a palette with actions, narrowed to skills-only, retired entirely, then returned as a filter. 0006 → 0010 → 0017 is the specimen story: a timer rotation, retired for one static record, then ten records with a timer again — and [0017](./0017-ten-records-stepped-by-the-reader-and-advanced-by-a-timer.md) is explicit that it does **not** clear the bar 0006 was held to, because the leg about records not fitting any other way stopped being true once arrows reached all ten.
 
-**[0015](./0015-search-returns-as-a-catalogue-filter.md) is superseded in status, partial in substance.** 0009 decided two things — the palette goes, and nothing replaces it. The palette is still gone and 0015 reaffirms that; it is the second half that is now false about the built page. The status line is the only signal the index carries, and leaving 0009 reading *Accepted* beside *"Gave up: Search, entirely"* would be the more misleading of the two errors.
+**[0009](./0009-the-command-palette-is-retired.md) is superseded in status, partial in substance.** 0009 decided two things — the palette goes, and nothing replaces it. The palette is still gone and 0015 reaffirms that; it is the second half that is now false about the built page. The status line is the only signal the index carries, and leaving 0009 reading *Accepted* beside *"Gave up: Search, entirely"* would be the more misleading of the two errors.
 
 **One supersession crosses tiers and is not in the graph.** [0007](./0007-the-site-is-terminal-rendered-markdown.md) replaces the direction stated in [repo ADR 0017](../../docs/decisions/0017-the-website-design-direction-is-swiss-whitepaper.md), which predates this tier and therefore lives in `docs/decisions/`. The `**Supersedes:**` field points inside this tier only, so the link is carried as a note in 0007 and as a dated Follow-up on 0017.
 

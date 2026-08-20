@@ -136,7 +136,23 @@ of what a skill folder is.
 *Append-only. Everything above this heading is **frozen**. Entries below are dated and
 additive — evidence that the world moved, not a revision of what was decided.*
 
-*(none yet)*
+- **2026-08-20** — **The churn is fixed; the consequence above is closed.** `git:04a408a`.
+  The Consequences section is frozen and stays as written, because it was accurate when
+  written and the record of *why* it took three attempts is worth more than a tidy file.
+
+  What the fix actually was: `3ddee88` stamped the archive via `generateAsync`, which does
+  not reach the entries. A second attempt stamped every `zip.file()`, and **four bytes
+  still moved per run** — JSZip auto-creates the intermediate FOLDER entries
+  (`repo-setup/`, `repo-setup/.claude-plugin/`) and stamps those with "now" regardless of
+  what the files say. Those four bytes are two DOS time fields at 2-second resolution.
+  Every entry is now restamped after the tree is built, folders included, and two runs 2.5
+  seconds apart produce byte-identical archives.
+
+  **The staleness consequence above still stands, unchanged.** `tests/skill-zips.spec.ts`
+  is still local-only, still cannot run in the environment whose absence caused the
+  original ENOENT, and editing a Chat-capable skill is still a two-step commit. The
+  revisit condition — the Vercel "Include source files outside of the Root Directory"
+  toggle — is also unchanged, and would still retire most of this record.
 
 ---
 

@@ -134,7 +134,27 @@ own header: prose here, structured or repeated content in `skills.ts`, counts de
 *Append-only. Everything above this heading is **frozen**. Entries below are dated and
 additive — evidence that the world moved, not a revision of what was decided.*
 
-*(none yet)*
+- **2026-08-20** — **The sentence above about the counts is now false, and the reason is
+  worth more than the correction.** `git:04a408a`.
+
+  This record said the counts were "the one part of the page that now genuinely reads the
+  repo rather than mirroring it". They did read the repo — and that is exactly what broke.
+  Vercel's Root Directory is `website/`, so the repo root is not on disk at build time.
+  `counts.ts` caught every failure and returned `0`, and `decisions` is `files - 1` for
+  the reject ledger, so the deployed page claimed **"-1 decisions"**. A false number,
+  shipped silently, on a page whose stated constraint is "no claim the page cannot
+  source" — a worse failure than the hardcoded counts this ADR replaced, because a stale
+  number is at least a number that was once true.
+
+  The counts are now derived where the repo exists and committed as
+  `components/lib/counts.json`, which is the same shape as the skill zips in
+  [0024](./0024-skills-ship-as-committed-build-time-zips.md) — and inherits the same
+  staleness cost, mitigated the same way by `tests/counts.spec.ts`.
+
+  **So the honest position is the reverse of what is written above:** the counts now
+  mirror the repo like everything else, and the mirror is checked by a test rather than
+  by the filesystem. Whether that is worth a further ADR is *(not decided)*; it is
+  recorded here so the claim above is not read as current.
 
 ---
 
