@@ -1,0 +1,102 @@
+# docs(design): the motion spec says two exceptions again, and names the gap
+
+- **Commit:** `7699f59d61aa0f57ff9ce47428d67292b800d81f` (`7699f59`)
+- **Author:** Vidhunnan Murugan
+- **Date:** 2026-08-20
+
+## Commit message
+
+The page auto-updates as of 5952626, so the spec's two flattest statements — that
+nothing on this page auto-updates, and that WCAG 2.2.2 therefore does not apply —
+had both become false. A spec that forbids what the page does is worse than no spec.
+
+Re-pinned to git:5952626. Exception count one → two, with the dwell, the hard cut
+and the progress line in the tables.
+
+The grounds are restated rather than inherited, because they are not the ones ADR
+0006 used. Its three-part bar was: the moving thing IS the content, it can be
+stopped, and six records could not fit any other way. That third leg no longer holds
+— the arrows reach all ten without motion. The timer is justified on discovery
+instead, and that is a weaker claim, written here as one.
+
+The accessibility section now states plainly that 2.2.2 applies again and that the
+page does not satisfy it, that this was raised and decided rather than missed, and
+what the four brakes do cover. Reinstating the control is one button if the trade is
+ever revisited.
+
+Still owed: a design ADR. This supersedes 0010's retirement and re-grants an
+exception the spec had closed in writing.
+
+## Changes in detail
+
+**One file, 41 insertions against 13 deletions.** The spec is brought back into
+agreement with the page one commit after the page stopped agreeing with it.
+
+### Why the commit exists
+
+`5952626` (entry 058) put the specimen on a timer. That made **two of the motion spec's
+flattest statements false at once**: that nothing on the page auto-updates, and that
+WCAG 2.2 SC 2.2.2 therefore does not apply to anything on it. The message states the
+principle rather than treating it as bookkeeping: *"A spec that forbids what the page
+does is worse than no spec."*
+
+Both of those statements were themselves written recently — entry 039 records
+`e05015d` cutting the spec to *"five documented behaviours to one"* and concluding that
+*"with nothing left auto-updating, WCAG 2.2 SC 2.2.2 no longer applies to anything on
+the page."* That held for **one day**.
+
+### `design/specs/motion.md` (modified, +41/−13)
+
+- **Re-pinned `git:467dc5b` → `git:5952626`.**
+- **The exception count goes one → two.** Verified in the diff: `**One exception:** the
+  reveal…` becomes `**Two exceptions:** the reveal…, and` the specimen timer. The
+  sentence entry 043 recorded — *"That the count went two → one is worth keeping
+  visible"* — is rewritten in past tense: the exception ADR 0006 granted *"lapsed with
+  it."*
+- The dwell, the hard cut and the progress line enter the token and states tables. The
+  dwell row carries its own limitation: *"inherited from the retired rotation, not
+  re-picked. Never tested on a reader."*
+
+### The grounds are restated, and downgraded, on purpose
+
+- **ADR 0006's three-part bar is not reused**, and the commit says exactly which leg
+  broke: *"the moving thing IS the content, it can be stopped, and six records could not
+  fit any other way. That third leg no longer holds — the arrows reach all ten without
+  motion."*
+- The timer is justified **on discovery instead** — *"and that is a weaker claim, written
+  here as one."* A spec that records an exception as weaker than the one it replaces,
+  rather than laundering it through the old bar, is the useful behaviour here.
+
+### The accessibility gap is stated, not softened
+
+- The section now says plainly that **2.2.2 applies again and the page does not satisfy
+  it**, that this was **raised and decided rather than missed**, and what the four brakes
+  do cover.
+- It also records the cost of reversing: *"Reinstating the control is one button if the
+  trade is ever revisited."*
+
+### The debt this commit declares and does not pay
+
+- *"Still owed: a design ADR. This supersedes 0010's retirement and re-grants an
+  exception the spec had closed in writing."*
+- **Checked against the tree at this commit**, the last one this changelog covers:
+  `design/decisions/` ends at `0011`, and
+  [0010](../../design/decisions/0010-one-hero-specimen-not-six.md) is still `Accepted`
+  and untouched. Entry 055 asserted the same supersession in its own commit message four
+  commits earlier; two commit messages now claim a decision that no record holds.
+- **This is the third open ADR debt in the log.** Entry 042 recorded the content-split
+  ADR owed by `467dc5b` and still unwritten; entry 046 recorded that 0009's reinstatement
+  *"should say exactly that"* and does not. Recording the debt in a commit message is not
+  the same as logging the decision, and the accumulation is now visible enough to name.
+
+## Files changed
+
+```
+ design/specs/motion.md | 54 +++++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 41 insertions(+), 13 deletions(-)
+```
+
+---
+
+_Generated by `/changelog-tracker` from `git log -1` and `git show --stat`. Every
+fact here comes from git: **faithful, not generative.**_
