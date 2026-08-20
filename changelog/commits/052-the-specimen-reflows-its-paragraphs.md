@@ -1,0 +1,100 @@
+# fix(website): the specimen reflows its paragraphs instead of wrapping twice
+
+- **Commit:** `9373c37dd5c9d72a839aa6c250ee16c24ed7b293` (`9373c37`)
+- **Author:** Vidhunnan Murugan
+- **Date:** 2026-08-20
+
+## Commit message
+
+The record is stored at the source file's own ~80-column wraps so it can be
+grepped against the file. The card is narrower than that, so every stored line
+wrapped a second time and left orphans — "weighing" and "fact." alone on a line.
+It read as broken text in the one place on the page that must not.
+
+In Markdown a single newline is not a line break: consecutive non-blank lines are
+one paragraph. So joining them is the correct reading of the format rather than a
+liberty taken with it. Blank lines still separate blocks, headings still stand
+alone, and every word and marker survives — only the arbitrary column wrap goes.
+
+Verified word-for-word: the rendered card normalises to exactly the source lines.
+
+Adds tests/specimen.spec.ts, which pins that. It resolves the file from the
+specimen's own href — the link a reader would click — asserts the quote is still
+present in it, and asserts the card renders exactly what was quoted. Whitespace is
+normalised, deliberately: words and markers must match, where the lines break must
+not.
+
+This is the page's load-bearing claim — "a real file in this repo". If the quote
+ever drifts from its source, the page becomes the thing it argues against, and
+nothing else in the suite would have noticed.
+
+30 tests passing.
+
+## Changes in detail
+
+**106 insertions against 27 deletions**, in `Hero.tsx` and one new spec. The typographic
+fix is the smaller half; the test is the durable one.
+
+### The bug and why the format settles it
+
+- Round 3 stored the hero quotation at the source file's own ~80-column wraps
+  (`467dc5b`, entry 042: *"Quoted at the source's own line wraps"*) precisely so it
+  could be grepped against the file. The card is narrower than 80 columns, so **every
+  stored line wrapped a second time**, leaving orphans — the message names two,
+  *"weighing"* and *"fact."*, alone on a line.
+- The fix is argued from the format rather than from taste: **in Markdown a single
+  newline is not a line break**; consecutive non-blank lines are one paragraph. So
+  joining them *"is the correct reading of the format rather than a liberty taken with
+  it."* Blank lines still separate blocks, headings still stand alone, and *"every word
+  and marker survives — only the arbitrary column wrap goes."*
+- **This matters more here than anywhere else on the page**, and the commit says why:
+  *"It read as broken text in the one place on the page that must not."*
+
+### `website/components/Hero.tsx` (modified, +63/−27)
+
+- The reflow, and the block-boundary rules that keep it honest.
+
+### `website/tests/specimen.spec.ts` (new, 43 lines)
+
+- **The guard on the page's load-bearing claim.** The site's whole argument rests on
+  the hero specimen being *"a real file in this repo"*, and until this commit nothing
+  in the suite checked it.
+- The spec's design is the notable part: it **resolves the file from the specimen's own
+  `href`** — *"the link a reader would click"* — rather than from a path typed into the
+  test, then asserts the quote is present in that file and that the card renders exactly
+  what was quoted.
+- **Whitespace is normalised deliberately**, and the trade is stated: *"words and
+  markers must match, where the lines break must not."* That is what lets the reflow
+  ship without weakening the check.
+- The failure it exists to catch is named: *"If the quote ever drifts from its source,
+  the page becomes the thing it argues against, and nothing else in the suite would have
+  noticed."* Two commits later (entry 055) this spec finds exactly that — five of six
+  stored specimens not verbatim.
+
+### Suite count
+
+- 28 → **30 tests passing.**
+
+## Files changed
+
+```
+ website/components/Hero.tsx                 |  90 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------
+ website/public/skills/decisions-logger.zip  | Bin 12702 -> 12702 bytes
+ website/public/skills/design-brief.zip      | Bin 5184 -> 5184 bytes
+ website/public/skills/design-critique.zip   | Bin 6877 -> 6877 bytes
+ website/public/skills/design-decisions.zip  | Bin 9072 -> 9072 bytes
+ website/public/skills/design-explore.zip    | Bin 7378 -> 7378 bytes
+ website/public/skills/design-language.zip   | Bin 7436 -> 7436 bytes
+ website/public/skills/design-setup.zip      | Bin 9933 -> 9933 bytes
+ website/public/skills/exploration-log.zip   | Bin 5266 -> 5266 bytes
+ website/public/skills/handoff-generator.zip | Bin 8690 -> 8690 bytes
+ website/public/skills/repo-setup.zip        | Bin 9809 -> 9809 bytes
+ website/public/skills/skill-scaffold.zip    | Bin 8428 -> 8428 bytes
+ website/tests/specimen.spec.ts              |  43 +++++++++++++++++++++++++++++++++++++++++
+ 13 files changed, 106 insertions(+), 27 deletions(-)
+```
+
+---
+
+_Generated by `/changelog-tracker` from `git log -1` and `git show --stat`. Every
+fact here comes from git: **faithful, not generative.**_

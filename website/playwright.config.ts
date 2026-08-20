@@ -26,6 +26,13 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:3000",
     trace: "on-first-retry",
+    /*
+      The hero advances on a timer. Honouring the reduced-motion preference stops
+      it — which is both true of the site and what makes this suite deterministic:
+      a card that changes under an assertion is a flake generator.
+      tests/specimen-autoplay.spec.ts opts back out to test the timer itself.
+    */
+    contextOptions: { reducedMotion: "reduce" },
   },
 
   projects: [

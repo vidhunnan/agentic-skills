@@ -23,6 +23,24 @@ import { join, relative } from "node:path";
 import { createHash } from "node:crypto";
 import JSZip from "jszip";
 
+/**
+ * Every entry is stamped with this, and the archive is too.
+ *
+ * JSZip defaults each entry's mtime to "now", which made the bytes differ on
+ * every run: a commit that touched no skill still rewrote all eleven archives,
+ * each to exactly its previous byte count.
+ *
+ * Two earlier attempts failed, and the second is the interesting one:
+ *   1. `date` on generateAsync only — that stamps the ARCHIVE, not the entries.
+ *   2. `date` on every zip.file() — closer, but four bytes still moved each run.
+ *      JSZip auto-creates the intermediate FOLDER entries ("repo-setup/",
+ *      "repo-setup/.claude-plugin/") and stamps those with "now" no matter what
+ *      the files say. Those four bytes are two DOS time fields at 2-second
+ *      resolution.
+ * So every entry is restamped after the tree is built, folders included.
+ */
+const EPOCH = new Date("2020-01-01T00:00:00Z");
+
 const HERE = import.meta.dirname;
 const WEBSITE = join(HERE, "..");
 const OUT = join(WEBSITE, "public", "skills");
@@ -95,9 +113,12 @@ if (!(await exists(SKILLS))) {
     for (const file of files) {
       const buf = await readFile(file);
       const entry = join(name, relative(dir, file));
-      zip.file(entry, buf);
+      zip.file(entry, buf, { date: EPOCH });
       hash.update(entry).update(buf);
     }
+
+    // Folders included — see EPOCH. This is the line that makes it reproducible.
+    for (const entry of Object.values(zip.files)) entry.date = EPOCH;
 
     const entries = Object.keys(zip.files);
     const hasSkill = entries.some((e) => e.endsWith("SKILL.md"));
@@ -115,7 +136,7 @@ if (!(await exists(SKILLS))) {
     const buf = await zip.generateAsync({
       type: "nodebuffer",
       compression: "DEFLATE",
-      date: new Date("2020-01-01T00:00:00Z"),
+      date: EPOCH,
     });
     await writeFile(join(OUT, `${name}.zip`), buf);
     manifest.skills[name] = hash.digest("hex");

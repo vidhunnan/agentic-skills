@@ -1,47 +1,23 @@
-import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import counts from "./counts.json";
 
 /**
- * The five counts the page states about this repo, derived from the repo.
+ * The five counts the page states about this repo.
  *
- * These were typed by hand until 2026-08-19 and drifted three times in a single
- * day — the site said seven rules and 32 commits, the round 3 artifact said 7
- * design decisions and 37 commits, and both were stale within the session that
- * wrote them. A typed count is a claim the page cannot source, which the design
- * language doc lists as a hard constraint.
+ * READ FROM A COMMITTED JSON, not from the filesystem. The previous version
+ * walked the repo at build time, which works locally and fails on Vercel, where
+ * the Root Directory is `website/` and the repo root is not on disk. It caught
+ * the failure and returned 0 — and `decisions` is `files - 1`, so the deployed
+ * page claimed "-1 decisions". A false number, shipped silently, on the page
+ * whose own constraint is "no claim the page cannot source".
  *
- * Node APIs are safe here: this module is imported only by server components and
- * runs at build time under `output: "export"`. Importing it from a client
- * component will fail the build, which is the correct failure.
+ * `scripts/build-counts.mjs` regenerates this on every local build and refuses
+ * to write a non-positive value. `tests/counts.spec.ts` fails if the committed
+ * numbers no longer match the repo.
  */
-const REPO_ROOT = join(process.cwd(), "..");
-
-const countFiles = (dir: string, re: RegExp) => {
-  try {
-    return readdirSync(join(REPO_ROOT, dir)).filter((f) => re.test(f)).length;
-  } catch {
-    return 0;
-  }
-};
-
-/** Protocol blocks registered in CLAUDE.md — the `<!-- BEGIN skill:<name> -->` markers. */
-function countProtocolBlocks(): number {
-  try {
-    const md = readFileSync(join(REPO_ROOT, "CLAUDE.md"), "utf8");
-    // The literal `BEGIN skill:<name>` in the docs example has no real name after
-    // the colon, so it is excluded by requiring at least one lowercase letter.
-    return (md.match(/BEGIN skill:[a-z]/g) ?? []).length;
-  } catch {
-    return 0;
-  }
-}
-
-const NUMBERED = /^\d{4}-.*\.md$/;
-
-export const COUNTS = {
-  rules: countProtocolBlocks(),
-  decisions: countFiles("docs/decisions", NUMBERED) - 1, // 0000 is the reject ledger
-  designDecisions: countFiles("design/decisions", NUMBERED),
-  commits: countFiles("changelog/commits", /^\d{3}-.*\.md$/),
-  handoffs: countFiles("handoff", /^handoff-.*\.md$/),
-} as const;
+export const COUNTS: {
+  rules: number;
+  decisions: number;
+  designDecisions: number;
+  commits: number;
+  handoffs: number;
+} = counts;

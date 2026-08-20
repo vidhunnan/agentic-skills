@@ -1,6 +1,6 @@
 # 0010. The hero shows one specimen; the rotation is retired
 
-- **Status:** **Accepted**
+- **Status:** Superseded by [0017](./0017-ten-records-stepped-by-the-reader-and-advanced-by-a-timer.md)
 - **Date:** 2026-08-19
 - **Supersedes:** [0006](./0006-the-hero-specimen-rotates-through-six-skills.md)
 
@@ -104,6 +104,18 @@ motion exception, the scroll reveal, and `globals.css` now states it in the file
 ## Follow-up
 
 *Append-only. Everything above is **frozen**. Entries below are dated and additive.*
+
+- **2026-08-20** — **Superseded by [0017](./0017-ten-records-stepped-by-the-reader-and-advanced-by-a-timer.md).**
+  The hero shows ten records, stepped by the reader, and — as of `git:5952626` — advanced
+  by a timer again.
+
+  Read 0017 before assuming this record was simply reversed. It is explicit that it does
+  **not** clear the three-part bar design ADR 0006 was held to: the leg about records not
+  fitting on the page any other way stopped being true the moment arrows reached all ten.
+  The timer is justified on discovery instead, which is a weaker claim, and 0017 says so.
+
+  One thing this record got right and the replacement inherited: specimen [0] is still
+  what a JS-off reader sees.
 
 - **2026-08-19** — **On the "six specimens as a static gallery" alternative.** Asked whether
   it was ever considered, the owner did not recognise the option: *"six specimens as a

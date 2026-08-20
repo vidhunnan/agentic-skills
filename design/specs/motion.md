@@ -1,6 +1,6 @@
 # Spec — Motion
 
-**Source:** `website/app/globals.css` · `website/components/Reveal.tsx` · `website/components/LoopSteps.tsx` · `website/components/NavLinks.tsx` · **Version:** `git:467dc5b` (2026-08-19)
+**Source:** `website/app/globals.css` · `website/components/Reveal.tsx` · `website/components/LoopSteps.tsx` · `website/components/NavLinks.tsx` · **Version:** `git:5952626` (2026-08-20)
 **Status:** built
 
 Motion is the least-documented layer in most design systems: easing and duration get
@@ -19,18 +19,28 @@ curve.
 
 ## Layout
 
-No motion on layout. **Nothing moves that the reader did not cause, with one
-exception:** the reveal, which runs once per element as it enters the viewport.
+No motion on layout. **Nothing moves that the reader did not cause, with two
+exceptions:** the reveal, which runs once per element as it enters the viewport, and
+the hero specimen, which advances on a timer.
 
 The rule was absolute until [design ADR 0006](../decisions/0006-the-hero-specimen-rotates-through-six-skills.md)
 knowingly broke it for the hero specimen rotation — a timer-driven exception that
 cleared a three-part bar: the moving thing *was* the content, six records could not
 fit any other way, and it could be stopped. [ADR 0010](../decisions/0010-one-hero-specimen-not-six.md)
-retired the rotation, so **the exception it was granted lapses with it** and the
-count returns to one.
+retired the rotation, so the exception it was granted lapsed with it and the count
+returned to one.
 
-That the count went two → one is worth keeping visible. An exception that outlives
-the thing it was granted for is how a motion system loses its rule.
+**On 2026-08-20 it went back to two**, for the ten-record specimen set. Be precise
+about the grounds, because they are not 0006's. That ADR's three-part bar was: the
+moving thing IS the content ✓, it can be stopped ✓, and *"six records could not fit
+on the page any other way"* — and that third leg **no longer holds**, because the
+arrows added in `git:1c7f754` reach all ten without any motion at all. The timer is
+justified on **discovery** instead: a reader who never touches the arrows would
+otherwise never learn there are ten records rather than one. That is a weaker claim
+than 0006's and is written here as one.
+
+An exception that outlives the thing it was granted for is how a motion system loses
+its rule — which is why the grounds are restated rather than inherited.
 
 ## Tokens used
 
@@ -41,6 +51,9 @@ the thing it was granted for is how a motion system loses its rule.
 | Reveal offset | `translateY(8px)` | small — it should read as settling, not sliding |
 | Stagger step | `45ms` | via `--reveal-i`, the row index |
 | Hover / state | `0.15s ease` | links and buttons |
+| Specimen dwell | `6500ms` | inherited from the retired rotation, not re-picked. Never tested on a reader |
+| Specimen change | *(none)* | a hard cut. The retired version crossfaded 0.5s in / 0.22s out; this moves less |
+| Progress line | `linear`, over the dwell | 2px, `--blue`, filling across the card's bottom edge |
 | Step highlight | `0.35s ease` | background + left border on the active loop step |
 | Nav mark | *(none)* | the active section is a colour swap, untransitioned |
 
@@ -55,6 +68,8 @@ one is the change this table exists to make visible.
 | Pointer over a link or button | `color`, `border-color` | 0.15s | — | interactive |
 | Loop step passes the middle of the viewport | `background`, `border-left-color` | 0.35s | — | this is the step you are reading |
 | Section enters the viewport | nav link `color` | — | — | where you are in the document |
+| Specimen dwell elapses | the record is replaced | *(instant)* | — | a different record, not a different page |
+| Dwell running | progress line `transform: scaleX` | 6500ms linear | — | this card is on a clock, and how far through it is |
 
 ## Interaction
 
@@ -86,12 +101,25 @@ page to `0.01ms` and zeroes all delays — not just the reveal. The reveal's hid
 state is also neutralised, so nothing depends on a transition completing to become
 visible.
 
-With the rotation gone, **nothing on this page auto-updates**, so WCAG 2.2 SC 2.2.2
-(Pause, Stop, Hide) no longer applies to anything here. That is a simplification
-worth naming: the pause control, the roving-tabindex dots, the `inert` panels and the
-`change`-listener on the motion preference were all machinery this page needed only
-because something moved on a timer. None of it survives, and none of it should be
-reintroduced without a decision that clears ADR 0006's bar again.
+**The specimen auto-updates again, so WCAG 2.2 SC 2.2.2 (Pause, Stop, Hide) applies
+again — and the page does not currently satisfy it.** This is a known, decided gap,
+recorded rather than hidden.
+
+What the timer does have: it holds while the pointer is over the card, while focus is
+inside it, while the tab is backgrounded, and while the card is off-screen; it stops
+for good once the reader presses an arrow; and it does not run at all under
+`prefers-reduced-motion`, read through a `change` listener so enabling the preference
+with the page open stops it immediately.
+
+What it does not have is an explicit pause control. That was raised — the retired
+spec's own reasoning is that *"holding on hover and focus does not reach a visitor who
+never enters the widget"* — and the owner decided against it on 2026-08-20. So a
+visitor who never hovers, focuses or steers the card gets content that auto-updates
+indefinitely. Reinstating the control is a one-button change if that trade is ever
+revisited.
+
+The roving-tabindex dots and the `inert` panels did not come back; arrows and a count
+replaced them.
 
 Nothing in this system conveys meaning through motion alone.
 

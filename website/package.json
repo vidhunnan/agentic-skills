@@ -4,8 +4,8 @@
   "private": true,
   "description": "Landing page for the agentic-skills repo \u2014 terminal-rendered markdown for the context-writing skills, code and design.",
   "scripts": {
-    "prebuild": "node scripts/build-skill-zips.mjs",
-    "predev": "node scripts/build-skill-zips.mjs",
+    "prebuild": "node scripts/build-skill-zips.mjs && node scripts/build-counts.mjs",
+    "predev": "node scripts/build-skill-zips.mjs && node scripts/build-counts.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

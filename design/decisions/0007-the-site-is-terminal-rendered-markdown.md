@@ -120,7 +120,18 @@ source **is** verbatim, where rendering them into styled components would not be
 
 *Append-only. Everything above is **frozen**. Entries below are dated and additive.*
 
-*(none yet)*
+- **2026-08-19** — **[0012](./0012-markdown-markers-leave-the-chrome.md) narrows one clause
+  of the Decision above, and does not replace it.** The direction stands entire: monospace,
+  colour as signal, hierarchy from case and weight, the palette inherited. What changed is
+  scope — markdown markers now appear only inside quoted records, not in the page's own
+  headings.
+
+  The argument turns on this record's own words. The verbatim justification here cites `##`
+  and `*(reason not stated)*`, and **both of those are lines in the hero specimen** — a
+  quoted record, not chrome. 0012 reads that as the constraint having always been scoped to
+  records. Whether that was the intent when this was written is *(not recorded)*.
+
+  This record is **not** superseded and its status is unchanged.
 
 ---
 
