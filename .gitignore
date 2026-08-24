@@ -14,8 +14,10 @@ Icon?
 *.log
 .tmp/
 
+# Node
+node_modules/
+
 # website (Next.js build artifacts)
-website/node_modules/
 website/.next/
 website/out/
 website/next-env.d.ts
@@ -23,6 +25,10 @@ website/tsconfig.tsbuildinfo
 
 # Playwright MCP scratch output
 .playwright-mcp/
+
+# graph-context (generated context graph)
+.graph-context/
+GRAPH.md
 
 # NOTE: website/public/skills/ is deliberately NOT ignored. Vercel's Root
 # Directory is website/, so skills/ is not on disk at build time and the zips
