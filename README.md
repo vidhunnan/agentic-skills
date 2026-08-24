@@ -4,7 +4,7 @@ An agent starts every session with no memory of the last one. It doesn't need a 
 
 These are the skills that write that briefing. They author the context files a project should have anyway: a changelog of what actually shipped, a decision log of why you chose what you chose, a handoff for where you left off. All of it is Markdown. None of it is code.
 
-**Fourteen skills, all live.** Install one, or all of them.
+**Fifteen skills, all live.** Install one, or all of them.
 
 ## Skills
 
@@ -28,12 +28,13 @@ The three questions a teammate with amnesia will ask.
 
 ### Working conventions
 
-Two small habits, made to stick across sessions.
+Three conventions, made to stick across sessions.
 
 | Skill | What it does | Surfaces | Status |
 |---|---|---|---|
 | **[`branch-naming`](skills/branch-naming/SKILL.md)**<br>`/plugin install branch-naming` | Suggests and creates a branch name that follows your project's convention — read from CLAUDE.md, or inferred from your existing branches. | Code | Live |
 | **[`model-strategy`](skills/model-strategy/SKILL.md)**<br>`/plugin install model-strategy` | Builds `docs/MODEL-STRATEGY.md` — which Claude model for which kind of work, tailored by interview, with a mandatory review rule. | Code | Live |
+| **[`version-manager`](skills/version-manager/SKILL.md)**<br>`/plugin install version-manager` | *What version is this, and what actually shipped?* — splits the **released** version from the build you're testing, so a local build can never move the published number. Checks every file carrying the version agrees, and keeps a generated ledger of every build and release. Knows npm, Claude Code plugins, Docker, PyPI, binaries, sites, extensions, mobile apps and plain exports. | Code · Chat | Live |
 
 ### Design work
 
@@ -76,6 +77,7 @@ Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and 
 /plugin install handoff-generator
 /plugin install branch-naming
 /plugin install model-strategy
+/plugin install version-manager
 /plugin install design-setup
 /plugin install design-brief
 /plugin install design-language
@@ -86,7 +88,7 @@ Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and 
 /plugin install skill-scaffold
 ```
 
-Each skill is a separate plugin, so take one or take all fourteen. The command for a single skill sits next to its name in the tables above.
+Each skill is a separate plugin, so take one or take all fifteen. The command for a single skill sits next to its name in the tables above.
 
 ### Other surfaces
 

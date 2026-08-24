@@ -14,10 +14,10 @@ import styles from "./Install.module.css";
  * step, and putting it in the cycle made people step past the only command
  * that is not optional.
  *
- * Below it, all fourteen skills, one at a time, prev/next WRAPPING so you can
+ * Below it, all fifteen skills, one at a time, prev/next WRAPPING so you can
  * circle back round rather than dead-ending at either edge.
  *
- * This prints all fourteen install commands, which the catalogue also prints.
+ * This prints all fifteen install commands, which the catalogue also prints.
  * That is deliberate and it is not the old defect: the catalogue is for reading
  * about a skill, this is for installing one, and the page-wide copy-button
  * count goes 17 → 30 as a result. The original defect was the same list

@@ -67,7 +67,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     title: "Working conventions",
-    note: "Two small habits, made to stick across sessions.",
+    note: "Three conventions, made to stick across sessions.",
     skills: [
       {
         name: "branch-naming",
@@ -82,6 +82,13 @@ export const SKILL_GROUPS: SkillGroup[] = [
         surfaces: ["Code"],
         install: "/plugin install model-strategy",
         answers: "Which model for this work?",
+      },
+      {
+        name: "version-manager",
+        desc: "Splits the released version from the build you're testing, so a local build can never move the published number. Checks every file carrying the version agrees, and keeps a generated ledger of every build and release — npm, Claude Code plugins, Docker, PyPI, binaries, sites, extensions, mobile apps, plain exports.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install version-manager",
+        answers: "What version is this, and what shipped?",
       },
     ],
   },
@@ -586,12 +593,12 @@ export const LOOP_STEPS: LoopStep[] = [
 
    2. The BAND ORDER is the fix, not the fuzzy gate. "chat" is four characters
       and single-word, so the subsequence gate does not exclude it; what stops
-      changelog-tracker (c-h-a…t, in order) beating the eleven Chat skills is
+      changelog-tracker (c-h-a…t, in order) beating the twelve Chat skills is
       that the keywords band scores 400 and subsequence scores 300 - length.
       Reorder these and that regression returns.
 
    Worth knowing about the data: every skill runs on Code, so a query of
-   "code" matches all fourteen. That is the truth, not a broken filter.
+   "code" matches all fifteen. That is the truth, not a broken filter.
    ───────────────────────────────────────────────────────────────── */
 
 export interface SearchItem {
