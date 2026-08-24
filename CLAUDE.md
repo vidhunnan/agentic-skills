@@ -28,7 +28,7 @@ When adding or editing a skill, keep this split explicit — the same skill prod
 
 ## Skill protocols — the CLAUDE.md registration pattern
 
-Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`, `repo-setup`, `decisions-logger`, `design-setup`, `design-decisions`, `skill-scaffold` — nine at last count, verified with `grep -l "BEGIN skill:" skills/*/SKILL.md`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
+Several skills (`changelog-tracker`, `model-strategy`, `branch-naming`, `handoff-generator`, `repo-setup`, `decisions-logger`, `design-setup`, `design-decisions`, `skill-scaffold`, `version-manager` — ten at last count, verified with `grep -l "BEGIN skill:" skills/*/SKILL.md`) enforce an ongoing convention in the **target project** they're used in — "document every commit," "follow the model policy," "name branches this way." Since Claude Code has no per-event hook here (by design — enforcement is CLAUDE.md-based, not hook-based), these skills make the behavior stick by **registering a protocol block into the target repo's `CLAUDE.md`**, which Claude re-reads every session.
 
 The shared mechanism, embedded as a Step in each such skill:
 
@@ -120,6 +120,11 @@ Every design ADR records **what we gave up** and **what would make us revisit** 
 
 **Offer to log at the fork, not later.** Design reasoning is not recoverable: there is no diff, no commit, no blame line. When a direction is chosen over a named alternative, offer once — specifically — and take no for an answer. **Never invent a rationale.** If nobody remembers why, write `*(reason not stated)*`; an honest gap is worth more than a plausible fiction, and here there is nothing to check the fiction against. Run `/design-decisions` to log one.
 <!-- END skill:design-decisions -->
+
+<!-- BEGIN skill:version-manager -->
+### Versioning
+Each skill is its own plugin and carries **its own version** in `skills/<name>/.claude-plugin/plugin.json` — **bumped only when that skill changes** (a library-wide bump would tell someone reinstalling `branch-naming` that something changed in a skill they don't have). New skills start at `0.1.0`. The released version is a commit on `prod-stable`: merging *is* releasing, and a version is a candidate until its branch merges. Every version that ships is logged to `changelog/VERSION-LOG.md`, which is **generated — never hand-edit it**. Policy: `docs/VERSIONING.md`. Bump rules, the surface, and the registration check (marketplace entry + `skills.ts` + README row) live there. Run `/version-manager status` for live state.
+<!-- END skill:version-manager -->
 
 ## Adding a new skill
 

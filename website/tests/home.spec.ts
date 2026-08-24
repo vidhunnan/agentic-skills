@@ -1,4 +1,4 @@
-// `includeHidden` and `allTextContents` throughout: the catalogue is fourteen
+// `includeHidden` and `allTextContents` throughout: the catalogue is fifteen
 // collapsed <details> rows and the installer shows one skill at a time, so most
 // copy buttons are legitimately outside the accessibility tree on load. Content
 // that is merely collapsed still counts; content that is gone does not.
@@ -16,9 +16,9 @@ import {
   This replaces "at most once page-wide", which round 5 broke deliberately. The
   original defect was "thirty copy buttons for fourteen commands": one list of
   commands rendered twice with nothing to tell the two apart. The installer now
-  cycles all fourteen on purpose — you read about a skill in the catalogue and you
-  install it from the installer — so the page-wide count is thirty again, and the
-  number alone no longer distinguishes the defect from the design.
+  cycles all fifteen on purpose — you read about a skill in the catalogue and you
+  install it from the installer — so the page-wide count is two per command again,
+  and the number alone no longer distinguishes the defect from the design.
 
   What distinguishes it is per-surface uniqueness, which is what this now asserts.
   It still fails loudly if either surface prints a command twice, and it still

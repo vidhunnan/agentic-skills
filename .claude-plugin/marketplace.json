@@ -74,6 +74,11 @@
       "name": "design-critique",
       "source": "./skills/design-critique",
       "description": "Reviews a built interface against its stated design intent — naming how the thing reads before proposing a fix, ranking findings by severity, and treating removal as a first-class verdict. Refuses to critique without a written intent."
+    },
+    {
+      "name": "version-manager",
+      "source": "./skills/version-manager",
+      "description": "Splits the released version from the build you're testing, checks every file carrying the version agrees, and keeps a generated ledger of every build and release \u2014 across npm, Claude Code plugins, Docker, PyPI, binaries, sites, extensions, mobile apps and plain exports."
     }
   ]
 }

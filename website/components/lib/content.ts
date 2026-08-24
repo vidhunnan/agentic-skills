@@ -64,7 +64,7 @@ export const LOOP_COPY = {
 
 export const SKILLS_COPY = {
   heading: "The skills",
-  sub: "Fourteen, each a separate plugin. Three worth reading properly; the rest are one line each.",
+  sub: "Fifteen, each a separate plugin. Three worth reading properly; the rest are one line each.",
   leadTag: "start with this one",
   filterPlaceholder: "search for skills, repo, design",
   leadNote:

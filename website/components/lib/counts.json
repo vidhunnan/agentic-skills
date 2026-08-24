@@ -1,7 +1,7 @@
 {
-  "rules": 8,
-  "decisions": 25,
+  "rules": 9,
+  "decisions": 26,
   "designDecisions": 17,
-  "commits": 62,
+  "commits": 65,
   "handoffs": 3
 }

@@ -1,5 +1,5 @@
 // Round 4 note on `includeHidden` and `allTextContents` below: the catalogue is
-// now fourteen collapsed <details> rows and the install block steps one command at
+// now fifteen collapsed <details> rows and the install block steps one command at
 // a time, so most copy buttons are legitimately outside the accessibility tree on
 // load. The SELECTORS changed to see them; not one assertion did. If a count here
 // ever needs lowering, that is content going missing, not a test needing a tweak.

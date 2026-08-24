@@ -1,0 +1,8 @@
+{
+  "name": "version-manager",
+  "description": "Splits the released version from the build you're testing, checks every file carrying the version agrees, and keeps a generated ledger of every build and release — for npm, Claude Code plugins, Docker, PyPI, binaries, sites, extensions, mobile apps and plain exports.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

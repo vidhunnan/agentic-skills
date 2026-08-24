@@ -8,14 +8,14 @@ import Tags from "./Tags";
 import styles from "./Skills.module.css";
 
 /**
- * Fourteen rows, filterable.
+ * Fifteen rows, filterable.
  *
  * The filter HIDES rows rather than unmounting them: every row stays in the DOM
  * and in the static export, so nothing is destroyed by a query and a JS-off
  * reader has the whole catalogue. It also keeps the page honest about how many
  * skills exist.
  *
- * Order never changes. The ranker can sort, but reordering fourteen rows under
+ * Order never changes. The ranker can sort, but reordering fifteen rows under
  * the reader's cursor as they type is worse than leaving them where they were;
  * it is used here purely as the matcher.
  *
