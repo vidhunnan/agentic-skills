@@ -147,7 +147,7 @@ There is deliberately **no design changelog**. What shipped is `changelog/`, gen
 
 Everything above was used to build this repo, so you can read the output before you install anything:
 
-- **[`docs/decisions/`](docs/decisions/README.md)** — 21 ADRs explaining why this repo is shaped the way it is, each with the evidence it was drawn from. Written by `decisions-logger`. It also records the [five decisions whose reasoning was never written down](docs/decisions/0000-not-logged.md) — the honest gaps, kept visible rather than filled in with a plausible guess.
+- **[`docs/decisions/`](docs/decisions/README.md)** — 26 ADRs explaining why this repo is shaped the way it is, each with the evidence it was drawn from. Written by `decisions-logger`. It also records the [five decisions whose reasoning was never written down](docs/decisions/0000-not-logged.md) — the honest gaps, kept visible rather than filled in with a plausible guess.
 - **[`changelog/`](changelog/CHANGELOG.md)** — every substantive commit documented, with the diff and the reason. Written by `changelog-tracker`.
 - **[`docs/MODEL-STRATEGY.md`](docs/MODEL-STRATEGY.md)** — the model policy this repo actually follows. Written by `model-strategy`.
 - **[`handoff/`](handoff/)** — the briefs that carried this work between Claude.ai and Claude Code. Written by `handoff-generator`.
