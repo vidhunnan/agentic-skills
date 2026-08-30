@@ -5,6 +5,16 @@ Status: exploring · Date: 2026-08-30
 > Hypothesis, not a plan. Nothing here is committed. Do not cite this document as
 > evidence that anything exists or has been decided.
 
+> **Graduated 2026-08-30.** The by-hand test passed, and each of the five skills
+> now has a PRD, which is the spec: [`post-setup`](../prds/post-setup.md) ·
+> [`post-export`](../prds/post-export.md) · [`post-angles`](../prds/post-angles.md) ·
+> [`post-generator`](../prds/post-generator.md) · [`post-card`](../prds/post-card.md).
+>
+> **The PRDs win where they disagree with this file.** What is kept here is the
+> family-level argument no single PRD owns: why an outbound family belongs in a
+> faithful library, and what it had to survive to get in. **Nothing here has been
+> built** — check the changelog, not this file.
+
 ## The hunch
 
 Every skill in this library is **inbound**. It reads the work and writes the
