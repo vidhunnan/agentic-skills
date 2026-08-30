@@ -112,9 +112,13 @@ Draft the four beats once, then cut separately for each platform. **A single dra
 trimmed four ways is not four posts** — the constraint changes which beat survives,
 and a 280-character cut is a different argument from a 1,300-character one.
 
-Voice rules apply in this order: the **banned moves** unconditionally, then
-`VOICE.md`'s **Stripped** table, then its **Carries over** traits. A user override
-only beats a banned move where they put it in `VOICE.md` explicitly.
+Voice rules apply in this order: **`references/ai-tells.md`** unconditionally,
+then the **banned moves**, then `VOICE.md`'s **Stripped** table, then its
+**Carries over** traits. A user override in `VOICE.md` beats a banned move; it
+never beats an AI tell, because none of those is a matter of register.
+
+**Read `references/ai-tells.md` every run**, including its *What not to strip*
+section — over-applying it flattens a voice into the beige it exists to prevent.
 
 ### Step 5 — Propose composition
 
