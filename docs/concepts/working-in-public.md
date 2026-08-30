@@ -45,19 +45,26 @@ That also makes this the **first family that consumes other skills' output.**
 Cross-skill composition was listed as a non-goal in `handoff-generator`'s PRD.
 If it's ever worth doing, this is the case for it: the stack is the input.
 
-## The four skills
+## The skills
 
-Split by question, the way the design cluster splits.
+Split by question, the way the design cluster splits. Five so far, and the family
+is open-ended — it grows by finding another distinct question, not by adding modes
+to an existing skill.
 
 | Question | Skill | Output |
 |---|---|---|
 | Where does any of this go? | `post-setup` | Scaffolds `posts/`, runs the voice interview, captures the card direction, registers the protocol block |
+| What was postable about this work? | `post-export` | A content export written while the work is warm — decisions, learnings, before/after, quotable moments |
 | What's even worth posting? | `post-angles` | Three or four angles, each with its tension and its audience |
 | How do I say it, and how does it break up? | `post-generator` | One Markdown file: per-platform copy on the storytelling arc, plus the **visual plan** — how many frames, what each one carries |
 | What does each frame look like? | `post-card` | Reads that plan and renders the frames as self-contained HTML at real dimensions, to PNG where a browser is available |
 
 `post-setup` mirrors `repo-setup` and `design-setup`: detect, map, confirm, never
-impose; additive only. It is what makes the other three have somewhere to write.
+impose; additive only. It is what makes the rest have somewhere to write.
+
+The flow runs one way and each step is optional: capture material, find an angle,
+draft the copy and its plan, render the frames. You can enter at any point. A post
+you already know how to write skips straight to `post-generator`.
 
 ## The storytelling arc
 
@@ -241,7 +248,7 @@ So: an explicit gate before drafting. *Is this public?* Refuse to draft from
 anything unreleased, client-named, credentialed, or marked internal, and refuse
 by default rather than on suspicion.
 
-## The four skills, in detail
+## The skills, in detail
 
 Conditional throughout. This is the shape being proposed, not a spec — a PRD per
 skill is what turns any of it into a commitment.
@@ -269,6 +276,48 @@ problems.
 **Refuses to** invent a voice. If the user skips the samples and the interview,
 it writes the banned-moves list and an explicitly empty positive half rather than
 a plausible-sounding voice nobody chose.
+
+### `post-export`
+
+The one that isn't about posting. It's about **capturing the material before it
+evaporates.**
+
+The record answers what shipped and why it was chosen. It does not hold *the third
+attempt failed because the API returned stale reads, and that's the interesting
+part*, or how a flow looked before versus after. Those are the details a post is
+actually built from, they are freshest the day the work happens, and they are gone
+a fortnight later when you sit down to write.
+
+**Would trigger on** "export this for content", "capture what's postable here",
+"what did we learn in this session", `/post-export`.
+
+**Reads** the session and the work it touched: what changed, what got decided and
+what it cost, what was tried and abandoned, how something looked before and after.
+
+**Writes** `posts/material/{date}-{slug}.md` — an export, not a post. Rough by
+design, with sources attached:
+
+```md
+# Material — {what this work was}
+
+Date: {YYYY-MM-DD} · Status: unused | drafted | posted
+
+## What changed
+## Decisions, and what each one cost
+## Learnings
+## Before → after
+## Quotable moments
+## Not postable yet
+{under embargo, client-named, or not shipped}
+```
+
+**Refuses to** invent a learning. `*(nothing conclusive)*` carries over from
+`exploration-log` verbatim, and for the same reason: most stretches of work teach
+nothing crisp, and a backlog full of manufactured insight is worse than an empty
+one.
+
+`post-angles` then reads **both** the record and this backlog. The backlog is
+where the good material lives; the record is what makes it checkable.
 
 ### `post-angles`
 
@@ -375,16 +424,41 @@ trusting forever.
   is read by one person. This one is read by an audience, and that is exactly
   the pressure that turns "nothing conclusive yet" into a claim.
 
+## Positions taken so far
+
+Settled in brainstorming, not logged as decisions. This is the concepts tier —
+**none of these are ADRs and none should be cited as one.** If the family
+graduates, they're what `decisions-logger` would be pointed at first.
+
+**No record is not a refusal.** Most projects worth posting about have no
+changelog and no ADRs. The family degrades to an interview and drafts from the
+conversation, but labels it: `*(from conversation, not the record)*` in the
+Sources section. The thesis survives because the artifact says which mode it ran
+in, so a reader can tell a sourced claim from a remembered one. Declining outright
+was the alternative, and it would make the family unusable outside repos that
+already run this library.
+
+**Nothing ever publishes.** Drafts only, on every surface, permanently. Every
+skill here is Markdown with no outbound side effect, a bad post cannot be
+un-posted, and pasting it yourself is the last honest review step. Pushing to a
+drafts queue was considered and rejected for v1 on the same grounds.
+
+**Nudge to capture, never to post.** The protocol block would offer `post-export`
+at the end of a stretch of work in any project — capture is cheap, low-stakes, and
+the material is perishable. It must not depend on `version-manager` or any other
+skill being installed. Nothing in the family ever suggests you should be posting
+more; that's a stance about how you work, and not one a skill gets to take.
+
+**Graduation is gated on one real post.** Not on the doc feeling finished. The
+flow gets run by hand, end to end, on real work; if the output is publishable
+without a rewrite the family graduates into PRDs, and if it isn't we learned that
+for the price of one post instead of five specs.
+
 ## Open questions
 
 - Does `post-angles` earn its own skill, or is it the first phase of drafting?
-- Should publishing ever be in scope? A Typefully-style integration is
-  technically easy and would make this the only skill in the library with an
-  outbound side effect. The instinct is no for v1: drafts only, the human posts.
-- How does the family handle a project with **no record**? Most projects someone
-  would post about have no changelog and no ADRs. Does it degrade to a plain
-  interview, or does it decline the way `design-critique` declines to critique
-  without a written intent?
+  Weaker now that `post-export` exists, since the backlog does much of the
+  surfacing work an angles skill was going to do.
 - Is HTML output a one-time exception or the start of the library generating
   code?
 - Who owns composition when the user overrides it? If they take a proposed
@@ -400,13 +474,20 @@ trusting forever.
 - Is `posts/CARD.md` its own file or a section of `posts/VOICE.md`? One voice
   covering words and visuals is tidier; splitting them means `post-card` can run
   in a project that never drafts copy.
-- Does `post-setup` deserve a protocol block, given the other setup skills have
-  one, or is "offer to draft a post after a release" a nudge too far?
+- Does `post-export` overlap `handoff-generator` too much to justify itself? Both
+  read a session and write what happened. The claimed difference is audience —
+  a handoff briefs a machine on state, an export harvests material for a human
+  reader — but that difference has to show up in the output or it's one skill.
+- How much of a session can `post-export` actually see? On Claude Code it has
+  git and the conversation; the "third attempt failed because X" detail may only
+  exist in the user's head, which turns capture into an interview rather than an
+  extraction.
 
 ## Graduate or kill
 
-**Graduate** into PRDs when the storytelling arc and the voice capture have been
-tried by hand, on one real post, and the output is something worth publishing
+**Graduate** into PRDs — one per skill — when the flow has been run by hand, end
+to end, on one real piece of work: capture the material, find the angle, draft the
+copy and its plan, render a frame. The bar is that the output is worth publishing
 without a rewrite.
 
 **Kill** it when the honest answer after that test is that the record didn't help
