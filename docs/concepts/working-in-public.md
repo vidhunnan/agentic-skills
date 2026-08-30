@@ -54,7 +54,7 @@ to an existing skill.
 | Question | Skill | Output |
 |---|---|---|
 | Where does any of this go? | `post-setup` | Scaffolds `posts/`, runs the voice interview, captures the card direction, registers the protocol block |
-| What was postable about this work? | `post-export` | A content export written while the work is warm — decisions, learnings, before/after, quotable moments |
+| What was postable about this work? | `post-export` | A typed, indexed backlog captured while the work is warm — with the before-state snapshotted before it's overwritten |
 | What's even worth posting? | `post-angles` | Three or four angles, each with its tension and its audience |
 | How do I say it, and how does it break up? | `post-generator` | One Markdown file: per-platform copy on the storytelling arc, plus the **visual plan** — how many frames, what each one carries |
 | What does each frame look like? | `post-card` | Reads that plan and renders the frames as self-contained HTML at real dimensions, to PNG where a browser is available |
@@ -218,10 +218,12 @@ The visual direction itself would come from an interview, in the way
 `design/system/` or a `design-language` output, that pre-fills the interview and
 gets confirmed rather than assumed.
 
-This is the one place the family strains the library's "all Markdown, no code"
-line. HTML is not Markdown. The defence would be that it's a single static file
-with no build step and no dependency, which is closer to a Markdown document than
-to an application — but it is a real widening and worth saying out loud.
+This is one of two places the family strains the library's "all Markdown, no code"
+line, the other being `post-export`'s snapshots. They widen it differently: a card
+is **generated**, a snapshot is **preserved**. The defence for the card is that
+it's a single static file with no build step and no dependency, closer to a
+Markdown document than to an application. Both are real widenings and worth saying
+out loud rather than discovering later.
 
 ## The `posts/` tier
 
@@ -288,28 +290,105 @@ part*, or how a flow looked before versus after. Those are the details a post is
 actually built from, they are freshest the day the work happens, and they are gone
 a fortnight later when you sit down to write.
 
-**Would trigger on** "export this for content", "capture what's postable here",
-"what did we learn in this session", `/post-export`.
+**Would trigger on** "export this for content", "capture that", "what did we learn
+in this session", `/post-export`, `/post-export --since 2w`.
 
-**Reads** the session and the work it touched: what changed, what got decided and
-what it cost, what was tried and abandoned, how something looked before and after.
+#### Four ways a capture starts
 
-**Writes** `posts/material/{date}-{slug}.md` — an export, not a post. Rough by
-design, with sources attached:
+| Trigger | When | Why it's here |
+|---|---|---|
+| End of a session | You ran it, or the protocol block offered | The core case. The details are still warm |
+| Mid-session interjection | "capture that", the moment a reframe lands | The absolute freshest point. Must be cheap or it derails the work |
+| Over a named range | `--since 2w` — reads git, changelog, decisions | Catching up. Everything unrecorded is already gone by then, and it should say so |
+| From another skill | `exploration-log` kills a direction, `decisions-logger` writes an ADR | The strongest composition in the library, and zero extra effort |
+
+The mid-session mode has a hard constraint: **it captures and gets out of the
+way.** No interview, no confirmation loop. It writes what was just said, marks the
+item `untyped`, and the typing happens at the end of the session. A capture step
+that interrupts is a capture step that gets turned off.
+
+#### Typing the material
+
+Every item carries a type. **This is required**, with `other` as an explicit
+escape, because the type is what feeds `post-generator`'s composition decision —
+leave it blank and the two skills stop composing.
+
+| Type | What it is | Post shape it suits |
+|---|---|---|
+| Reframe | "I thought the problem was A, it was actually B" | The strongest opener there is. Works anywhere |
+| Failed attempt | What didn't work, and why | Thread or long-form |
+| Trade | Chose X, gave up Y | Single card, quotable |
+| Before → after | A flow, a layout, a structure | Carousel or split panorama |
+| Surprise | Didn't behave as expected | Short text post |
+| Technique | A move someone else could copy | Carousel — this is the type that gets saved |
+| Number | Real, and from a source | Single frame, big type |
+| Mistake | What you got wrong and fixed | Text. Highest trust, needs no visual |
+| Constraint | "Had to fit in X, which killed Y" | Pairs with a before/after |
+| Dead end | No resolution, but the problem shape is interesting | Honest, and rarely posted |
+| `other` | None of the above, and that's fine | Decided at angle time |
+
+The list is also a **scan checklist**. Rather than asking "what was interesting",
+which produces nothing, the skill walks the work against these shapes and asks
+about the ones that seem to have hit.
+
+#### Snapshotting the before
+
+Git holds the before-state of *code*. It does not hold the **rendered** before:
+the screenshot of the old flow, the doc as it read last week, the terminal output
+of the failing run. By the time you write the post, the before has been
+overwritten, and only a skill running at that moment can catch it.
+
+So `post-export` would capture artifacts, not just prose — a copy of the prior
+version of a changed file, the failing output verbatim, and a prompt to drop in a
+screenshot with somewhere to put it. Stored beside the item and referenced from it.
+
+**This is the family's second widening past Markdown**, after the HTML cards, and
+the two are different in kind: a card is generated, a snapshot is preserved. The
+defence for this one is the same as `exploration-log`'s: the artifact is
+unrecoverable later, which is exactly why capturing it is the job.
+
+#### What it writes
+
+Index plus one file per item, mirroring how `changelog/CHANGELOG.md` sits over
+`changelog/commits/`. Each item is atomic, so it can move through the pipeline on
+its own.
+
+`posts/material/README.md`:
+
+| Item | Type | Captured | Expires | Status |
+|---|---|---|---|---|
+| `003-arc-is-the-carousel` | Reframe | 2026-08-30 | — | unused |
+| `002-post-vs-handoff` | Trade | 2026-08-30 | — | drafted |
+
+`posts/material/NNN-slug.md`:
 
 ```md
-# Material — {what this work was}
+# {one line: the thing itself, not a description of the session}
 
-Date: {YYYY-MM-DD} · Status: unused | drafted | posted
+Type: {reframe} · Captured: {YYYY-MM-DD} · Status: unused | drafted | posted
+Expires: {YYYY-MM-DD or —}
+Sources: {paths, or *(from conversation, not the record)*}
+Artifacts: {posts/material/assets/003-before.png}
 
-## What changed
-## Decisions, and what each one cost
-## Learnings
-## Before → after
-## Quotable moments
-## Not postable yet
-{under embargo, client-named, or not shipped}
+## What happened
+## Why it's interesting to someone who wasn't here
+## What I'd have to check before posting it
 ```
+
+That third section is the one doing unusual work. It's where a half-remembered
+number, an unverified claim or a name that might not be public goes — held next to
+the material instead of quietly entering a draft two weeks later.
+
+**Status closes the loop.** Once items carry `unused | drafted | posted`, the
+backlog is answerable: *fourteen unused, three over sixty days old*. And material
+genuinely expires — a technique that's now obsolete, an embargo that lifted, a
+launch that already happened — so `Expires` beats a backlog that rots silently.
+
+#### Retrieval
+
+The second mode, the way `exploration-log` has one. *"What have I got that I
+haven't posted?"* *"Anything about caching?"* A backlog that can only be written
+to is a backlog nobody reads.
 
 **Refuses to** invent a learning. `*(nothing conclusive)*` carries over from
 `exploration-log` verbatim, and for the same reason: most stretches of work teach
@@ -449,6 +528,14 @@ the material is perishable. It must not depend on `version-manager` or any other
 skill being installed. Nothing in the family ever suggests you should be posting
 more; that's a stance about how you work, and not one a skill gets to take.
 
+**An export is not a handoff.** Both read a session and write down what happened,
+which is why the overlap needed settling. The difference is completeness: a
+**handoff is state-oriented and complete** — everything the receiver needs,
+including the dull parts. An **export is reader-oriented and selective** — only
+what a stranger would find interesting, deliberately incomplete. A handoff that
+omits boring-but-necessary context is broken; an export that includes it is
+useless. Different failure modes, so different skills.
+
 **Graduation is gated on one real post.** Not on the doc feeling finished. The
 flow gets run by hand, end to end, on real work; if the output is publishable
 without a rewrite the family graduates into PRDs, and if it isn't we learned that
@@ -474,10 +561,6 @@ for the price of one post instead of five specs.
 - Is `posts/CARD.md` its own file or a section of `posts/VOICE.md`? One voice
   covering words and visuals is tidier; splitting them means `post-card` can run
   in a project that never drafts copy.
-- Does `post-export` overlap `handoff-generator` too much to justify itself? Both
-  read a session and write what happened. The claimed difference is audience —
-  a handoff briefs a machine on state, an export harvests material for a human
-  reader — but that difference has to show up in the output or it's one skill.
 - How much of a session can `post-export` actually see? On Claude Code it has
   git and the conversation; the "third attempt failed because X" detail may only
   exist in the user's head, which turns capture into an interview rather than an
