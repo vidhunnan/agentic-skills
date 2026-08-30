@@ -241,6 +241,115 @@ So: an explicit gate before drafting. *Is this public?* Refuse to draft from
 anything unreleased, client-named, credentialed, or marked internal, and refuse
 by default rather than on suspicion.
 
+## The four skills, in detail
+
+Conditional throughout. This is the shape being proposed, not a spec — a PRD per
+skill is what turns any of it into a commitment.
+
+### `post-setup`
+
+**Would trigger on** "set up posts", "where do my posts go", "set up this repo
+for working in public", `/post-setup`, `/post-setup check`.
+
+**Reads** the repo for anything that already exists: a `posts/`, `content/` or
+`social/` folder; `design/system/` or a `design-language` output for the card
+direction; `CLAUDE.md` for protocol blocks; the record tiers, so it can report
+what the drafting skills will actually have to work from.
+
+**Interviews for** the voice — the questions plus three to five real posts pasted
+in, because a described voice and a demonstrated one differ — and the card
+direction, pre-filled from the design system where one exists.
+
+**Writes** `posts/README.md` (declaring the derived tense), `posts/VOICE.md`,
+`posts/CARD.md`, `posts/cards/`, and a `skill:post-setup` protocol block.
+Additive only, adopts existing folder names, never renames anyone's repo. Same
+two principles as `repo-setup` and `design-setup`, because they are the same two
+problems.
+
+**Refuses to** invent a voice. If the user skips the samples and the interview,
+it writes the banned-moves list and an explicitly empty positive half rather than
+a plausible-sounding voice nobody chose.
+
+### `post-angles`
+
+**Would trigger on** "what should I post about", "is there a post in this", "post
+ideas from this week", `/post-angles`.
+
+**Reads** the record over a window the user names — `changelog/` for what
+shipped, `docs/decisions/` for the forks, the explorations tier for what got
+killed, `handoff/` for where things stand.
+
+**Proposes** three or four angles. Each carries its tension, who it's for, and
+the source lines behind it. An angle with no source is either dropped or marked
+`*(from conversation, not the record)*` so the difference stays visible.
+
+**Refuses to** manufacture an angle out of a quiet week. "Nothing here is worth a
+post yet" is a real answer and the skill should be able to give it, or it becomes
+a machine for posting about nothing.
+
+### `post-generator`
+
+**Would trigger on** "draft a post about this", "write this up for LinkedIn",
+"turn this into a post", `/post-generator`.
+
+**Reads** the chosen angle, the sources behind it, `posts/VOICE.md`, and the
+existing `posts/` so it can notice you already covered this.
+
+**Interviews**, in order:
+
+1. **What are you trying to get across, and to whom?** First, always. The record
+   answers *what happened*; only the human has the angle.
+2. **Which platforms?** Each has its own copy, not one draft trimmed four ways.
+3. **Composition** — proposed, not picked. Two or three concepts differing on
+   where the argument gets cut and how much load the caption carries.
+4. **Anything the record can't know**, offered as optional. The reaction from a
+   user, why the obvious approach was never tried, how long it actually took.
+
+**Writes** `posts/{date}-{slug}.md` — the contract file above — always, including
+for text-only posts, so there is one artifact per post whether or not it has a
+visual.
+
+**Refuses to** state anything as shipped that the changelog doesn't carry, to
+report a metric no source contains, or to resolve an exploration that hasn't
+concluded. Those go to `## Not claimed` instead of into the copy.
+
+### `post-card`
+
+**Would trigger on** "make the cards", "render the carousel", "make an image for
+this post", `/post-card`.
+
+**Reads** the plan file's `## Visual plan` and `## Alt text`, plus `posts/CARD.md`
+for the direction.
+
+**Proposes** two or three treatments per plan — type only, chart, screenshot,
+pull quote, code — held consistent across every frame in a run, since a carousel
+is a sequence and not a set.
+
+**Writes** `posts/cards/{slug}-{n}.html`, one self-contained file per frame,
+inline CSS, no build step and no dependency. Renders to PNG where a headless
+browser is available; where one isn't, it says so plainly and tells the user to
+open and screenshot rather than failing.
+
+**Refuses to** render against a plan whose frame count no longer matches its copy
+— see the drift question below — and to fabricate a chart. If a frame calls for
+data, the data comes from a source or the frame gets a different treatment.
+
+### Platform reference
+
+Needed by both drafting skills, and the thing most likely to be quietly wrong.
+
+| Platform | Frame size | Composition it supports |
+|---|---|---|
+| X | 1200×675 landscape | Text only, or up to four images. No swipe carousel |
+| LinkedIn | 1200×627 landscape, 1080×1350 portrait for document posts | Single, multi-image, or a document/carousel post |
+| Instagram | 1080×1350 portrait | Single, carousel, or a wide image split into aligned grid tiles |
+| Threads | 1080×1350 portrait | Single or multi-image |
+
+**These drift, and a stale aspect ratio fails silently** — it produces something
+that looks fine locally and crops wrong in the feed. They'd need verifying when
+the skills are built and re-checking periodically, not hardcoding once and
+trusting forever.
+
 ## Why it might matter
 
 - The library's argument is that a complete record makes the next session cheap.
@@ -281,9 +390,16 @@ by default rather than on suspicion.
 - Who owns composition when the user overrides it? If they take a proposed
   four-frame carousel down to two, the copy no longer matches the plan. Does
   `post-generator` re-draft, or does `post-card` flag the drift and refuse?
+  **Leaning refuse-and-report** — silently rendering a mismatch is the failure
+  you only catch after posting, which is the one time it can't be fixed.
 - Does a carousel need per-frame copy in the file, or just the beat and a
   treatment note? Writing the frame text at plan time is more useful and much
   more likely to produce filler for frames that only needed an image.
+  **Leaning beat plus treatment note**, with frame text written at card time
+  where the treatment is known.
+- Is `posts/CARD.md` its own file or a section of `posts/VOICE.md`? One voice
+  covering words and visuals is tidier; splitting them means `post-card` can run
+  in a project that never drafts copy.
 - Does `post-setup` deserve a protocol block, given the other setup skills have
   one, or is "offer to draft a post after a release" a nudge too far?
 
