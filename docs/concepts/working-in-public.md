@@ -53,8 +53,8 @@ Split by question, the way the design cluster splits.
 |---|---|---|
 | Where does any of this go? | `post-setup` | Scaffolds `posts/`, runs the voice interview, captures the card direction, registers the protocol block |
 | What's even worth posting? | `post-angles` | Three or four angles, each with its tension and its audience |
-| How do I say it? | `post-generator` | Per-platform copy on the storytelling arc, in the captured voice |
-| What does it look like? | `post-card` | A self-contained HTML card at the platform's real dimensions, rendered to PNG where a browser is available |
+| How do I say it, and how does it break up? | `post-generator` | One Markdown file: per-platform copy on the storytelling arc, plus the **visual plan** — how many frames, what each one carries |
+| What does each frame look like? | `post-card` | Reads that plan and renders the frames as self-contained HTML at real dimensions, to PNG where a browser is available |
 
 `post-setup` mirrors `repo-setup` and `design-setup`: detect, map, confirm, never
 impose; additive only. It is what makes the other three have somewhere to write.
@@ -74,10 +74,90 @@ templates. They'd be one spine, with a different beat carrying the weight:
 A shipped post lands on beats 2 and 3. An exploration post lands on 1 and 4 and
 stays honest about 3. A decision post puts the trade in beat 3.
 
+The arc has a useful second life: **it is also the frame structure.** Four beats
+is a four-slide carousel almost for free. A single-image post is the same arc
+compressed, with the card carrying one beat and the caption carrying the rest.
+That's the link between the copy and the visual, and the reason the two can't be
+decided independently.
+
 The interview would open before any of it, with the question that steers
 everything downstream: **what are you trying to get across, and to whom?** Not
 "what happened" — the record already answers that. The angle is the part only the
 human has.
+
+## Composition: the decision the platforms force
+
+The same content wants a different shape on each platform, and the shape is a
+function of the content *and* the platform, not either alone.
+
+A chart is one landscape image on LinkedIn. On Instagram the same chart is either
+a portrait crop that loses the axis labels, a three-frame carousel that walks
+through it, or a wide image split across three grid tiles. Those are three
+different posts, and the copy has to change with them.
+
+So `post-generator` would carry composition as a first-class decision, roughly:
+
+| Composition | Where it fits | What it does to the copy |
+|---|---|---|
+| Text only | X, Threads | The whole arc is in the words |
+| Single frame | LinkedIn, X | Card carries one beat; caption carries the rest |
+| Carousel | Instagram, LinkedIn document posts | One beat per frame; the caption becomes a lead-in, not a summary |
+| Split panorama | Instagram grid | One wide image cut into aligned tiles; reads as one thing on the profile |
+| Portrait vs landscape | Everywhere | Changes how much text a frame can hold before it stops being readable |
+
+**And it proposes rather than picks.** This is `design-explore`'s move: two or
+three composition concepts that differ on a *named structural axis* — where the
+argument gets cut, how much load the caption carries — not on cosmetics. The user
+chooses. If the honest answer is that one composition is obviously right, it says
+so and offers one, rather than manufacturing three.
+
+Platform dimensions and limits would need verifying at build time and periodically
+after. They drift, and a skill that hardcodes a stale aspect ratio fails silently
+in the worst way: it produces something that looks fine and crops wrong.
+
+## The Markdown file is the contract
+
+`post-generator` always writes `posts/{date}-{slug}.md`, even for a text-only
+post. `post-card` reads it. That file is the interface between the two skills,
+which is what lets them be separate skills at all.
+
+```md
+# Post — {title}
+
+Date: {YYYY-MM-DD} · Status: draft
+Mode: exploring | shipped | decision | release
+Angle: {what I'm trying to get across, and to whom}
+
+## Sources
+- {path into changelog/, docs/decisions/, explorations — the lines this is drawn from}
+
+## Copy
+### X
+### LinkedIn
+### Instagram / Threads
+
+## Visual plan
+Composition: {carousel, 4 frames} · {1080×1350 portrait}
+
+| # | Beat | What this frame carries | Treatment note |
+|---|---|---|---|
+| 1 | Tension | ... | type only |
+
+## Alt text
+- Frame 1: {...}
+
+## Not claimed
+{facts deliberately left out, because no source supports them}
+```
+
+Two sections are load-bearing beyond their size. **Sources** is what makes the
+draft auditable — you can check any claim against the tier it came from.
+**Not claimed** is the honesty rule made visible in the artifact: the things it
+wanted to say and wouldn't, so you can add them deliberately with your own
+knowledge rather than have them appear on their own.
+
+`post-card` would also run standalone, without a plan file, by interviewing for
+what it's missing. Not every card starts life as a post.
 
 ## Voice
 
@@ -104,17 +184,32 @@ repo voice.
 Instagram and Threads are visual-first, so text-only output would be half a
 skill there.
 
-`post-card` would write one self-contained HTML file, inline CSS, at real
-dimensions — 1080×1350 Instagram portrait, 1200×675 X, 1200×627 LinkedIn — then
-render to PNG where a headless browser exists and fall back to
-open-it-and-screenshot where one doesn't. That keeps it installable for people
-who don't have Chromium lying around, and keeps the artifact a single readable
-file the user can restyle by hand.
+`post-card` takes the visual plan and renders each frame as a self-contained HTML
+file, inline CSS, at real dimensions — then to PNG where a headless browser exists,
+falling back to open-it-and-screenshot where one doesn't. That keeps it installable
+for people who don't have Chromium lying around, and keeps each frame a single
+readable file the user can restyle by hand.
 
-The visual direction would come from an interview, in the way `design-language`
-refuses to propose a look for you. Where the project already has `design/system/`
-or a `design-language` output, that pre-fills the interview and gets confirmed
-rather than assumed.
+**It brainstorms too, on a different axis than `post-generator`.** The plan says
+*frame 2 carries the move*; it does not say whether that frame is a screenshot, a
+chart, a pull quote, a code block or type on a flat ground. So `post-card` would
+propose two or three treatments for a plan and let the user choose — same
+propose-don't-pick rule, one level down.
+
+| Skill | Brainstorms | Axis |
+|---|---|---|
+| `post-angles` | What to say | Which story the record supports |
+| `post-generator` | How it breaks up | Where the argument gets cut |
+| `post-card` | How each frame reads | Treatment: type, chart, screenshot, quote |
+
+A carousel is a sequence, not a set, so treatment has to hold across frames —
+frame 3 can't arrive in a different visual language than frame 1. The direction
+gets decided once and applies to the run.
+
+The visual direction itself would come from an interview, in the way
+`design-language` refuses to propose a look for you. Where the project already has
+`design/system/` or a `design-language` output, that pre-fills the interview and
+gets confirmed rather than assumed.
 
 This is the one place the family strains the library's "all Markdown, no code"
 line. HTML is not Markdown. The defence would be that it's a single static file
@@ -183,6 +278,12 @@ by default rather than on suspicion.
   without a written intent?
 - Is HTML output a one-time exception or the start of the library generating
   code?
+- Who owns composition when the user overrides it? If they take a proposed
+  four-frame carousel down to two, the copy no longer matches the plan. Does
+  `post-generator` re-draft, or does `post-card` flag the drift and refuse?
+- Does a carousel need per-frame copy in the file, or just the beat and a
+  treatment note? Writing the frame text at plan time is more useful and much
+  more likely to produce filler for frames that only needed an image.
 - Does `post-setup` deserve a protocol block, given the other setup skills have
   one, or is "offer to draft a post after a release" a nudge too far?
 
