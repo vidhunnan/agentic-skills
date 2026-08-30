@@ -1,0 +1,83 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Card — capture not writing, frame 1</title>
+<style>
+  :root {
+    --paper: #f3f2ed;
+    --ink: #16160f;
+    --ink-soft: #4e4e45;
+    --mute: #6b6b60;
+    --red: #bf3018;
+    --rule: rgba(22, 22, 15, 0.14);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1350px; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 96px 88px;
+  }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 22px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  main { padding-bottom: 40px; }
+  h1 {
+    font-size: 86px;
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    font-weight: 600;
+    max-width: 15ch;
+  }
+  h1 .soft { color: var(--ink-soft); }
+  .rule {
+    height: 1px;
+    background: var(--rule);
+    margin: 56px 0 40px;
+  }
+  .note {
+    font-size: 30px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 26ch;
+  }
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    color: var(--mute);
+  }
+  .status {
+    color: var(--red);
+    border-left: 2px solid var(--red);
+    padding-left: 14px;
+    max-width: 30ch;
+    line-height: 1.5;
+  }
+</style>
+
+<div class="eyebrow">Working in public</div>
+
+<main>
+  <h1>Git keeps the before-state of your code.<br>
+    <span class="soft">Not the before-state you'd want to show a person.</span></h1>
+  <div class="rule"></div>
+  <p class="note">The screenshot of the old flow. The output of the run that broke.
+    Overwritten by the time you write the post.</p>
+</main>
+
+<footer>
+  <div class="status">Hypothesis. Nothing built yet.</div>
+  <div>agentic-skills</div>
+</footer>

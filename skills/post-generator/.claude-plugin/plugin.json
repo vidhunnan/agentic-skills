@@ -1,0 +1,8 @@
+{
+  "name": "post-generator",
+  "description": "Drafts per-platform copy from a sourced angle in your captured voice, decides how the post breaks into frames, and lists what it refused to claim and why. Never publishes.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

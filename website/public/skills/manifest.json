@@ -12,6 +12,11 @@
     "exploration-log": "bcff5e6164781cd0432cc63f9526584b61ab265be881ada58879449ab36e06fb",
     "design-critique": "2e13d3815b024c33b16210e99b0645f80bdcc939a20bea23ab7ff11bae222833",
     "design-decisions": "9ccaf719ab7521073a2cfd4212c768b3dc3fdb36cf5266bbf5221a1f77ec5e7b",
-    "skill-scaffold": "57e2c6d23f82a5b07c7000d6296174637da1a141f712c850106a22a61bb255da"
+    "post-setup": "b74265fd21fc5869b7f6d1c4a3837be8c81ae785ae2258dba35ffc1e08abc9fb",
+    "post-export": "2c8408b64264000c0b1c09df625fca0fa5ba16a479eb2b06faedc24d62a3fe47",
+    "post-angles": "0a49c92f9f55851b5f28536193d79082441b12bfc516d0e64a7dd2099c479459",
+    "post-generator": "35ce6894e2b2902bf3aa4fab97ca305defa9fb0e4087813ad622cbbb071ad538",
+    "post-card": "6b1b8f2ac893b7f48c48acda096faa45c06ec06d3b01ddf8d4d3fbc24e49af22",
+    "skill-scaffold": "dc256b908e560de31f18d050fcf7ab668ad483660bcada170d0f6a4cb39e1c67"
   }
 }

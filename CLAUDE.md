@@ -128,7 +128,7 @@ Each skill is its own plugin and carries **its own version** in `skills/<name>/.
 
 ## Adding a new skill
 
-**Run `/skill-scaffold` — it does all seven steps below.** Do them by hand only if that skill is unavailable.
+**Run `/skill-scaffold` — it does all eight steps below.** Do them by hand only if that skill is unavailable.
 
 1. Write `docs/prds/<name>.md` for anything non-trivial (problem, goals/non-goals, workflow, output template, per-surface trigger + output table).
 2. Create `skills/<name>/SKILL.md` with frontmatter whose `name` matches the folder and whose `description` lists the trigger phrases.
@@ -136,7 +136,8 @@ Each skill is its own plugin and carries **its own version** in `skills/<name>/.
 4. Add the corresponding entry to the repo-root `.claude-plugin/marketplace.json`, with `source` pointing at `./skills/<name>`.
 5. Add a row to the right group in `README.md`'s Skills section (the tables are grouped by job — "Set up the repo" / "Keep the record" / "Working conventions" / "Design work" / "Build the skills themselves" — not one flat list), and add its `/plugin install <name>` line to the Install block.
 6. **Add the entry to `website/components/lib/skills.ts` (`SKILL_GROUPS`)** — it is the site's single source of truth, it is typed, and skipping it silently leaves the published site stale. This is the step that used to get missed.
-7. Verify: `python3 -m json.tool .claude-plugin/marketplace.json`, the new `plugin.json`, and `cd website && npm run build`.
+7. **Run `cd website && npm run prebuild`** — regenerates the committed skill zips, their `manifest.json`, and `counts.json`. This is *not* optional for a Chat-capable skill: the zips are committed build output (Vercel's Root Directory is `website/`, so `skills/` isn't on disk at build time), and `tests/skill-zips.spec.ts` fails when they go stale. Then update the hand-typed counts in `README.md` and `SKILLS_COPY.sub` in `content.ts` — `TOTAL_SKILLS` is derived and needs nothing.
+8. Verify: `python3 -m json.tool .claude-plugin/marketplace.json`, the new `plugin.json`, and `cd website && npm run build && npx playwright test`.
 
 ## Distribution
 

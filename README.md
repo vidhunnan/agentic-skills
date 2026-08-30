@@ -4,7 +4,7 @@ An agent starts every session with no memory of the last one. It doesn't need a 
 
 These are the skills that write that briefing. They author the context files a project should have anyway: a changelog of what actually shipped, a decision log of why you chose what you chose, a handoff for where you left off. All of it is Markdown. None of it is code.
 
-**Fifteen skills, all live.** Install one, or all of them.
+**Twenty skills, all live.** Install one, or all of them.
 
 ## Skills
 
@@ -50,13 +50,25 @@ Code has `git log`. Design has nothing — a Figma file shows the winner and nev
 | **[`design-critique`](skills/design-critique/SKILL.md)**<br>`/plugin install design-critique` | *Does this match what we said?* — reviews built work against its stated intent, naming how the thing **reads** before proposing any fix. **Delete** is a first-class verdict, listed first. Refuses to critique without a written intent, because that's just taste with extra steps. | Code · Chat | Live |
 | **[`design-decisions`](skills/design-decisions/SKILL.md)**<br>`/plugin install design-decisions` | *Why is it like this?* — records a design fork as an append-only ADR, including **what you gave up** and what would make you revisit. Where nobody remembers the reason, it writes `(reason not stated)` — in design there's no diff to catch a plausible fiction. | Code · Chat | Live |
 
+### Working in public
+
+Everything else in this library writes for the next session. These write for a reader — the record, aimed outward.
+
+| Skill | What it does | Surfaces | Status |
+|---|---|---|---|
+| **[`post-setup`](skills/post-setup/SKILL.md)**<br>`/plugin install post-setup` | Scaffolds the `posts/` tier and captures **how your posts sound** — by interview *plus* real posts you paste in, because a described voice and a demonstrated one differ. Personal profiles are gitignored by default: the skill ships a template and **never a voice**. | Code · Chat | Live |
+| **[`post-export`](skills/post-export/SKILL.md)**<br>`/plugin install post-export` | *What was postable about this?* — captures material while the work is warm: the attempt that failed and why, the decision and what it cost. Git keeps the before-state of your code and **nothing of the rendered before**, so it snapshots that too, before it's overwritten. | Code · Chat | Live |
+| **[`post-angles`](skills/post-angles/SKILL.md)**<br>`/plugin install post-angles` | *Is there a post in this?* — proposes three or four angles from the backlog and the record, each with its tension, its named reader and its **weakest point**. Says **"nothing here yet"** rather than padding to three, and never ranks or predicts reach. | Code · Chat | Live |
+| **[`post-generator`](skills/post-generator/SKILL.md)**<br>`/plugin install post-generator` | Drafts per-platform copy in your captured voice and decides **how the post breaks into frames** — proposed, not picked, because where you cut the argument changes what each frame says. Every refusal is visible in a **Not claimed** section. Nothing publishes. | Code · Chat | Live |
+| **[`post-card`](skills/post-card/SKILL.md)**<br>`/plugin install post-card` | Renders the visual plan into self-contained HTML frames at real dimensions, from a direction you chose. **A frame is where a claim stops being auditable** — so it never states what the post declined to claim, and carries "unverified" visibly when that's the truth. | Code · Chat | Live |
+
 ### Build the skills themselves
 
 The library, building itself.
 
 | Skill | What it does | Surfaces | Status |
 |---|---|---|---|
-| **[`skill-scaffold`](skills/skill-scaffold/SKILL.md)**<br>`/plugin install skill-scaffold` | Wires a new skill into this library — all seven touchpoints, from the PRD to the website entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently. For authoring skill *content* in general, use Anthropic's `skill-creator` instead. | Code · Chat | Live |
+| **[`skill-scaffold`](skills/skill-scaffold/SKILL.md)**<br>`/plugin install skill-scaffold` | Wires a new skill into this library — all eight touchpoints, from the PRD to the website entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently. For authoring skill *content* in general, use Anthropic's `skill-creator` instead. | Code · Chat | Live |
 
 Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and the thing to read before you change one. Where the library is going next is in [`docs/concepts/`](docs/concepts/) — a roadmap, and the case for [a context stack for design work](docs/concepts/design-context-stack.md).
 
@@ -85,10 +97,15 @@ Every skill has a PRD in [`docs/prds/`](docs/prds/) — the spec behind it, and 
 /plugin install exploration-log
 /plugin install design-critique
 /plugin install design-decisions
+/plugin install post-setup
+/plugin install post-export
+/plugin install post-angles
+/plugin install post-generator
+/plugin install post-card
 /plugin install skill-scaffold
 ```
 
-Each skill is a separate plugin, so take one or take all fifteen. The command for a single skill sits next to its name in the tables above.
+Each skill is a separate plugin, so take one or take all twenty. The command for a single skill sits next to its name in the tables above.
 
 ### Other surfaces
 

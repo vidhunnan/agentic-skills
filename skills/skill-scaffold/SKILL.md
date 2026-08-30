@@ -1,6 +1,6 @@
 ---
 name: skill-scaffold
-description: Registers a new skill across all seven touchpoints of the agentic-skills library — the PRD, the SKILL.md skeleton, plugin.json, the marketplace entry, the README row and install line, and the website's SKILL_GROUPS entry — from a short interview. Interviews for the real trigger phrases rather than inventing them, and writes nothing until you confirm the full file plan. Use when the user says "add a skill to this library", "scaffold a skill", "wire up a new skill", "new skill called X", "set up the boilerplate for a skill", or runs /skill-scaffold. This is the plumbing for *this repo's* conventions — for authoring or improving a skill's content in general, or for skills outside this library, use skill-creator instead. Claude Code primary; on Claude.ai it emits the files as downloadable artifacts plus the registry snippets to paste.
+description: Registers a new skill across all eight touchpoints of the agentic-skills library — the PRD, the SKILL.md skeleton, plugin.json, the marketplace entry, the README row and install line, the website's SKILL_GROUPS entry, and the committed build output a Chat-capable skill needs — from a short interview. Interviews for the real trigger phrases rather than inventing them, and writes nothing until you confirm the full file plan. Use when the user says "add a skill to this library", "scaffold a skill", "wire up a new skill", "new skill called X", "set up the boilerplate for a skill", or runs /skill-scaffold. This is the plumbing for *this repo's* conventions — for authoring or improving a skill's content in general, or for skills outside this library, use skill-creator instead. Claude Code primary; on Claude.ai it emits the files as downloadable artifacts plus the registry snippets to paste.
 argument-hint: "[<skill-name>]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 disable-model-invocation: false
@@ -8,7 +8,7 @@ disable-model-invocation: false
 
 # skill-scaffold
 
-Adds a skill to this library. Not the skill's *logic* — its **plumbing**: the seven
+Adds a skill to this library. Not the skill's *logic* — its **plumbing**: the eight
 places a new skill has to appear before it installs, triggers, and shows up on the
 site, plus the house `SKILL.md` skeleton every skill here shares.
 
@@ -30,10 +30,12 @@ Two rules govern it:
   **interviewed, never invented**, and the assembled description is shown back
   before it is used.
 
-## The seven touchpoints
+## The eight touchpoints
 
-Adding a skill means all seven. `CONTRIBUTING.md` documents six — it omits the
-website, which is why adding a skill by hand leaves the published site stale.
+Adding a skill means all eight. **This list has been wrong twice, in the same
+direction** — it omitted the website, and then it omitted the build. Both omissions
+had the same shape: a step that lives outside the obvious files, so nobody
+remembers it and nothing complains until later.
 
 | # | Path | What lands there |
 |---|---|---|
@@ -44,6 +46,7 @@ website, which is why adding a skill by hand leaves the published site stale.
 | 5 | `README.md` — Skills tables | One row, in the right group |
 | 6 | `README.md` — Install block | One `/plugin install <name>` line |
 | 7 | `website/components/lib/skills.ts` | One `Skill` object inside the right `SkillGroup` |
+| 8 | `cd website && npm run prebuild` | Regenerated zips, `manifest.json` and `counts.json` — **committed build output** |
 
 ## Instructions
 
@@ -195,6 +198,7 @@ CREATE  skills/{name}/.claude-plugin/plugin.json
 EDIT    .claude-plugin/marketplace.json      (+1 entry)
 EDIT    README.md                            (+1 row in "{group}", +1 install line)
 EDIT    website/components/lib/skills.ts     (+1 entry in "{group}")
+RUN     cd website && npm run prebuild        (regenerates zips + counts)
 
 Registers a CLAUDE.md protocol block: yes — the Step is scaffolded, the block text is yours to write
 Frontmatter description:
@@ -338,6 +342,24 @@ be cited by a phase doc later.
    A new group gets a new `SkillGroup` with `title` and `note`. The file is typed,
    so a malformed entry fails the site build — which is the point.
 
+5. **`cd website && npm run prebuild`** — touchpoint 8, and the one that is not a
+   file you edit. It regenerates the skill zips under `website/public/skills/`,
+   their `manifest.json`, and `counts.json`.
+
+   **This is committed build output**, because Vercel's Root Directory is
+   `website/` and `skills/` is not on disk at build time. Committed build output
+   goes stale silently, so `tests/skill-zips.spec.ts` rehashes every skill folder
+   and fails when it drifts. **A Chat-capable skill without a regenerated zip is a
+   red test and a site offering a download that doesn't exist.**
+
+   Run `npm install` first if `website/node_modules` is absent — the zip script
+   needs `jszip`, a devDependency.
+
+   Then update the hand-typed counts, which are *not* derived: `README.md`'s
+   "N skills, all live" and "all N" lines, and `SKILLS_COPY.sub` in
+   `website/components/lib/content.ts`. `TOTAL_SKILLS` and `spellCount` in
+   `skills.ts` are computed and need nothing.
+
 ### Step 7 — Confirm back, and hand over the real work
 
 Report every path written and every registry edited. Then state plainly what is
@@ -353,7 +375,7 @@ Next:
   4. Trigger it two ways: /{name}, and one of your own phrases —
      "{a phrase from the interview}". If the phrase doesn't fire it,
      the description needs work, not the Steps.
-  5. cd website && npm run build
+  5. cd website && npm run prebuild && npm run build && npx playwright test
 ```
 
 Step 4 is the one people skip. Say it every time.
@@ -362,13 +384,15 @@ Step 4 is the one people skip. Say it every time.
 
 If `skills/<name>/` already exists, this is a reconcile, not a create:
 
-1. Check all seven touchpoints and report which are present and which are missing.
+1. Check all eight touchpoints and report which are present and which are missing.
+   For touchpoint 8, "present" means `npm run prebuild` has been run *since* the
+   skill's files last changed — the manifest hash is what tells you.
 2. **Never overwrite an existing `SKILL.md`, `plugin.json` or PRD.** Offer to fill
    only the absent touchpoints.
 3. If the frontmatter `name` and the folder name disagree, **stop**. That breaks
    both the plugin and the slash command, and the fix is a rename the user must
    choose — offer both directions, change nothing.
-4. If everything is present: "`{name}` is fully registered across all seven
+4. If everything is present: "`{name}` is fully registered across all eight
    touchpoints. Nothing to do." Stop. Ask nothing.
 
 ### Step 9 — Edge cases
@@ -390,5 +414,6 @@ If `skills/<name>/` already exists, this is a reconcile, not a create:
 - **JSON fails to parse after the edit** — restore the entry you added and report.
   Never leave a broken manifest behind; a broken `marketplace.json` breaks every
   install of every skill, not just the new one.
-- **User cancels at the gate** — print all seven artifacts inline, write nothing.
+- **User cancels at the gate** — print all seven authored artifacts inline, write
+  nothing, and don't run the build.
   A legitimate outcome, not a failure.

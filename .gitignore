@@ -33,3 +33,9 @@ GRAPH.md
 # NOTE: website/public/skills/ is deliberately NOT ignored. Vercel's Root
 # Directory is website/, so skills/ is not on disk at build time and the zips
 # have to be committed. tests/skill-zips.spec.ts fails if they go stale.
+
+# posts/ — personal voice and card profiles. The skill writes these into a
+# project; they are one person's register, not skill content. Templates are
+# committed as *.example.md. See docs/concepts/working-in-public.md.
+posts/VOICE.md
+posts/CARD.md

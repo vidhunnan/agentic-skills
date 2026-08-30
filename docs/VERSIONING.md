@@ -27,10 +27,11 @@ has shipped once.
 | `.claude-plugin/marketplace.json` | — | Carries no `version` field, so it is **not** part of the surface. It is a *registration* check: every skill folder must have an entry, and every entry must point at a folder that exists. |
 | `website/components/lib/skills.ts` | — | Same: no version, but the site's single source of truth. A skill missing here ships a stale site. |
 | `README.md` | — | Skills table + install block. Registration only. |
+| `website/public/skills/` | — | Committed build output, not a version. A **Chat-capable** skill without a regenerated zip ships a download link to nothing; `npm run prebuild` writes them and `tests/skill-zips.spec.ts` fails when they go stale. |
 
 So `status` on this repo checks two different things, and should say which is which:
 **version agreement** (trivial here — one file per skill) and **registration completeness**
-across the four touchpoints above.
+across the five touchpoints above.
 
 ## Bump rules
 
