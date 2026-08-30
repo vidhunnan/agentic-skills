@@ -148,12 +148,53 @@ export const SKILL_GROUPS: SkillGroup[] = [
     ],
   },
   {
+    title: "Working in public",
+    note: "Everything else in this library writes for the next session. These write for a reader — the record, aimed outward.",
+    skills: [
+      {
+        name: "post-setup",
+        desc: "Scaffolds the posts tier and captures how your posts sound — by interview plus real posts you paste in, because a described voice and a demonstrated one differ. Personal profiles are gitignored by default: the skill ships a template and never a voice.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install post-setup",
+        answers: "How should my posts sound?",
+      },
+      {
+        name: "post-export",
+        desc: "What was postable about this? — captures material while the work is warm: the attempt that failed and why, the decision and what it cost. Git keeps the before-state of your code and nothing of the rendered before, so it snapshots that too, before it's overwritten.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install post-export",
+        answers: "What was postable about this?",
+      },
+      {
+        name: "post-angles",
+        desc: "Is there a post in this? — proposes three or four angles from the backlog and the record, each with its tension, its named reader and its weakest point. Says \"nothing here yet\" rather than padding to three, and never ranks or predicts reach.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install post-angles",
+        answers: "Is there a post in this?",
+      },
+      {
+        name: "post-generator",
+        desc: "Drafts per-platform copy in your captured voice and decides how the post breaks into frames — proposed, not picked, because where you cut the argument changes what each frame says. Every refusal is visible in a Not claimed section. Nothing publishes.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install post-generator",
+        answers: "How do I say it?",
+      },
+      {
+        name: "post-card",
+        desc: "Renders the visual plan into self-contained HTML frames at real dimensions, from a direction you chose. A frame is where a claim stops being auditable — so it never states what the post declined to claim, and carries unverified visibly when that's the truth.",
+        surfaces: ["Code", "Chat"],
+        install: "/plugin install post-card",
+        answers: "What does each frame look like?",
+      },
+    ],
+  },
+  {
     title: "Build the skills themselves",
     note: "The library, building itself.",
     skills: [
       {
         name: "skill-scaffold",
-        desc: "Wires a new skill into this library — all seven touchpoints, from the PRD to this website's own entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently. For authoring skill content in general, use Anthropic's skill-creator instead.",
+        desc: "Wires a new skill into this library — all eight touchpoints, from the PRD to this website's own entry. Interviews for the trigger phrases rather than inventing them, because a description that matches nothing fails silently. For authoring skill content in general, use Anthropic's skill-creator instead.",
         surfaces: ["Code", "Chat"],
         install: "/plugin install skill-scaffold",
         answers: "How do I add another one?",
@@ -598,7 +639,7 @@ export const LOOP_STEPS: LoopStep[] = [
       Reorder these and that regression returns.
 
    Worth knowing about the data: every skill runs on Code, so a query of
-   "code" matches all fifteen. That is the truth, not a broken filter.
+   "code" matches all twenty. That is the truth, not a broken filter.
    ───────────────────────────────────────────────────────────────── */
 
 export interface SearchItem {

@@ -1,0 +1,8 @@
+{
+  "name": "post-card",
+  "description": "Renders a post's visual plan into self-contained HTML frames at real dimensions, rasterised where a browser exists — from a direction you chose, and never stating what the post declined to claim.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

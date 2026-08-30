@@ -1,0 +1,8 @@
+{
+  "name": "post-export",
+  "description": "Captures postable material while the work is warm — typed, indexed backlog items with the before-state snapshotted before it is overwritten. Never invents a learning.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}

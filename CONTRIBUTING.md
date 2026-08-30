@@ -16,7 +16,7 @@ Thanks for your interest! This is a small, curated library of Claude / Cursor-co
 
 ## Adding or changing a skill
 
-**The fastest way is `/skill-scaffold`** — it generates all seven touchpoints below from a short interview. Do them by hand only if you'd rather.
+**The fastest way is `/skill-scaffold`** — it generates all eight touchpoints below from a short interview. Do them by hand only if you'd rather.
 
 Follow the conventions in [`CLAUDE.md`](CLAUDE.md) and the [README](README.md#repo-conventions):
 
@@ -26,6 +26,7 @@ Follow the conventions in [`CLAUDE.md`](CLAUDE.md) and the [README](README.md#re
 - For non-trivial skills, write a PRD in `docs/prds/<name>.md` and keep it in sync with the skill.
 - Add a row to the right group in the README's Skills tables, and a line to the Install block.
 - **Add the entry to `website/components/lib/skills.ts`** (`SKILL_GROUPS`). It's the site's single source of truth. Miss it and the published site silently goes stale — this is the step that used to be undocumented.
+- **Run `cd website && npm run prebuild`.** It regenerates the skill zips, their `manifest.json` and `counts.json` — all **committed build output**, because Vercel's Root Directory is `website/` and `skills/` isn't on disk at build time. `tests/skill-zips.spec.ts` fails when they go stale, and a Chat-capable skill without a fresh zip ships a download link to nothing. Then update the hand-typed counts in the README and in `SKILLS_COPY.sub` (`content.ts`); `TOTAL_SKILLS` is derived and needs nothing.
 
 ### Skill quality bar
 
@@ -36,7 +37,8 @@ Follow the conventions in [`CLAUDE.md`](CLAUDE.md) and the [README](README.md#re
 ## Validating before you open a PR
 
 - JSON manifests parse: `python3 -m json.tool .claude-plugin/marketplace.json` and each `plugin.json`.
-- The site builds: `cd website && npm run build`. `SKILL_GROUPS` is typed, so a malformed entry fails the build — which is the point.
+- The site builds: `cd website && npm run prebuild && npm run build`. `SKILL_GROUPS` is typed, so a malformed entry fails the build — which is the point.
+- The committed build output isn't stale: `cd website && npx playwright test tests/skill-zips.spec.ts tests/counts.spec.ts`. These two catch exactly the drift that committing build output invites.
 - Trigger the skill locally (install from a local marketplace: `/plugin marketplace add ./`) and confirm it behaves as the PRD describes. Trigger it **two ways**: the `/<name>` slash form, and one of the natural phrases from its `description`. If the phrase doesn't fire it, the description is wrong — and that's a silent failure in the wild.
 
 ## Reporting issues

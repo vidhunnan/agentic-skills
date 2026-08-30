@@ -1,0 +1,8 @@
+{
+  "name": "post-setup",
+  "description": "Scaffolds the posts tier and captures how your posts should sound — by interview plus real samples — with personal profiles gitignored by default. The skill ships a template and never a voice.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Vidhunnan Murugan"
+  }
+}
