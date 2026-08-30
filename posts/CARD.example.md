@@ -1,8 +1,12 @@
-# Card direction
+# Card direction — template
 
-**Status: PRE-FILLED, NOT CONFIRMED.** Derived from `design/system/palette.md` and
-`design/system/language-website.md`, which is what `post-card` is meant to do when a
-design system exists. The author has not confirmed it.
+**This is the shape `post-card` reads. The real file is `posts/CARD.md`, which is
+gitignored by default** for the same reason as `VOICE.md`.
+
+Where the project already has a design system, this file is **pre-filled from it
+and then confirmed** rather than invented. The example below is filled from this
+repo's own `design/system/palette.md` to show what that looks like; in your project
+the tokens are yours.
 
 ## Direction
 

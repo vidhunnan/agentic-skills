@@ -536,6 +536,26 @@ what a stranger would find interesting, deliberately incomplete. A handoff that
 omits boring-but-necessary context is broken; an export that includes it is
 useless. Different failure modes, so different skills.
 
+**The skill ships a template. It never ships a voice.** `VOICE.md` is personal
+data — one person's register, derived from their own writing — and it is generated
+into the *user's* project by `post-setup`, never distributed with the plugin. Same
+relationship `model-strategy` has to `docs/MODEL-STRATEGY.md`: the skill writes the
+file, the file is not the skill. What ships is the template, the interview, and the
+hard-coded banned-moves list, which is the library's editorial stance and identical
+for everyone. A captured voice in a published skill would hand every installer one
+person's register as a default, which is worse than no voice file at all.
+
+The same applies to `CARD.md`, and to `posts/` in general. **Nothing under `posts/`
+is skill content.** It is output, and it belongs to whoever ran the skill.
+
+Which sets the default: **`post-setup` gitignores `VOICE.md` and `CARD.md`, and
+offers to commit them.** Most repos a skill gets run in are public or shared, and a
+profile of how someone writes is not something to publish by accident. Committing
+them is a real choice — it survives a fresh clone, works across machines, and lets
+a team share one voice — so the skill offers it rather than deciding. What is
+committed either way is `VOICE.example.md`: the shape, plus the banned-moves list
+that is the same for everyone.
+
 **Graduation is gated on one real post.** Not on the doc feeling finished. The
 flow gets run by hand, end to end, on real work; if the output is publishable
 without a rewrite the family graduates into PRDs, and if it isn't we learned that

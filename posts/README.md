@@ -18,8 +18,9 @@ shipped.** Check `changelog/`, or check the code.
 | `material/assets/` | Snapshots — the before-state, before it was overwritten |
 | `{date}-{slug}.md` | A post: copy per platform, plus the visual plan |
 | `cards/` | Rendered frames, one self-contained HTML file each |
-| `VOICE.md` | How the posts sound. Not how this repo's docs sound |
-| `CARD.md` | How the frames look |
+| `VOICE.md` | How the posts sound. Not how this repo's docs sound. **Gitignored** |
+| `CARD.md` | How the frames look. **Gitignored** |
+| `*.example.md` | The committed templates. What the skill would actually ship |
 
 ## The rule that matters
 
@@ -29,6 +30,17 @@ that cannot show its working is a draft that will state something confidently
 wrong under your own name.
 
 **Nothing here publishes.** These are drafts. You post them.
+
+## Why two of these files are gitignored
+
+`VOICE.md` and `CARD.md` are **personal profiles, not skill content.** A voice file
+is one person's register, derived from their own writing; shipping it would hand
+every installer someone else's defaults. So the skill writes them into your
+project and ignores them by default, and offers to commit them if you want them
+synced across machines or shared with a team.
+
+What is committed is `VOICE.example.md` and `CARD.example.md` — the shape, with
+the universal banned-moves list, and no one's evidence in them.
 
 > Scaffolded by hand on 2026-08-30 as the graduation test for
 > [`docs/concepts/working-in-public.md`](../docs/concepts/working-in-public.md).
