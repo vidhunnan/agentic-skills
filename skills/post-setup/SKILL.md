@@ -26,7 +26,7 @@ Three rules govern this skill:
   person's register, derived from their own writing. `VOICE.md` is generated *into
   your project* and is **gitignored by default**, because most repos a skill runs
   in are public or shared. What ships with the plugin is the shape and the
-  banned-moves list. This is the same relationship `model-strategy` has to
+  two shipped rule lists. This is the same relationship `model-strategy` has to
   `docs/MODEL-STRATEGY.md`: the skill writes the file, the file is not the skill.
 - **Never invent a voice.** Asked how someone writes, a model will produce a
   confident, generic answer. If the user supplies neither samples nor answers, the
@@ -46,7 +46,7 @@ Used only to fill gaps. An existing path always wins.
 |---|---|---|
 | `posts/README.md` | The tier's tense: **derived — it cites the record, never a source** | yes |
 | `posts/VOICE.md` | How the posts sound | **gitignored by default** |
-| `posts/VOICE.example.md` | The shape, plus the banned-moves list | yes |
+| `posts/VOICE.example.md` | The shape, plus the banned moves and the AI-tells pointer | yes |
 | `posts/CARD.md` | How the frames look | **gitignored by default** |
 | `posts/CARD.example.md` | The shape | yes |
 | `posts/material/README.md` | The backlog index | yes |
@@ -137,7 +137,7 @@ get the patterns they cannot.
    loses it.
 5. **Mark any register you have no samples for as uncaptured.** Do not infer it.
 
-**If the user declines both samples and interview**, write the banned-moves list,
+**If the user declines both samples and interview**, write the two shipped rule sections,
 leave the positive half explicitly empty, and say plainly that every draft until
 they return will be generic.
 
@@ -169,7 +169,7 @@ how someone writes, published into whatever repo this is. Take either answer.
 
 Only what does not exist. Never move, rename or overwrite.
 
-The `*.example.md` templates are committed and carry the banned-moves list; the
+The `*.example.md` templates are committed and carry the shipped rule sections; the
 captured profiles are not. Both are written, and they are different files — the
 example is what would ship with the plugin, the real one is the user's.
 
