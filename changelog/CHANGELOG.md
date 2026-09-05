@@ -8,6 +8,7 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 
 | # | Commit | Date | Subject |
 |---|--------|------|---------|
+| [080](./commits/080-the-one-command-install-and-what-it-costs.md) | `fbc6575` | 2026-09-05 | The one-command install, and what it costs |
 | [079](./commits/079-absorb-the-ai-tells-list-and-split-taste-from-hygiene.md) | `801cab4` | 2026-08-30 | Absorb the AI-tells list, and split taste from hygiene |
 | [078](./commits/078-log-the-five-new-skills-and-bump-skill-scaffold.md) | `883193c` | 2026-08-30 | Log the five new skills, and bump `skill-scaffold` |
 | [077](./commits/077-add-the-five-working-in-public-skills.md) | `0701f86` | 2026-08-30 | Add the five working-in-public skills |
@@ -87,6 +88,13 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 | [003](./commits/003-add-changelog-baseline-model-strategy-and-skill-protocol-registrations.md) | `0fc116e` | 2026-07-12 | Add changelog baseline, model strategy, and skill protocol registrations |
 | [002](./commits/002-add-install-commands-for-all-skills-in-readme.md) | `75f7a7c` | 2026-07-12 | Add install commands for all skills in README |
 | [001](./commits/001-add-three-git-workflow-skills-shared-claude-md-registration.md) | `506a5c6` | 2026-07-12 | Add three git-workflow skills + shared CLAUDE.md registration |
+
+---
+
+## 2026-09-05
+
+### Added
+- **The one-command install, explored and costed** (`fbc6575`) — `docs/concepts/npm-distribution.md`. The README's Install block asks for **twenty `/plugin install` lines**, and the stack only works whole: `design-critique` refuses to run without what `design-brief` wrote, so install friction that selects for partial adoption selects against the library's own thesis. The first finding is that **the library is already installable in one command and nobody has been told** — `npx skills add vidhunnan/agentic-skills --skill '*'` was run against the live repo, unchanged, and found all twenty skills, copied each whole folder (`SKILL.md` **and** `.claude-plugin/`), wrote a lockfile, and updated all twenty in one pass, because `skills/<name>/SKILL.md` is exactly the layout [`vercel-labs/skills`](https://github.com/vercel-labs/skills) walks. Three routes are tabled — that CLI, an `{"source": "npm"}` entry in `marketplace.json` which Claude Code supports natively, and a first-party CLI — but the concept's point is that the fork is **not npm-or-not**: it is *whether a one-command install is allowed to be version-blind*, and that puts it directly against [ADR 0026](../docs/decisions/0026-versions-are-per-skill-bumped-only-when-that-skill-changes.md). Every one-command installer treats the **repo** as the unit of distribution; 0026 says the unit of release is the **skill**. The free route pins a content hash and cannot say which skills moved; the route that preserves semver costs **twenty npm packages**, published by hand, forever. The document flags its own weakest link rather than arguing past it — there is no install telemetry, so "partial adoption is happening and harmful" is a guess — and its kill condition is real: if installing twenty skills at once floods a project's auto-trigger surface, the twenty README lines are not friction, they are a **filter**, and the README is already right.
 
 ---
 
