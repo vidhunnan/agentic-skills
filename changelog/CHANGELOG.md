@@ -8,6 +8,7 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 
 | # | Commit | Date | Subject |
 |---|--------|------|---------|
+| [080](./commits/080-explore-the-readme-as-a-generated-document.md) | `9efe7b8` | 2026-09-05 | Explore the README as a generated document |
 | [079](./commits/079-absorb-the-ai-tells-list-and-split-taste-from-hygiene.md) | `801cab4` | 2026-08-30 | Absorb the AI-tells list, and split taste from hygiene |
 | [078](./commits/078-log-the-five-new-skills-and-bump-skill-scaffold.md) | `883193c` | 2026-08-30 | Log the five new skills, and bump `skill-scaffold` |
 | [077](./commits/077-add-the-five-working-in-public-skills.md) | `0701f86` | 2026-08-30 | Add the five working-in-public skills |
@@ -87,6 +88,13 @@ Every substantive commit is documented in a file under [`commits/`](./commits/),
 | [003](./commits/003-add-changelog-baseline-model-strategy-and-skill-protocol-registrations.md) | `0fc116e` | 2026-07-12 | Add changelog baseline, model strategy, and skill protocol registrations |
 | [002](./commits/002-add-install-commands-for-all-skills-in-readme.md) | `75f7a7c` | 2026-07-12 | Add install commands for all skills in README |
 | [001](./commits/001-add-three-git-workflow-skills-shared-claude-md-registration.md) | `506a5c6` | 2026-07-12 | Add three git-workflow skills + shared CLAUDE.md registration |
+
+---
+
+## 2026-09-05
+
+### Added
+- **A concept for the one document here that still hand-types its own facts** (`9efe7b8`) — `docs/concepts/readme-sync.md`. This library holds one rule as absolute — a document that states facts about the repo is **generated, never hand-edited** — and the rule stops at the front door: `skills.ts` derives every count it prints, while `README.md` hand-types "Twenty" twice and `content.ts` a third time. The concept refuses the easy reading of *automatically*: **there is no per-event hook here, by design**, so the word breaks into a four-rung ladder — `check`, `sync`, a CLAUDE.md protocol block, CI — and only the last rung, which lives outside the skill, earns it. The shaky assumption is recorded rather than buried: a row's name, link and install line are derivable, but its *"What it does"* sentence is the best writing in the file and **no file holds it** — frontmatter `description` is trigger-phrase copy for the matcher, not readable prose. So it proposes testing a **claim checker** first, which verifies and reports but never rewrites. It stays a concept because the checker-vs-generator question is unresolved and picking now would be guessing; the graduation gate is a **test**, not a feeling — rename or remove one skill, do the README update by hand, and list every place a machine could not have known what to write.
 
 ---
 
